@@ -26,7 +26,7 @@ header{gap:6px;padding:6px 10px 2px}header h1{flex:none;font-size:22px;line-heig
 footer{padding:4px 12px 4px}.pi{gap:8px}.pi b{font-size:13px;line-height:1.3}.pi small{font-size:11px;line-height:1.2}.pi img,.pi .ph{width:30px;height:30px;font-size:15px;border-radius:8px}.sb{margin:0}.sb input{height:20px}.cb{gap:6px}.cb button{flex:1;padding:4px 0;font-size:17px;height:38px;border-radius:12px}#pp{flex:none;width:46px;height:46px;font-size:19px;padding:0}#sl{font-size:12px!important}
 #ad{position:fixed;inset:0;background:rgba(0,0,0,.6);display:flex;align-items:flex-end;z-index:20}#ad[hidden]{display:none}#ad>div{width:100%;background:#1b1b22;border-radius:18px 18px 0 0;padding:16px 14px 20px;display:flex;flex-direction:column;gap:10px}#ad button{display:flex;flex-direction:column;align-items:flex-start;gap:3px;text-align:left;padding:12px 14px;font-size:15px;font-weight:700;border-radius:12px}#ad button small{font-weight:400;font-size:12px;color:#b9b9c6;line-height:1.35}#adx{align-items:center!important}#adm{min-height:18px;font-size:13px;color:#ffb3a8}
 #pk{position:fixed;inset:0;background:#141418;display:flex;flex-direction:column;padding:12px;gap:8px;z-index:30}#pk[hidden]{display:none}#pkl{flex:1;overflow:auto}.pr{display:flex;align-items:center;gap:12px;padding:12px 6px;border-bottom:1px solid #22222c;cursor:pointer}.pc{flex:none;width:26px;height:26px;border-radius:50%;border:2px solid #6b6b7a;display:flex;align-items:center;justify-content:center;font-size:15px;color:transparent}.pr.on .pc{background:#ff7a3d;border-color:#ff7a3d;color:#fff}.pt{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.pt small{display:block;color:#9a9aa8;font-size:12px}
-.dc{flex:none;width:26px;height:26px;border-radius:50%;border:2px solid #6b6b7a;display:flex;align-items:center;justify-content:center;font-size:15px;color:#fff}.it.ds{background:#3a1a1c}.it.ds .dc{background:#e8344e;border-color:#e8344e}#dmb{padding:4px 0 8px;position:sticky;top:0;z-index:2;background:#141418}#dmb button{padding:10px 12px}</style></head><body>
+.dc{flex:none;width:26px;height:26px;border-radius:50%;border:2px solid #6b6b7a;display:flex;align-items:center;justify-content:center;font-size:15px;color:#fff}.it.ds{background:#3a1a1c}.it.ds .dc{background:#e8344e;border-color:#e8344e}#dmb{padding:4px 0 8px;position:sticky;top:0;z-index:2;background:#141418}#dmb button{padding:10px 12px}#sa{position:fixed;inset:0;background:#141418;display:flex;flex-direction:column;padding:14px;gap:10px;z-index:10;overflow:auto}#sa[hidden]{display:none}#sac{width:100%;height:150px;background:#1a1a20;border-radius:14px;flex:none}#sa .mh button{padding:11px 6px}#sa label{font-size:13.5px;display:flex;gap:8px;align-items:center}#sao{align-self:center;min-width:64px;text-align:center;font-size:14px}#sat{height:90px;background:#1b1b22;color:#f2f2f6;border:1px solid #2b2b36;border-radius:12px;padding:8px;font:11px monospace}</style></head><body>
 <header><h1>🎵</h1><nav><button id="t1">목록</button><button id="t2" class="on">가사</button></nav><button id="bkb" title="백업">💾</button><button id="fu" title="도구줄 숨기기/보이기">⛶</button><button class="add" id="addb">＋ 추가</button></header>
 <div id="st" style="padding:0 14px;font-size:13px;color:#ffb3a8;min-height:0"></div>
 <input id="fi" type="file" multiple hidden accept="audio/*,.mp3,.m4a,.flac,.wav,.ogg,.aac,.lrc,.txt"><input id="fi2" type="file" webkitdirectory multiple hidden>
@@ -36,7 +36,7 @@ footer{padding:4px 12px 4px}.pi{gap:8px}.pi b{font-size:13px;line-height:1.3}.pi
 <button id="adp">🎵 파일 선택<small>곡을 여러 개 고른 뒤, 다음 화면에서 한 번 더 체크할 수 있어요 (녹음 파일은 자동 해제)</small></button>
 <div id="adm"></div><button id="adx">닫기</button></div></div>
 <div id="fpm" hidden></div><div id="nxb" hidden></div><main><section id="v-list" hidden><div id="fdb" class="mh" style="padding:4px 0 6px"></div><div id="dmb" class="mh"></div><div id="list"></div></section>
-<section id="v-ly"><div class="lt"><button id="fm" title="글자 작게">A−</button><button id="fp" title="글자 크게">A＋</button><button id="ff" title="글꼴 선택">🔤</button><button id="bd" title="싱크 안 맞는 곡으로 표시">🚩</button><button id="om" style="display:none" title="싱크 −0.5초">−0.5</button><span id="ov" style="display:none">0.0s</span><button id="op" style="display:none" title="싱크 +0.5초">+0.5</button><button id="fs1" title="첫 소절 맞추기">🎯</button><button id="af" title="가사 찾기">🔍</button><button id="le" title="가사 편집">📝</button><button id="eio" title="제목·가수 수정">✏️</button><button id="syo" title="직접 싱크">⏱</button><button id="pip" style="display:none" title="가사 창 띄우기 (백그라운드)">🪟</button></div><div id="ly"><p class="em">곡을 추가하고 선택하면<br>가사가 여기에 크게 표시돼요</p></div></section></main>
+<section id="v-ly"><div class="lt"><button id="fm" title="글자 작게">A−</button><button id="fp" title="글자 크게">A＋</button><button id="ff" title="글꼴 선택">🔤</button><button id="bd" title="싱크 안 맞는 곡으로 표시">🚩</button><button id="om" style="display:none" title="싱크 −0.5초">−0.5</button><span id="ov" style="display:none">0.0s</span><button id="op" style="display:none" title="싱크 +0.5초">+0.5</button><button id="fs1" title="첫 소절 맞추기">🎯</button><button id="sx" title="자동 싱크 분석">🎚</button><button id="af" title="가사 찾기">🔍</button><button id="le" title="가사 편집">📝</button><button id="eio" title="제목·가수 수정">✏️</button><button id="syo" title="직접 싱크">⏱</button><button id="pip" style="display:none" title="가사 창 띄우기 (백그라운드)">🪟</button></div><div id="ly"><p class="em">곡을 추가하고 선택하면<br>가사가 여기에 크게 표시돼요</p></div></section></main>
 <footer><div class="pi"><div id="pc" style="display:contents"></div><div><b id="tt">재생 중인 곡 없음</b><small id="ta"></small></div></div>
 <div class="sb"><span id="tc">0:00</span><input id="sk" type="range" min="0" max="1" step="0.1" value="0"><span id="td">0:00</span></div>
 <div class="cb"><button id="sf">⇄</button><button id="pv">⏮</button><button id="pp">▶</button><button id="nt">⏭</button><button id="rp">↻</button><button id="sl"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l3 2M9 2h6M12 2v3"/></svg></button></div><audio id="a"></audio><div id="ver"></div></footer>
@@ -44,6 +44,7 @@ footer{padding:4px 12px 4px}.pi{gap:8px}.pi b{font-size:13px;line-height:1.3}.pi
 <div id="cf" hidden><div class="mh"><b style="flex:1;align-self:center">⚙ 가사 중계 서버</b><button id="cfx">닫기</button></div><small>Cloudflare Worker 주소를 넣으면 알송·지니·멜론 등이 안정적으로 연결돼요</small><input id="cfu" placeholder="https://이름.계정.workers.dev" style="background:#1b1b22;color:#f2f2f6;border:1px solid #2b2b36;border-radius:12px;padding:11px;font-size:14px"><div class="mh"><button id="cfs">저장</button><button id="cft">연결 점검</button></div><div class="mh"><b style="flex:1;align-self:center;font-size:13px">📊 출처별 기록 (누적)</b><button id="sstc">복사</button><button id="sstr">지우기</button></div><div id="sstd" style="white-space:pre-wrap;font-size:12px;line-height:1.5;max-height:42vh;overflow:auto;user-select:text;-webkit-user-select:text;background:#1b1b22;border-radius:12px;padding:10px"></div><div id="cfr" style="flex:1;overflow:auto"></div></div>
 <div id="fd" hidden><div class="mh"><input id="fq" placeholder="제목 가수"><button id="fs">검색</button><button id="fcfg" title="중계 서버 설정">⚙</button><button id="fc">닫기</button></div><div id="fr"></div></div>
 <div id="sy" hidden><div class="mh"><b style="flex:1;align-self:center">⏱ 직접 싱크 맞추기</b><button id="syx">닫기</button></div><small>노래를 들으면서 <b>가사가 시작되는 순간마다 큰 버튼</b>을 탭하세요. 줄을 누르면 그 줄부터 다시 맞출 수 있어요.</small><div id="syl"></div><div class="syc"><button id="syp">▶ 재생</button><button id="syb">⏪ 5초</button><button id="syu">↶ 되돌리기</button><button id="syr">속도 1×</button></div><button id="syt" class="add">👆 탭</button><button id="syv" style="padding:12px;border-color:#6fe39a;color:#6fe39a">💾 완료·저장</button></div>
+<div id="sa" hidden><div class="mh"><b style="flex:1;align-self:center">🎚 싱크 분석</b><button id="sax">닫기</button></div><small id="sam"></small><canvas id="sac"></canvas><div class="mh"><button id="sar" class="add" style="flex:2;border:0">🔬 분석 실행</button><button id="sau" style="flex:1">↩ 원래대로</button></div><button id="sag" style="display:none;border-color:#ffb3a8;color:#ffb3a8">⚠️ 신뢰도 낮음 — 그래도 적용</button><div class="mh" id="safine"><button data-k="-10" style="flex:1">−0.1</button><button data-k="-1" style="flex:1">−0.01</button><span id="sao">0.00s</span><button data-k="1" style="flex:1">+0.01</button><button data-k="10" style="flex:1">+0.1</button></div><label><input type="checkbox" id="sal"> 줄별 보정 사용 (줄마다 시간을 따로 맞춤)</label><label><input type="checkbox" id="saa"> 곡을 재생하면 자동으로 분석</label><b style="margin-top:4px">📦 싱크 DB (HTML 안에 압축 내장)</b><small id="sad"></small><div class="mh"><button id="sae" style="flex:2">💾 HTML에 내장해 저장</button><button id="sac2" style="flex:1">복사</button><button id="sai" style="flex:1">불러오기</button></div><textarea id="sat" hidden></textarea></div>
 <div id="ei" hidden><div class="mh"><b style="flex:1;align-self:center">✏️ 곡 정보 수정</b><button id="eix">닫기</button></div><small>제목과 가수 이름이 정확하면 가사를 더 잘 찾아요 (예: To Heaven / 조성모)</small><input id="eit" placeholder="제목"><input id="eia" placeholder="가수"><input id="eif" placeholder="폴더 (예: 발라드 / 비워두면 폴더 없음)"><button id="eis" class="add" style="border:0">저장</button><button id="eir" style="padding:12px">저장하고 가사 다시 찾기</button></div>
 <div id="ed" hidden><b>가사 편집 (.lrc 시간 태그 [00:12.30] 지원)</b><textarea id="et" placeholder="가사를 붙여넣으세요"></textarea><div style="display:flex;gap:8px"><label class="add" style="flex:1;text-align:center;background:#22222c">가사 파일 불러오기<input id="lf" type="file" hidden accept=".lrc,.txt"></label><button id="ec">취소</button><button id="es" class="add" style="border:0">저장</button></div></div>
 <script>
@@ -504,7 +505,7 @@ function findDup(){
 dmUi();
 
 // ── 뒤로가기: 열린 화면 닫기 → 목록이면 가사 화면 → 맨 처음이면 "한 번 더 누르면 종료"
-(()=>{const CL={ad:()=>$('#adx').click(),pk:()=>$('#pkx').click(),bk:()=>$('#bkx').click(),cf:()=>$('#cfx').click(),fd:()=>$('#fc').click(),ei:()=>$('#eix').click(),ed:()=>$('#ec').click(),sy:()=>$('#syx').click(),fpm:()=>{$('#fpm').hidden=true},'v-list':()=>tab('ly')};
+(()=>{const CL={ad:()=>$('#adx').click(),pk:()=>$('#pkx').click(),bk:()=>$('#bkx').click(),cf:()=>$('#cfx').click(),fd:()=>$('#fc').click(),ei:()=>$('#eix').click(),ed:()=>$('#ec').click(),sy:()=>$('#syx').click(),sa:()=>$('#sax').click(),fpm:()=>{$('#fpm').hidden=true},'v-list':()=>tab('ly')};
  const stack=[];let ign=0,exitT=0;
  const hs=()=>{try{return history.state}catch{return null}};
  const push=o=>{try{history.pushState(o,'')}catch{}};
@@ -517,4 +518,291 @@ dmUi();
   if(stack.length){const id=stack.pop();try{CL[id]()}catch{}return}
   const s=hs();if(s&&s.root){modeMsg('뒤로가기를 한 번 더 누르면 앱이 종료돼요');clearTimeout(exitT);exitT=setTimeout(()=>{exitT=0;const q=hs();if(!stack.length&&q&&q.root)push({guard:1})},2000)}});
 })();
-</script><script>if('serviceWorker' in navigator)addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}))</script><script>(()=>{const BUILD='2026-11-21 16:46',f=d=>d.toLocaleString('ko-KR',{month:'numeric',day:'numeric',hour:'2-digit',minute:'2-digit',hour12:false}),e=document.getElementById('ver');if(!e)return;let s='빌드 '+BUILD.slice(5);try{const d=new Date(document.lastModified);if(!isNaN(d)&&Math.abs(Date.now()-d)>20000)s+=' · 사이트 반영 '+f(d)}catch{}e.textContent=s;e.title='이 index.html의 빌드 '+BUILD+' (한국 시간)'})()</script></body></html>
+</script><script id="sydb" type="text/plain"></script><script>/* SyncAI core: 순수 계산부 (브라우저/노드 공용) */
+const SyncAI = (() => {
+  const HOP = 160, WIN = 512; // sr=16000 기준 10ms 간격, 32ms 창
+  const HANN = new Float32Array(WIN);
+  for (let i = 0; i < WIN; i++) HANN[i] = 0.5 - 0.5 * Math.cos(2 * Math.PI * i / WIN);
+
+  // 간단한 radix-2 FFT (in-place)
+  function fft(re, im) {
+    const n = re.length;
+    for (let i = 1, j = 0; i < n; i++) {
+      let bit = n >> 1;
+      for (; j & bit; bit >>= 1) j ^= bit;
+      j ^= bit;
+      if (i < j) { let t = re[i]; re[i] = re[j]; re[j] = t; t = im[i]; im[i] = im[j]; im[j] = t; }
+    }
+    for (let len = 2; len <= n; len <<= 1) {
+      const ang = -2 * Math.PI / len, wr = Math.cos(ang), wi = Math.sin(ang);
+      for (let i = 0; i < n; i += len) {
+        let cr = 1, ci = 0;
+        for (let k = 0; k < len / 2; k++) {
+          const a = i + k, b = a + len / 2;
+          const xr = re[b] * cr - im[b] * ci, xi = re[b] * ci + im[b] * cr;
+          re[b] = re[a] - xr; im[b] = im[a] - xi; re[a] += xr; im[a] += xi;
+          const t = cr * wr - ci * wi; ci = cr * wi + ci * wr; cr = t;
+        }
+      }
+    }
+  }
+
+  /* 1) 보컬 특징 곡선: 가운데 성분의 300~3400Hz 로그 스펙트럼 플럭스 + 보컬 존재 곡선 */
+  async function features(L, R, sr, onProg) {
+    const nF = Math.max(0, Math.floor((L.length - WIN) / HOP));
+    const k0 = Math.round(300 * WIN / sr), k1 = Math.round(3400 * WIN / sr);
+    const h0 = Math.round(5000 * WIN / sr), h1 = Math.min(WIN / 2 - 1, Math.round(7500 * WIN / sr));
+    const flux = new Float32Array(nF), pres = new Float32Array(nF), hi = new Float32Array(nF);
+    let prev = new Float32Array(k1 - k0 + 1), prevHi = 0;
+    const mr = new Float32Array(WIN), mi = new Float32Array(WIN), sr_ = new Float32Array(WIN), si = new Float32Array(WIN);
+    const stereo = R && R !== L;
+    for (let f = 0; f < nF; f++) {
+      const o = f * HOP;
+      for (let i = 0; i < WIN; i++) {
+        const l = L[o + i], r = stereo ? R[o + i] : l;
+        mr[i] = (l + r) * 0.5 * HANN[i]; mi[i] = 0;
+        sr_[i] = (l - r) * 0.5 * HANN[i]; si[i] = 0;
+      }
+      fft(mr, mi);
+      if (stereo) fft(sr_, si);
+      let fl = 0, en = 0, hh = 0;
+      for (let k = k0; k <= k1; k++) {
+        const m = Math.hypot(mr[k], mi[k]);
+        const s = stereo ? Math.hypot(sr_[k], si[k]) : 0;
+        const c = Math.max(0, m - 0.9 * s);           // 가운데(보컬) 성분
+        const lg = Math.log1p(c * 30);
+        const d = lg - prev[k - k0];
+        if (d > 0) fl += d;
+        prev[k - k0] = lg; en += c * c;
+      }
+      for (let k = h0; k <= h1; k++) hh += Math.hypot(mr[k], mi[k]);
+      flux[f] = fl; pres[f] = Math.log1p(Math.sqrt(en) * 30); hi[f] = hh;
+      if (onProg && f % 400 === 0) { await onProg(f / nF); }
+    }
+    // 드럼/하이햇처럼 고음이 갑자기 튀는 프레임은 온셋 점수 감점
+    for (let f = 1; f < nF; f++) {
+      const dh = hi[f] - hi[f - 1];
+      const ref = (hi[f - 1] + hi[Math.max(0, f - 2)]) * 0.5 + 1e-6;
+      if (dh / ref > 1.2) flux[f] *= 0.5;
+    }
+    return { flux, pres, nF, hop: HOP / sr };
+  }
+
+  const smooth = (a, w) => { // 이동평균(양쪽 w칸)
+    const n = a.length, o = new Float32Array(n), c = new Float64Array(n + 1);
+    for (let i = 0; i < n; i++) c[i + 1] = c[i] + a[i];
+    for (let i = 0; i < n; i++) { const lo = Math.max(0, i - w), hi = Math.min(n, i + w + 1); o[i] = (c[hi] - c[lo]) / (hi - lo); }
+    return o;
+  };
+  const normZ = (a) => { // 국소 정규화: 1.5초 평균을 빼고 표준편차로 나눔
+    const n = a.length, m = smooth(a, 75), o = new Float32Array(n);
+    let v = 0; for (let i = 0; i < n; i++) v += (a[i] - m[i]) ** 2; const sd = Math.sqrt(v / Math.max(1, n)) + 1e-6;
+    for (let i = 0; i < n; i++) o[i] = Math.max(0, (a[i] - m[i]) / sd);
+    return o;
+  };
+
+  /* 2) 시작점 점수 곡선: (보컬 켜짐 경계) + (스펙트럼 플럭스) */
+  function onsetCurve(F) {
+    const { flux, pres, nF } = F;
+    const pm = smooth(pres, 2);
+    const edge = new Float32Array(nF), W = 30, G = 6; // 앞뒤 0.3초 비교, 0.06초 간격
+    for (let i = 0; i < nF; i++) {
+      let a = 0, b = 0, na = 0, nb = 0;
+      for (let k = G; k < G + W; k++) {
+        if (i - k >= 0) { a += pm[i - k]; na++; }
+        if (i + k < nF) { b += pm[i + k]; nb++; }
+      }
+      edge[i] = na && nb ? Math.max(0, b / nb - a / na) : 0;
+    }
+    const fz = normZ(smooth(flux, 1)), ez = normZ(edge);
+    const on = new Float32Array(nF);
+    for (let i = 0; i < nF; i++) on[i] = 0.55 * ez[i] + 0.45 * fz[i];
+    // 보컬이 전혀 없는 구간(조용한 구간)의 가짜 점수 억제
+    const lvl = smooth(pres, 25); let mx = 0; for (let i = 0; i < nF; i++) if (lvl[i] > mx) mx = lvl[i];
+    for (let i = 0; i < nF; i++) if (lvl[i] < mx * 0.18) on[i] *= 0.2;
+    return on;
+  }
+
+  const gauss = (a, sigFr) => {
+    const r = Math.ceil(sigFr * 3), k = []; let s = 0;
+    for (let i = -r; i <= r; i++) { const v = Math.exp(-0.5 * (i / sigFr) ** 2); k.push(v); s += v; }
+    const n = a.length, o = new Float32Array(n);
+    for (let i = 0; i < n; i++) { let acc = 0; for (let j = -r; j <= r; j++) { const q = i + j; if (q >= 0 && q < n) acc += a[q] * k[j + r]; } o[i] = acc / s; }
+    return o;
+  };
+
+  /* 3) 정렬: 전역 이동량 → 줄별 비터비 → 미세 보정 */
+  function align(onset, hop, T) {
+    const n = onset.length, N = T.length;
+    const at = (c, t) => { const x = t / hop; if (x < 0 || x >= c.length - 1) return 0; const i = x | 0, f = x - i; return c[i] * (1 - f) + c[i + 1] * f; };
+    // 줄 가중치: 앞 줄과 간격이 길수록(= 쉬었다 시작) 믿을 만함
+    const w = T.map((t, i) => { const g = i ? t - T[i - 1] : 9; return 0.6 + Math.min(1, g / 5); });
+    const wsum = w.reduce((a, b) => a + b, 0) || 1;
+    const sm = gauss(onset, 10);           // σ=0.1s (넓은 봉우리: 큰 이동 탐색용)
+    const sh = gauss(onset, 4);            // σ=0.04s (정밀)
+    const dur = n * hop;
+    const lo = -Math.min(45, T[0] + 5), hi = Math.min(60, dur - T[N - 1] + 5);
+    let best = -1e9, bd = 0; const all = [];
+    for (let d = lo; d <= hi; d += 0.02) {
+      let s = 0; for (let i = 0; i < N; i++) s += w[i] * at(sm, T[i] + d);
+      s = s / wsum - 0.0015 * Math.abs(d);   // 이동량이 작은 쪽을 아주 약하게 선호
+      all.push([d, s]); if (s > best) { best = s; bd = d; }
+    }
+    // 신뢰도: 최고점이 전체 분포·다른 봉우리보다 얼마나 뚜렷한가
+    const ss = all.map(x => x[1]); const mean = ss.reduce((a, b) => a + b, 0) / ss.length;
+    const sd = Math.sqrt(ss.reduce((a, b) => a + (b - mean) ** 2, 0) / ss.length) + 1e-9;
+    let second = -1e9; for (const [d, s] of all) if (Math.abs(d - bd) > 1.2 && s > second) second = s;
+    const z = (best - mean) / sd, margin = (best - second) / (Math.abs(best) + 1e-9);
+    // 줄별 비터비: 전역 이동량 주변 ±3초, 점프에는 상수 비용, 완만한 변화는 저렴
+    const S = 151, step = 0.04, mid = 75;
+    const cost = new Float32Array(N * S), back = new Int16Array(N * S);
+    const emit = (i, s) => -w[i] * at(sh, T[i] + bd + (s - mid) * step) + 0.12 * Math.abs(s - mid) * step;
+    for (let s = 0; s < S; s++) cost[s] = emit(0, s);
+    for (let i = 1; i < N; i++) {
+      for (let s = 0; s < S; s++) {
+        let bc = 1e18, bs = s;
+        const a = Math.max(0, s - 40), b = Math.min(S - 1, s + 40);
+        for (let p = a; p <= b; p++) {
+          const dd = Math.abs(p - s) * step;
+          const tr = dd < 0.06 ? dd * 1.0 : 0.35 + dd * 0.5; // 큰 점프는 비쌈
+          const c = cost[(i - 1) * S + p] + tr;
+          if (c < bc) { bc = c; bs = p; }
+        }
+        cost[i * S + s] = bc + emit(i, s); back[i * S + s] = bs;
+      }
+    }
+    let s = 0, bc = 1e18; for (let k = 0; k < S; k++) if (cost[(N - 1) * S + k] < bc) { bc = cost[(N - 1) * S + k]; s = k; }
+    const sel = new Array(N);
+    for (let i = N - 1; i >= 0; i--) { sel[i] = s; s = back[i * S + s]; }
+    // 미세 보정(±0.15초): 뚜렷한 봉우리가 있을 때만
+    const shift = sel.map((si, i) => {
+      let d = bd + (si - mid) * step;
+      const base = at(sh, T[i] + d);
+      let bb = base, bo = 0;
+      for (let o = -0.15; o <= 0.15; o += 0.01) { const v = at(sh, T[i] + d + o) - 0.5 * Math.abs(o); if (v > bb + 0.15) { bb = v; bo = o; } }
+      return d + bo;
+    });
+    return { d: bd, z, margin, shift, score: best };
+  }
+
+  /* 4) 전체 파이프라인: 결과는 줄별 총 이동량(sh_j = 오디오시간 − 가사시간) */
+  async function analyze(L, R, sr, T, onProg) {
+    const F = await features(L, R, sr, onProg);
+    if (F.nF < 400 || T.length < 3) return null;
+    const on = onsetCurve(F);
+    const r = align(on, F.hop, T);
+    const med = [...r.shift].sort((a, b) => a - b)[r.shift.length >> 1];
+    return { ...r, med, onset: on, hop: F.hop, pres: F.pres };
+  }
+  return { analyze, features, onsetCurve, align };
+})();
+
+/* ===== 자동 싱크(파형 분석) + 압축 싱크 DB ===== */
+(()=>{
+const U=0.02; // 줄별 보정 저장 단위(20ms)
+let busy=0,last=null,lastK=null,tm=0,rt=0;
+const fnv=s=>{let h=0x811c9dc5;for(let k=0;k<s.length;k++){h^=s.charCodeAt(k);h=Math.imul(h,0x01000193)>>>0}return h>>>0};
+const keyOf=s=>fnv((cl(s.title||'')+'|'+cl(s.artist||'')).toLowerCase().replace(/\s+/g,''));
+const lh=s=>fnv(s.lyrics||'');
+const auto=()=>{try{return localStorage.sxAuto!=='0'}catch{return true}};
+
+/* --- DB: Map(h → [{dur,n,t0,o,d}]) --- */
+const DB=new Map();
+const dbAdd=e=>{const a=DB.get(e.h)||[];const j=a.findIndex(x=>Math.abs(x.dur-e.dur)<15&&x.n===e.n);if(j>=0)a[j]=e;else a.push(e);DB.set(e.h,a)};
+const zz=v=>v<0?(-v<<1)-1:v<<1,uz=v=>v&1?-((v+1)>>1):v>>1;
+const wv=(o,v)=>{while(v>=128){o.push((v&127)|128);v=Math.floor(v/128)}o.push(v)};
+function enc(){const o=[];let c=0;DB.forEach(a=>a.forEach(e=>{c++}));wv(o,c);
+ DB.forEach((a,h)=>a.forEach(e=>{o.push(h&255,(h>>>8)&255,(h>>>16)&255,(h>>>24)&255);wv(o,e.dur);wv(o,e.n);wv(o,e.t0);wv(o,zz(e.o));e.d.forEach(v=>wv(o,zz(v)))}));return new Uint8Array(o)}
+function dec(u){let p=0;const rv=()=>{let v=0,m=1,b;do{b=u[p++];v+=(b&127)*m;m*=128}while(b&128);return v};
+ const c=rv();for(let k=0;k<c;k++){const h=(u[p]|u[p+1]<<8|u[p+2]<<16|u[p+3]<<24)>>>0;p+=4;const dur=rv(),n=rv(),t0=rv(),o=uz(rv()),d=[];for(let j=0;j<n;j++)d.push(uz(rv()));dbAdd({h,dur,n,t0,o,d})}}
+const b64=u=>{let s='';for(let k=0;k<u.length;k+=8192)s+=String.fromCharCode.apply(null,u.subarray(k,k+8192));return btoa(s)};
+const ub64=t=>Uint8Array.from(atob(t),c=>c.charCodeAt(0));
+async function pipe(u,S_){const r=new Response(new Blob([u]).stream().pipeThrough(new S_('deflate-raw')));return new Uint8Array(await r.arrayBuffer())}
+async function dbText(){const raw=enc();if(typeof CompressionStream==='function'){try{return 'z'+b64(await pipe(raw,CompressionStream))}catch{}}return 'r'+b64(raw)}
+async function dbLoad(t){t=(t||'').trim();if(!t)return 0;let u=ub64(t.slice(1));if(t[0]==='z')u=await pipe(u,DecompressionStream);const b=cnt();dec(u);return cnt()-b}
+const cnt=()=>{let c=0;DB.forEach(a=>c+=a.length);return c};
+
+/* --- 곡의 보정값을 DB 항목으로 --- */
+const toE=s=>{const y=s.sy;return{h:keyOf(s),dur:Math.round(y.dur*10),n:y.n,t0:Math.round(y.t0*10),o:Math.round(y.o*100),d:Array.from({length:y.n},(_,j)=>y.pl?(y.d[j]||0):0)}};
+function gather(){S.forEach(s=>{if(s.sy&&s.sy.a&&s.sy.dur)dbAdd(toE(s))})}
+
+/* --- 적용 --- */
+const sig=s=>{const L=plrc(s.lyrics||'');return L.sync?{n:L.l.length,t0:L.l[0]?L.l[0][0]:0}:null};
+const origApply=()=>{const s=S[i];if(!s||!LY||!LY.sync)return;const y=s.sy;if(!y||!y.a||y.n!==LY.l.length||y.h!==lh(s)||!y.pl)return;
+ const a=LY.l;a.forEach((x,j)=>{x.o=x[0];x[0]=x.o+(y.d[j]||0)*U});for(let j=1;j<a.length;j++)if(a[j][0]<a[j-1][0])a[j][0]=a[j-1][0]+.01};
+async function save(s){try{await put(s)}catch{}}
+function setSy(s,y,msg){s.sy=y;if(y.a){s.off=y.o;if(S[i]===s){off=y.o;$('#ov').textContent=off.toFixed(1)+'s';lyr();A.ontimeupdate()}}save(s);if(msg)stt(msg)}
+
+/* --- 분석 --- */
+async function decode(blob){const buf=await blob.arrayBuffer();let ctx;
+ try{ctx=new(window.OfflineAudioContext||window.webkitOfflineAudioContext)(2,16000,16000)}catch{ctx=new(window.AudioContext||window.webkitAudioContext)({sampleRate:16000})}
+ const ab=await new Promise((res,rej)=>{const p=ctx.decodeAudioData(buf,res,rej);if(p&&p.catch)p.catch(rej)});
+ return ab}
+async function run(s,manual){if(busy)return null;const L0=plrc(s.lyrics||'');if(!L0.sync||L0.l.length<3){if(manual)alert('시간(싱크)이 있는 가사가 3줄 이상 있어야 분석할 수 있어요');return null}
+ if(!s.blob){return null}
+ busy=1;const T=L0.l.map(x=>x[0]);const dur=A.duration&&isFinite(A.duration)?A.duration:0;
+ try{stt('🎚 싱크 분석: 소리를 읽는 중…');const ab=await decode(s.blob);
+  const ch0=ab.getChannelData(0),ch1=ab.numberOfChannels>1?ab.getChannelData(1):ch0;
+  const r=await SyncAI.analyze(ch0,ch1,ab.sampleRate,T,async p=>{stt('🎚 싱크 분석 중 '+Math.round(p*100)+'%');await new Promise(q=>setTimeout(q,0))});
+  if(!r){stt('분석할 수 없는 곡이에요');return null}
+  const good=r.z>=4.5&&r.margin>=.12;
+  last={s,r,T,dur:dur||ab.duration,good};lastK=s.id;
+  return last}catch(e){stt('싱크 분석 실패: '+(e&&e.message||e));return null}finally{busy=0}}
+function commit(s,L,force){const r=L.r,med=r.med,o=Math.round(-med*100)/100;
+ const d=r.shift.map(x=>Math.round((x-med)/U));const g=sig(s);
+ const y={v:1,a:(L.good||force)?1:0,pl:1,o,d,n:g.n,t0:g.t0,dur:L.dur,h:lh(s),z:+r.z.toFixed(1),src:force?'force':'auto'};
+ if(y.a){const big=Math.abs(o)<.05&&d.every(v=>Math.abs(v)<=2);setSy(s,y,big?'✅ 싱크가 이미 잘 맞아요':'✅ 싱크 자동 보정: '+(o>=0?'+':'')+o.toFixed(2)+'초'+(d.some(v=>Math.abs(v)>=3)?' · 줄별 보정 포함':''));setTimeout(()=>stt(''),5000);dbAdd(toE(s))}
+ else{setSy(s,y,'싱크 분석 신뢰도가 낮아 변경하지 않았어요 (🎚에서 확인)');setTimeout(()=>stt(''),5000)}}
+
+/* --- 자동 실행 스케줄 --- */
+function sched(){clearTimeout(tm);const s=S[i];if(!s||!auto()||busy)return;const g=sig(s);if(!g)return;
+ if(s.sy&&(s.sy.h===lh(s)))return;                 // 이미 분석함(적용/미적용 모두)
+ if(!s.sy&&s.off)return;                            // 손으로 맞춰 둔 곡은 건드리지 않음
+ tm=setTimeout(async function go(n){const s2=S[i];if(s2!==s||!s.blob)return;if(!isFinite(A.duration)&&(n||0)<12)return setTimeout(()=>go((n||0)+1),700);
+  const dur=A.duration||0;const h=keyOf(s);const hit=(DB.get(h)||[]).find(e=>Math.abs(e.dur-dur*10)<15&&e.n===g.n&&Math.abs(e.t0-g.t0*10)<2);
+  if(hit){setSy(s,{v:1,a:1,pl:1,o:hit.o/100,d:hit.d,n:g.n,t0:g.t0,dur,h:lh(s),z:99,src:'db'},'✅ 저장된 싱크를 적용했어요');setTimeout(()=>stt(''),4000);return}
+  const L=await run(s,false);if(L&&S[i]===s)commit(s,L,false)},1500)}
+
+/* lyr 가로채기: 줄별 보정 적용 + 자동 분석 예약 */
+const _lyr=lyr;lyr=function(){_lyr();try{origApply()}catch{}try{sched()}catch{}};
+
+/* --- 분석 창 --- */
+const $a=id=>document.getElementById(id);let win0=0,raf=0;
+function draw(){const c=$a('sac');if(!c||$a('sa').hidden)return;const W=c.width=c.clientWidth*devicePixelRatio,H=c.height=c.clientHeight*devicePixelRatio,g=c.getContext('2d');
+ g.clearRect(0,0,W,H);const s=S[i];if(!s||!last||last.s!==s){g.fillStyle='#8e8e9c';g.font=(13*devicePixelRatio)+'px sans-serif';g.fillText('분석을 실행하면 소리 그림이 여기에 나와요',12,H/2);return}
+ const r=last.r,span=30,ct=A.currentTime||0,t0=Math.max(0,ct-span*.35),t1=t0+span,x=t=>(t-t0)/span*W;
+ const a=Math.floor(t0/r.hop),b=Math.min(r.pres.length,Math.ceil(t1/r.hop));let mx=1e-6;for(let k=a;k<b;k++)mx=Math.max(mx,r.pres[k]);
+ g.fillStyle='rgba(111,227,154,.35)';g.beginPath();g.moveTo(0,H);for(let k=a;k<b;k+=2)g.lineTo(x(k*r.hop),H-(r.pres[k]/mx)*H*.8);g.lineTo(W,H);g.fill();
+ g.strokeStyle='rgba(255,200,80,.9)';g.lineWidth=1.2*devicePixelRatio;g.beginPath();let m2=1e-6;for(let k=a;k<b;k++)m2=Math.max(m2,r.onset[k]);for(let k=a;k<b;k+=2){const yy=H-(r.onset[k]/m2)*H*.8;k==a?g.moveTo(x(k*r.hop),yy):g.lineTo(x(k*r.hop),yy)}g.stroke();
+ last.T.forEach((T,j)=>{const t_o=T;
+  if(t_o>=t0&&t_o<=t1){g.strokeStyle='rgba(180,180,190,.7)';g.setLineDash([4,4]);g.beginPath();g.moveTo(x(t_o),0);g.lineTo(x(t_o),H*.45);g.stroke();g.setLineDash([])}
+  const tn=T+r.shift[j];if(tn>=t0&&tn<=t1){g.strokeStyle='#ff5a4d';g.lineWidth=2*devicePixelRatio;g.beginPath();g.moveTo(x(tn),H*.2);g.lineTo(x(tn),H);g.stroke()}});
+ g.strokeStyle='#fff';g.lineWidth=1;g.beginPath();g.moveTo(x(ct),0);g.lineTo(x(ct),H);g.stroke()}
+function ui(){const s=S[i],y=s&&s.sy;let m;
+ if(!s)m='곡을 먼저 재생해 주세요';else if(!sig(s))m='시간(싱크) 태그가 있는 가사가 있어야 분석할 수 있어요';
+ else if(busy)m='분석 중…';else if(last&&last.s===s)m=(last.good?'✅ 분석 완료':'⚠️ 신뢰도 낮음')+` · 신뢰도 ${last.r.z.toFixed(1)} · 평균 이동 ${(-last.r.med).toFixed(2)}초`+(y&&y.a?' · 적용 중':' · 미적용');
+ else if(y&&y.a)m='저장된 보정 적용 중: '+(y.o>=0?'+':'')+y.o.toFixed(2)+'초 ('+(y.src==='db'?'DB':'자동')+')';else m='회색 점선=원래 가사 시간, 빨강=분석한 시작점, 노랑 선=소리 변화';
+ $a('sam').textContent=m;$a('sao').textContent=(y&&y.a?y.o:off).toFixed(2)+'s';$a('sal').checked=!!(y&&y.pl);$a('saa').checked=auto();
+ $a('sag').style.display=last&&last.s===s&&!last.good?'':'none';
+ gather();$a('sad').textContent='내장 DB '+cnt()+'곡'}
+async function dbInfo(){gather();const t=await dbText();$a('sad').textContent='싱크 DB '+cnt()+'곡 · 압축 '+t.length.toLocaleString()+'자 (약 '+Math.ceil(t.length*.75/1024*10)/10+'KB)';return t}
+$('#sx').onclick=()=>{$a('sa').hidden=false;ui();dbInfo();clearInterval(raf);raf=setInterval(()=>{draw()},200)};
+$a('sax').onclick=()=>{$a('sa').hidden=true;clearInterval(raf)};
+$a('sar').onclick=async()=>{const s=S[i];if(!s)return;$a('sar').disabled=true;const L=await run(s,true);$a('sar').disabled=false;if(L){if(L.good)commit(s,L,false);else{stt('신뢰도가 낮아요. 아래 「그래도 적용」으로 직접 판단하세요');}}ui();draw()};
+$a('sag').onclick=()=>{if(last&&last.s===S[i]){commit(S[i],last,true);ui()}};
+$a('sau').onclick=()=>{const s=S[i];if(!s)return;delete s.sy;off=0;s.off=0;$('#ov').textContent='0.0s';save(s);lyr();A.ontimeupdate();stt('원래 가사 시간으로 되돌렸어요');setTimeout(()=>stt(''),3000);ui()};
+$a('sal').onchange=e=>{const s=S[i];if(!s||!s.sy)return;s.sy.pl=e.target.checked?1:0;save(s);lyr();A.ontimeupdate()};
+$a('saa').onchange=e=>{try{localStorage.sxAuto=e.target.checked?'1':'0'}catch{}};
+document.querySelectorAll('#safine [data-k]').forEach(b=>b.onclick=()=>{const s=S[i];if(!s)return;const k=+b.dataset.k/100;const y=s.sy||(s.sy={v:1,a:1,pl:0,o:s.off||0,d:[],n:sig(s)?sig(s).n:0,t0:sig(s)?sig(s).t0:0,dur:A.duration||0,h:lh(s),z:0,src:'man'});y.a=1;y.o=Math.round((y.o+k)*100)/100;s.off=y.o;off=y.o;$('#ov').textContent=off.toFixed(1)+'s';if(y.d.length===0)y.pl=0;save(s);dbAdd(toE(s));A.ontimeupdate();ui()});
+$a('sae').onclick=async()=>{const t=await dbInfo();const m=$a('sad');
+ try{const r=await fetch(location.href,{cache:'no-store'});if(!r.ok)throw 0;let h=await r.text();const re=/(<script id="sydb" type="text\/plain">)[\s\S]*?(<\/script>)/;if(!re.test(h))throw 0;h=h.replace(re,(_,a,b)=>a+t+b);
+  const bl=new Blob([h],{type:'text/html'}),a=document.createElement('a');a.href=URL.createObjectURL(bl);a.download='index.html';document.body.append(a);a.click();a.remove();m.textContent+=' · index.html로 저장했어요 (기존 파일 교체)'}
+ catch{const bl=new Blob([t],{type:'text/plain'}),a=document.createElement('a');a.href=URL.createObjectURL(bl);a.download='싱크DB.txt';document.body.append(a);a.click();a.remove();try{await navigator.clipboard.writeText(t)}catch{}m.textContent+=' · 이 환경에서는 HTML을 직접 못 읽어 싱크DB.txt로 저장하고 복사했어요'}};
+$a('sac2').onclick=async()=>{const t=await dbInfo();try{await navigator.clipboard.writeText(t);$a('sad').textContent+=' · 복사됨'}catch{$a('sat').hidden=false;$a('sat').value=t;$a('sat').select()}};
+$a('sai').onclick=async()=>{const t=$a('sat');if(t.hidden||!t.value.trim()){t.hidden=false;t.value='';t.placeholder='복사해 둔 싱크 DB를 붙여넣고 다시 「불러오기」';return}
+ try{const n=await dbLoad(t.value);try{localStorage.sydb=t.value.trim()}catch{}t.hidden=true;t.value='';$a('sad').textContent='불러왔어요 (+'+n+'곡)';ui()}catch{$a('sad').textContent='형식이 올바르지 않아요'}};
+
+/* 시작 시 DB 읽기: 내장 → 사용자가 불러온 것 */
+(async()=>{for(const t of [(document.getElementById('sydb')||{}).textContent,(()=>{try{return localStorage.sydb}catch{}})()]){try{await dbLoad(t)}catch{}}})();
+})();
+</script><script>if('serviceWorker' in navigator)addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}))</script><script>(()=>{const BUILD='2026-11-21 19:42',f=d=>d.toLocaleString('ko-KR',{month:'numeric',day:'numeric',hour:'2-digit',minute:'2-digit',hour12:false}),e=document.getElementById('ver');if(!e)return;let s='빌드 '+BUILD.slice(5);try{const d=new Date(document.lastModified);if(!isNaN(d)&&Math.abs(Date.now()-d)>20000)s+=' · 사이트 반영 '+f(d)}catch{}e.textContent=s;e.title='이 index.html의 빌드 '+BUILD+' (한국 시간)'})()</script></body></html>
