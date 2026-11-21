@@ -41,7 +41,7 @@ footer{padding:4px 12px 4px}.pi{gap:8px}.pi b{font-size:13px;line-height:1.3}.pi
 <div class="sb"><span id="tc">0:00</span><input id="sk" type="range" min="0" max="1" step="0.1" value="0"><span id="td">0:00</span></div>
 <div class="cb"><button id="sf">⇄</button><button id="pv">⏮</button><button id="pp">▶</button><button id="nt">⏭</button><button id="rp">↻</button><button id="sl"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l3 2M9 2h6M12 2v3"/></svg></button></div><audio id="a"></audio><div id="ver"></div></footer>
 <div id="bk" hidden><div class="mh"><b style="flex:1;align-self:center">💾 가사 백업 / 복원</b><button id="bkx">닫기</button></div><small>곡 파일 이름으로 가사·싱크와 제목·가수를 저장해요 (음악 파일은 포함되지 않아요)</small><button id="lrca">💾 전체 저장 (zip 파일)</button><label class="add" style="text-align:center;background:#22222c">백업 파일 불러오기<input id="bkf" type="file" hidden accept=".zip,.json,.txt,application/zip,application/json"></label><b style="margin-top:6px">앱 안 최근 기록 (최대 5개)</b><div id="bkh" style="flex:1;overflow:auto"></div><div id="bkm" style="color:#ffb3a8;font-size:13px"></div></div>
-<div id="cf" hidden><div class="mh"><b style="flex:1;align-self:center">⚙ 가사 중계 서버</b><button id="cfx">닫기</button></div><small>Cloudflare Worker 주소를 넣으면 알송·지니·멜론 등이 안정적으로 연결돼요</small><input id="cfu" placeholder="https://이름.계정.workers.dev" style="background:#1b1b22;color:#f2f2f6;border:1px solid #2b2b36;border-radius:12px;padding:11px;font-size:14px"><div class="mh"><button id="cfs">저장</button><button id="cft">연결 점검</button></div><div id="cfr" style="flex:1;overflow:auto"></div></div>
+<div id="cf" hidden><div class="mh"><b style="flex:1;align-self:center">⚙ 가사 중계 서버</b><button id="cfx">닫기</button></div><small>Cloudflare Worker 주소를 넣으면 알송·지니·멜론 등이 안정적으로 연결돼요</small><input id="cfu" placeholder="https://이름.계정.workers.dev" style="background:#1b1b22;color:#f2f2f6;border:1px solid #2b2b36;border-radius:12px;padding:11px;font-size:14px"><div class="mh"><button id="cfs">저장</button><button id="cft">연결 점검</button></div><div class="mh"><b style="flex:1;align-self:center;font-size:13px">📊 출처별 기록 (누적)</b><button id="sstc">복사</button><button id="sstr">지우기</button></div><div id="sstd" style="white-space:pre-wrap;font-size:12px;line-height:1.5;max-height:42vh;overflow:auto;user-select:text;-webkit-user-select:text;background:#1b1b22;border-radius:12px;padding:10px"></div><div id="cfr" style="flex:1;overflow:auto"></div></div>
 <div id="fd" hidden><div class="mh"><input id="fq" placeholder="제목 가수"><button id="fs">검색</button><button id="fcfg" title="중계 서버 설정">⚙</button><button id="fc">닫기</button></div><div id="fr"></div></div>
 <div id="sy" hidden><div class="mh"><b style="flex:1;align-self:center">⏱ 직접 싱크 맞추기</b><button id="syx">닫기</button></div><small>노래를 들으면서 <b>가사가 시작되는 순간마다 큰 버튼</b>을 탭하세요. 줄을 누르면 그 줄부터 다시 맞출 수 있어요.</small><div id="syl"></div><div class="syc"><button id="syp">▶ 재생</button><button id="syb">⏪ 5초</button><button id="syu">↶ 되돌리기</button><button id="syr">속도 1×</button></div><button id="syt" class="add">👆 탭</button><button id="syv" style="padding:12px;border-color:#6fe39a;color:#6fe39a">💾 완료·저장</button></div>
 <div id="ei" hidden><div class="mh"><b style="flex:1;align-self:center">✏️ 곡 정보 수정</b><button id="eix">닫기</button></div><small>제목과 가수 이름이 정확하면 가사를 더 잘 찾아요 (예: To Heaven / 조성모)</small><input id="eit" placeholder="제목"><input id="eia" placeholder="가수"><input id="eif" placeholder="폴더 (예: 발라드 / 비워두면 폴더 없음)"><button id="eis" class="add" style="border:0">저장</button><button id="eir" style="padding:12px">저장하고 가사 다시 찾기</button></div>
@@ -169,6 +169,19 @@ document.addEventListener('keydown',e=>{const k=e.key,c=e.keyCode;let m='';
  if(m){e.preventDefault();try{modeMsg(m)}catch{}}});
 
 // 가사 자동 찾기 - 여러 가사 사이트(LRCLIB · 넷이즈 · 쿠거우 · 벅스 · 지니어스 · lyrics.ovh)를 함께 검색
+// 📊 출처별 기록: 가사 검색 때마다 출처별 성공·실패를 폰에 누적 저장 (⚙ 중계 서버 화면에서 확인·복사)
+var SST={};try{SST=JSON.parse(localStorage.srcStat||'{}')}catch{}
+if(!SST._since)SST._since=Date.now();if(!SST._h)SST._h={};
+function sstSave(){try{localStorage.srcStat=JSON.stringify(SST)}catch{}}
+function rec(n,k,ms){const o=SST[n]||(SST[n]={t:0,s:0,sy:0,z:0,f:0,ms:0});o.t++;o[k]++;if(k!='f')o.ms+=ms;sstSave()}
+function hrec(h,ok,k){const o=SST._h[h]||(SST._h[h]={ok:0,f:0,px:[0,0,0,0,0]});if(ok){o.ok++;o.px[k]++}else o.f++;sstSave()}
+function sstText(){const d=new Date(SST._since),dt=d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+ const o=['[가사 출처 기록] '+dt+' 이후 누적'];
+ SRC.forEach(s=>{const a=SST[s.n];if(!a||!a.t){o.push(s.n+' · 기록 없음');return}const ok=a.s+a.sy;o.push(s.n+' · 시도 '+a.t+' · 가사 찾음 '+ok+'('+Math.round(ok*100/a.t)+'%) · 싱크 '+a.sy+' · 결과없음 '+a.z+' · 접속실패 '+a.f+(ok+a.z?' · 평균 '+(a.ms/(ok+a.z)/1000).toFixed(1)+'초':''))});
+ const P=['중계서버','직접','corsproxy','allorigins','codetabs'],hs=Object.keys(SST._h);
+ if(hs.length){o.push('','[사이트 접속 기록] 성공 · 실패 · 성공한 접속 경로');hs.sort().forEach(h=>{const a=SST._h[h];o.push(h+' · 성공 '+a.ok+' · 실패 '+a.f+' · '+a.px.map((n,k)=>n?P[k]+' '+n:'').filter(Boolean).join(', '))})}
+ return o.join('\n')}
+function sstDraw(){const e=$('#sstd');if(e)e.textContent=sstText()}
 const LR='https://lrclib.net/api/',hasSync=t=>/\[\d+:\d+(?:[.:]\d+)?\]/.test(t||''),stt=m=>{$('#st').textContent=m||''};
 const cl=t=>t.replace(/\.(mp3|m4a|flac|wav|ogg|aac|wma|lrc|mp4|webm|opus)$/i,'').replace(/[\[(（][^\])）]*[\])）]/g,' ').replace(/[\[(（][^\])）]*$/,' ').replace(/^\s*\d{1,3}[\s.\-_)]+/,'').replace(/_/g,' ').replace(/\s+/g,' ').trim();
 // 업로더·채널 이름(제목 맨 앞에 붙는 것)은 검색에서 뺌 — 필요하면 이름을 더 추가하세요
@@ -200,8 +213,8 @@ let WK='https://broad-queen-2a91.choijun4814.workers.dev';try{WK=(localStorage.w
 const PX=[u=>WK?WK+'/?url='+encodeURIComponent(u):null,u=>u,u=>'https://corsproxy.io/?url='+encodeURIComponent(u),u=>'https://api.allorigins.win/raw?url='+encodeURIComponent(u),u=>'https://api.codetabs.com/v1/proxy?quest='+encodeURIComponent(u)],PH={};
 async function ft(u,chk){const h=new URL(u).host,st=PH[h]??0,ord=[st,...PX.map((_,k)=>k).filter(k=>k!=st)];
  for(const k of ord){const c=new AbortController(),t=setTimeout(()=>c.abort(),8000);
-  try{const uu=PX[k](u);if(!uu)continue;const r=await fetch(uu,{signal:c.signal});if(!r.ok)continue;const tx=await r.text();if(tx&&tx.trim()&&(!chk||chk(tx))){PH[h]=k;return tx}}catch{}finally{clearTimeout(t)}}
- throw new Error('fail')}
+  try{const uu=PX[k](u);if(!uu)continue;const r=await fetch(uu,{signal:c.signal});if(!r.ok)continue;const tx=await r.text();if(tx&&tx.trim()&&(!chk||chk(tx))){PH[h]=k;hrec(h,1,k);return tx}}catch{}finally{clearTimeout(t)}}
+ hrec(h,0);throw new Error('fail')}
 const fj=u=>ft(u,tx=>{try{JSON.parse(tx);return 1}catch{}}).then(JSON.parse);
 const fh=u=>ft(u,tx=>tx.length>300).then(tx=>new DOMParser().parseFromString(tx,'text/html'));
 async function jf(u){const c=new AbortController(),t=setTimeout(()=>c.abort(),10000);try{const r=await fetch(u,{signal:c.signal});if(!r.ok)return[];const j=await r.json();return Array.isArray(j)?j:[j]}finally{clearTimeout(t)}}
@@ -272,7 +285,7 @@ function romLy(t,ar,ti,q){const x=(t||'').replace(/\[[^\]]*\]/g,''),h=(x.match(/
  return false}
 const SO={};SRC.forEach((s,k)=>SO[s.n]=k);
 // 한 출처를 최대 28초까지만 기다림 (실패해도 다른 출처에 영향 없음)
-const runSrc=(s,q,ar,ti,d)=>Promise.race([(async()=>{let r=await s.f(q,ar,ti,d);if(!(r&&r.length)&&ti&&!['LRCLIB','LrcApi','lyrics.ovh'].includes(s.n)&&NM(ti)!=NM(q))r=await s.f(ti,ar,ti,d);return r||[]})(),new Promise((_,j)=>setTimeout(j,28000))]).then(r=>(r||[]).map(x=>({...x,src:s.n})).filter(x=>!CJK.test(x.syncedLyrics||x.plainLyrics||'')&&!romLy(x.syncedLyrics||x.plainLyrics,ar,ti,q)));
+const runSrc=(s,q,ar,ti,d)=>{const t0=Date.now();return Promise.race([(async()=>{let r=await s.f(q,ar,ti,d);if(!(r&&r.length)&&ti&&!['LRCLIB','LrcApi','lyrics.ovh'].includes(s.n)&&NM(ti)!=NM(q))r=await s.f(ti,ar,ti,d);return r||[]})(),new Promise((_,j)=>setTimeout(j,28000))]).then(r=>{r=r||[];rec(s.n,r.length?(r.some(x=>x.syncedLyrics)?'sy':'s'):'z',Date.now()-t0);return r.map(x=>({...x,src:s.n})).filter(x=>!CJK.test(x.syncedLyrics||x.plainLyrics||'')&&!romLy(x.syncedLyrics||x.plainLyrics,ar,ti,q))},e=>{rec(s.n,'f',Date.now()-t0);throw e})};
 // 점수: 싱크 있음 · 곡 길이 비슷함 · 제목/가수 일치 · 앞쪽 출처 순
 function score(x,d,ar,ti){if(!(x.syncedLyrics||x.plainLyrics))return null;let sc=x.syncedLyrics?3:0;
  if(d&&x.duration){const df=Math.abs(x.duration-d);if(df>60)return null;sc+=df<=3?3:df<=8?1.5:df<=15?0:-2}else if(d)sc-=1;
@@ -357,7 +370,7 @@ let lsv=0;A.addEventListener('timeupdate',()=>{const n=Math.floor(A.currentTime/
 A.addEventListener('play',saveLast);A.addEventListener('pause',saveLast);A.addEventListener('loadstart',()=>{if(!rsm)saveLast()});
 addEventListener('pagehide',saveLast);document.addEventListener('visibilitychange',()=>{if(document.hidden)saveLast()});
 
-$('#fcfg').onclick=()=>{$('#cfu').value=WK;$('#cfr').innerHTML='';$('#cf').hidden=false};
+$('#fcfg').onclick=()=>{$('#cfu').value=WK;$('#cfr').innerHTML='';sstDraw();$('#cf').hidden=false};
 $('#cfx').onclick=()=>$('#cf').hidden=true;
 $('#cfs').onclick=()=>{WK=$('#cfu').value.trim().replace(/\/+$/,'');try{localStorage.wk=WK}catch{}$('#cfr').innerHTML='<small>저장했어요. 아래 연결 점검을 눌러 확인해 보세요</small>'};
 $('#cft').onclick=async()=>{WK=$('#cfu').value.trim().replace(/\/+$/,'');try{localStorage.wk=WK}catch{}
@@ -367,6 +380,9 @@ $('#cft').onclick=async()=>{WK=$('#cfu').value.trim().replace(/\/+$/,'');try{loc
  try{const r=await fetch(WK+'/ping',{cache:'no-store'});const t=(await r.text()).trim();w.textContent=t==='ok'?'✅ 연결됨':'⚠ 연결은 되는데 코드가 아직 바뀌지 않았어요'}catch{w.textContent='❌ 연결 안 됨 (주소를 확인하세요)'}
  await Promise.all(SRC.map(async s=>{const el=row(s.n),t0=Date.now();try{const r=await runSrc(s,'아이유 좋은날','아이유','좋은날',0),sy=r.filter(x=>x.syncedLyrics).length,sec=((Date.now()-t0)/1000).toFixed(1)+'초';el.textContent=r.length?'✅ '+r.length+'건 (싱크 '+sy+'건) · '+sec:'❌ 결과 없음 · '+sec}catch{el.textContent='❌ 연결 실패'}}));
 };
+{const c0=$('#cft').onclick;$('#cft').onclick=async()=>{await c0();sstDraw()}}
+$('#sstc').onclick=async()=>{const b=$('#sstc');try{await navigator.clipboard.writeText(sstText());b.textContent='✅ 복사됨'}catch{try{const r=document.createRange();r.selectNodeContents($('#sstd'));const g=getSelection();g.removeAllRanges();g.addRange(r);b.textContent='글을 길게 눌러 복사'}catch{}}setTimeout(()=>b.textContent='복사',2500)};
+$('#sstr').onclick=()=>{if(confirm('출처 기록을 모두 지울까요?')){SST={_since:Date.now(),_h:{}};sstSave();sstDraw()}};
 $('#fs').onclick=msearch;$('#fq').onkeydown=e=>{if(e.key=='Enter')msearch()};$('#fc').onclick=()=>$('#fd').hidden=true;
 let BK={},HI=[],lastL='';try{BK=JSON.parse(localStorage.lyBK||'{}')}catch{}try{HI=JSON.parse(localStorage.lyHI||'[]')}catch{}
 const bkSave=()=>{try{localStorage.lyBK=JSON.stringify(BK)}catch{}},stb=m=>$('#bkm').textContent=m||'';
