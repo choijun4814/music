@@ -82,7 +82,7 @@ function plrc(t){const l=[];let sy=0;t.split(/\r?\n/).forEach(x=>{const m=[...x.
 const cu=s=>s.cover?(s._c||(s._c=URL.createObjectURL(s.cover))):'';
 const cv=s=>'';
 function render(){try{fdUi()}catch{}const l=$('#list');l.innerHTML=S.length?'':'<p class="em">위의 「＋ 음악 추가」로 곡을 고르세요<br><small>같은 이름의 .lrc 가사 파일을 함께 고르면 자동으로 연결돼요</small></p>';
- rord().forEach(k=>{const s=S[k];const d=document.createElement('div');d.className='it'+(k==i?' on':'')+(s.bad?' bad':'')+(dm&&dsel.has(s.id)?' ds':'');d.innerHTML=`${dm?'<span class="dc">'+(dsel.has(s.id)?'✓':'')+'</span>':''}${cv(s)}<div><b>${esc(s.title)}</b><small>${esc(s.artist||'')}${s.lyrics?' · 가사 있음':''}${s.sy&&s.sy.a?' · <span style="color:#6fe39a">🎚 싱크 완료</span>':''}${s.bad?' · 🚩 싱크 확인':''}${dm==2&&dgrp.has(s.id)?' · 중복 '+dgrp.get(s.id)+'번 묶음':''}</small></div>${dm?'':'<span class="x e1">✎</span><span class="x">✕</span>'}`;d.onclick=e=>{if(dm){dsel.has(s.id)?dsel.delete(s.id):dsel.add(s.id);d.classList.toggle('ds');d.querySelector('.dc').textContent=dsel.has(s.id)?'✓':'';dmUi();return}const c=e.target.className;c=='x'?del(k):c=='x e1'?editInfo(k):play(k)};l.append(d)})}
+ rord().forEach(k=>{const s=S[k];const d=document.createElement('div');d.className='it'+(k==i?' on':'')+(s.bad?' bad':'')+(dm&&dsel.has(s.id)?' ds':'');d.innerHTML=`${dm?'<span class="dc">'+(dsel.has(s.id)?'✓':'')+'</span>':''}${cv(s)}<div><b>${esc(s.title)}</b><small>${esc(s.artist||'')}${s.lyrics?' · 가사 있음':''}${s.sy&&s.sy.a?' · <span style="color:#6fe39a">🎚 싱크 완료</span>':''}${s.bad?' · 🚩 싱크 확인':''}${dm==2&&dgrp.has(s.id)?' · 중복 '+dgrp.get(s.id)+'번 묶음':''}${dm==2&&nfIds.has(s.id)?' · 가사 못 찾음':''}</small></div>${dm?'':'<span class="x e1">✎</span><span class="x">✕</span>'}`;d.onclick=e=>{if(dm){dsel.has(s.id)?dsel.delete(s.id):dsel.add(s.id);d.classList.toggle('ds');d.querySelector('.dc').textContent=dsel.has(s.id)?'✓':'';dmUi();return}const c=e.target.className;c=='x'?del(k):c=='x e1'?editInfo(k):play(k)};l.append(d)})}
 async function del(k){if(!confirm(`"${S[k].title}" 삭제할까요?`))return;const s=S[k];await tx('readwrite',o=>o.delete(s.id));S.splice(k,1);if(k==i){A.pause();A.removeAttribute('src');i=-1;lyr();info()}else if(k<i)i--;render()}
 function badUi(){const b=$('#bd');if(b)b.classList.toggle('on',!!(S[i]&&S[i].bad))}
 function info(){try{badUi()}catch{}const s=S[i];$('#tt').textContent=s?s.title:'재생 중인 곡 없음';$('#ta').textContent=s?s.artist:'';$('#pc').innerHTML=cv(s)}
@@ -273,9 +273,16 @@ const sMg=async q=>{const j=await fj('https://m.music.migu.cn/migu/remoting/scr_
 const sLa=async(q,ar,ti)=>{const t=await ft('https://api.lrc.cx/lyrics?'+qs({title:ti||q,artist:ar}),x=>/\[\d+:\d+/.test(x));const o=mk({trackName:ti||q,artistName:ar||'',duration:null},t);return o?[o]:[]};
 const wf=async p=>{const c=new AbortController(),t=setTimeout(()=>c.abort(),15000);try{const r=await fetch(WK+p,{signal:c.signal});return r.ok?await r.json():null}finally{clearTimeout(t)}};
 const sAs=async(q,ar,ti)=>{if(!WK)return[];const j=await wf('/alsong?'+qs({artist:ar,title:ti||q}));return((j&&j.items)||[]).slice(0,8).map(x=>mk({trackName:x.title,artistName:x.artist,albumName:x.album,duration:null},x.lyric)).filter(Boolean)};
-const SRC_ALL=[{n:'LRCLIB',f:sLrc},{n:'알송',f:sAs},{n:'넷이즈',f:sNe},{n:'쿠거우',f:sKg},{n:'쿠워',f:sKw},{n:'벅스',f:sBg},{n:'지니',f:sGe},{n:'멜론',f:sMl},{n:'지니어스',f:sGn},{n:'미구',f:sMg},{n:'LrcApi',f:sLa},{n:'lyrics.ovh',f:sOv}];
+
+const sQq=async(q,ar,ti)=>{if(!WK)return[];const j=await wf('/qq?'+qs({artist:ar,title:ti||q,q}));return((j&&j.items)||[]).slice(0,8).map(x=>mk({trackName:x.title,artistName:x.artist,albumName:x.album,duration:x.duration||null},x.lyric)).filter(Boolean)};
+const sMb=async(q,ar,ti)=>{const doc=await fh('https://www.megalobiz.com/search/all?qry='+encodeURIComponent(q)+'&searchButton.x=0&searchButton.y=0');
+ const as=[...doc.querySelectorAll('a.entity_name,a[href*="/lrc/maker/"]')].filter((a,k,r)=>r.findIndex(b=>b.getAttribute('href')==a.getAttribute('href'))==k).slice(0,4);
+ return (await Promise.all(as.map(async a=>{try{const pg=await fh(new URL(a.getAttribute('href'),'https://www.megalobiz.com/').href),sp=pg.querySelector('div.lyrics_details span');if(!sp)return null;
+  let nm=(a.textContent||'').replace(/\s+/g,' ').replace(/\s*lrc\s*$/i,'').trim(),parts=nm.split(/\s+-\s+/),a2=parts.length>1?parts[0]:'',t2=parts.length>1?parts.slice(1).join(' - '):nm;
+  return mk({trackName:t2,artistName:a2,duration:null},sp.textContent)}catch{return null}}))).filter(Boolean)};
+const SRC_ALL=[{n:'LRCLIB',f:sLrc},{n:'알송',f:sAs},{n:'넷이즈',f:sNe},{n:'쿠거우',f:sKg},{n:'쿠워',f:sKw},{n:'벅스',f:sBg},{n:'지니',f:sGe},{n:'멜론',f:sMl},{n:'지니어스',f:sGn},{n:'미구',f:sMg},{n:'LrcApi',f:sLa},{n:'lyrics.ovh',f:sOv},{n:'QQ음악',f:sQq},{n:'Megalobiz',f:sMb}];
 // 안 되는 출처는 꺼 둠 (연결 점검 결과: LRCLIB·지니어스만 접속됨). 다시 켜려면 아래 목록에 출처 이름을 추가하세요
-const ON=['LRCLIB','지니어스'],SRC=SRC_ALL.filter(x=>ON.includes(x.n));
+const ON=['LRCLIB','알송','넷이즈','쿠거우','QQ음악','Megalobiz','지니어스'],SRC=SRC_ALL.filter(x=>ON.includes(x.n));
 // 일본어(가나)·중국어(한자)가 포함된 가사 결과는 제외. 끄려면 아래 정규식을 /(?!)/ 로 바꾸세요
 const CJK=/[\u3040-\u30ff\u31f0-\u31ff\u3400-\u4dbf\u4e00-\u9fff\uf900-\ufaff\uff66-\uff9f]/;
 // 영문 발음 표기(로마자) 가사 제외: 한글이 거의 없고, 한국어 로마자 특유의 철자(eo, eu, kk, neun, reul …)가 많은 가사만 제외 (진짜 영어 가사는 유지)
@@ -461,13 +468,40 @@ document.addEventListener('visibilitychange',()=>{if(document.hidden&&!A.paused&
 // ── 알림창(상단 내리면 나오는 재생 바)에 현재 가사 줄 표시
 let nk='';A.addEventListener('timeupdate',()=>{try{const s=S[i];if(!s||!LY||!LY.sync||!navigator.mediaSession)return;const t=A.currentTime+off+.2;let k=-1;for(let j=0;j<LY.l.length&&LY.l[j][0]<=t;j++)k=j;const key=i+':'+k;if(key===nk)return;nk=key;const ln=k>=0?LY.l[k][1]:'';navigator.mediaSession.metadata=new MediaMetadata({title:ln||s.title,artist:s.title+(s.artist?' · '+s.artist:''),artwork:[]})}catch{}});
 
-function dmUi(){const b=$('#dmb');if(!b)return;
- if(!dm){b.innerHTML='<button id="dmo" style="flex:1">🗑 여러 곡 삭제</button><button id="dmu" style="flex:1">🔁 중복 찾기</button>';$('#dmo').onclick=()=>{if(!S.length)return;dm=1;dsel.clear();dmUi();render()};$('#dmu').onclick=findDup;return}
+
+// ── 가사 일괄 찾기: 싱크 가사가 없는 곡을 차례로 검색. 20곡 이상 검색했을 때 가사를 전혀 못 찾은 곡은 삭제할지 물어봄
+const nfIds=new Set();let bkRun=0,bkStop=0;
+const durOf=s=>new Promise(res=>{if(!s.blob)return res(0);const a=new Audio(),u=URL.createObjectURL(s.blob);const f=d=>{try{URL.revokeObjectURL(u)}catch{}a.src='';res(isFinite(d)?d:0)};a.preload='metadata';a.onloadedmetadata=()=>f(a.duration);a.onerror=()=>f(0);setTimeout(()=>f(0),4000);a.src=u});
+async function bulkOne(s){const d=await durOf(s),[ar,ti]=guess(s),q=(ar+' '+ti).trim();let pool=[];
+ const pk=()=>{const o=pool.map(x=>({x,sc:score(x,d,ar,ti)})).filter(o=>o.sc!=null).sort((a,b)=>b.sc-a.sc);return o.length?o[0].x:null};
+ try{pool=await runSrc(SRC[0],q,ar,ti,d)}catch{}
+ let b=pk();
+ if(!b||!b.syncedLyrics){await Promise.all(SRC.slice(1).map(x=>runSrc(x,q,ar,ti,d).then(r=>{pool=pool.concat(r)}).catch(()=>{})));b=pk()}
+ s.tried=1;
+ if(b&&(!(s.lyrics||'').trim()||romLy(s.lyrics,ar,ti)||(b.syncedLyrics&&!hasSync(s.lyrics))))s.lyrics=b.syncedLyrics||b.plainLyrics;
+ try{await put(s)}catch{}
+ return b?(b.syncedLyrics?'sy':'pl'):'no'}
+async function bulkLy(){if(bkRun)return;
+ const T=S.filter(s=>inF(s)&&s.blob&&!hasSync(s.lyrics));
+ if(!T.length)return alert('싱크 가사가 없는 곡이 없어요 👍');
+ if(!confirm(T.length+'곡의 싱크 가사를 찾아볼까요?\n곡마다 여러 사이트를 검색하느라 시간이 걸려요 (중간에 ■ 중지 가능)'+(T.length>=20?'\n\n20곡 이상이라, 끝나면 가사를 전혀 못 찾은 곡을 삭제할지 물어볼게요 (삭제는 선택한 뒤 한 번 더 확인해요)':'')))return;
+ bkRun=1;bkStop=0;nfIds.clear();const c={sy:0,pl:0,no:0},none=[];let n=0,q=0;
+ const b=$('#dmb');b.innerHTML='<button id="bks" class="add" style="flex:1;border:0">■ 중지</button>';$('#bks').onclick=()=>{bkStop=1;$('#bks').textContent='멈추는 중…'};
+ const worker=async()=>{while(!bkStop&&q<T.length){const s=T[q++];let r='no';try{r=await bulkOne(s)}catch{}n++;c[r]++;if(r==='no'&&!(s.lyrics||'').trim())none.push(s);stt('🔍 가사 일괄 찾기 '+n+'/'+T.length+' · 싱크 '+c.sy+' · 일반 '+c.pl+' · 못 찾음 '+c.no);if(n%5==0)render()}};
+ try{await Promise.all([worker(),worker()])}finally{bkRun=0}
+ render();dmUi();
+ const msg='가사 찾기 끝: 싱크 '+c.sy+'곡 · 일반 가사 '+c.pl+'곡 · 못 찾음 '+c.no+'곡'+(bkStop?' (중간에 중지)':'');stt(msg);
+ if(n>=20&&none.length){
+  if(confirm(msg+'\n\n가사를 전혀 못 찾은 곡이 '+none.length+'곡이에요.\n삭제할 곡을 고르는 화면으로 갈까요?\n(고른 뒤 「삭제」를 누르면 한 번 더 확인해요 · 앱 안의 곡만 지워지고 폰의 원본 파일은 그대로예요)')){
+   dupIds.clear();dgrp.clear();dsel.clear();nfIds.clear();none.forEach(s=>{dupIds.add(s.id);dsel.add(s.id);nfIds.add(s.id)});dm=2;dmUi();render();stt('가사를 못 찾은 '+none.length+'곡이 선택돼 있어요. 남길 곡은 눌러서 해제하세요.');return}}
+ setTimeout(()=>stt(''),8000)}
+function dmUi(){const b=$('#dmb');if(!b)return;if(bkRun)return;
+ if(!dm){b.innerHTML='<button id="dmo" style="flex:1">🗑 여러 곡 삭제</button><button id="dmu" style="flex:1">🔁 중복 찾기</button><button id="dml" style="flex:1">🔍 가사 일괄</button>';$('#dml').onclick=bulkLy;$('#dmo').onclick=()=>{if(!S.length)return;dm=1;dsel.clear();dmUi();render()};$('#dmu').onclick=findDup;return}
  const pool=dm==2?S.filter(s=>dupIds.has(s.id)):S.filter(inF),all=pool.length&&pool.every(s=>dsel.has(s.id));
  b.innerHTML=`<button id="dma">${all?'전체 해제':'전체 선택'}</button><button id="dmd" class="add" style="flex:1;border:0">🗑 ${dsel.size}곡 삭제</button><button id="dmc">취소</button>`;
  $('#dma').onclick=()=>{if(all)dsel.clear();else pool.forEach(s=>dsel.add(s.id));dmUi();render()};
  $('#dmd').onclick=delMany;
- $('#dmc').onclick=()=>{dm=0;dsel.clear();dupIds.clear();dgrp.clear();dmUi();render()}}
+ $('#dmc').onclick=()=>{dm=0;dsel.clear();dupIds.clear();dgrp.clear();nfIds.clear();dmUi();render()}}
 async function delMany(){const n=dsel.size;if(!n){alert('삭제할 곡을 먼저 선택하세요');return}
  if(!confirm(`선택한 ${n}곡을 삭제할까요?\n(앱 안의 곡·가사가 지워지고 되돌릴 수 없어요)`))return;
  const cid=S[i]?S[i].id:null;
@@ -805,4 +839,4 @@ $a('sai').onclick=async()=>{const t=$a('sat');if(t.hidden||!t.value.trim()){t.hi
 /* 시작 시 DB 읽기: 내장 → 사용자가 불러온 것 */
 (async()=>{for(const t of [(document.getElementById('sydb')||{}).textContent,(()=>{try{return localStorage.sydb}catch{}})()]){try{await dbLoad(t)}catch{}}})();
 })();
-</script><script>if('serviceWorker' in navigator)addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}))</script><script>(()=>{const BUILD='2026-11-21 19:53',f=d=>d.toLocaleString('ko-KR',{month:'numeric',day:'numeric',hour:'2-digit',minute:'2-digit',hour12:false}),e=document.getElementById('ver');if(!e)return;let s='빌드 '+BUILD.slice(5);try{const d=new Date(document.lastModified);if(!isNaN(d)&&Math.abs(Date.now()-d)>20000)s+=' · 사이트 반영 '+f(d)}catch{}e.textContent=s;e.title='이 index.html의 빌드 '+BUILD+' (한국 시간)'})()</script></body></html>
+</script><script>if('serviceWorker' in navigator)addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}))</script><script>(()=>{const BUILD='2026-11-21 19:59',f=d=>d.toLocaleString('ko-KR',{month:'numeric',day:'numeric',hour:'2-digit',minute:'2-digit',hour12:false}),e=document.getElementById('ver');if(!e)return;let s='빌드 '+BUILD.slice(5);try{const d=new Date(document.lastModified);if(!isNaN(d)&&Math.abs(Date.now()-d)>20000)s+=' · 사이트 반영 '+f(d)}catch{}e.textContent=s;e.title='이 index.html의 빌드 '+BUILD+' (한국 시간)'})()</script></body></html>
