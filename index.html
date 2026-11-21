@@ -96,7 +96,7 @@ function play(k){const s=S[k];if(!s)return;i=k;off=s.off||0;$('#ov').textContent
 function nx(d,auto){const L=PL();if(!L.length)return;let k;if(sh&&L.length>1){if(d>0)k=peek();else{do k=L[Math.floor(Math.random()*L.length)];while(k==i)}}else{const p=L.indexOf(i);if(p<0)k=L[0];else{let q=p+d;if(q>=L.length){if(auto&&!rp)return;q=0}if(q<0)q=L.length-1;k=L[q]}}play(k)}
 A.onended=()=>rp==2?(A.currentTime=0,A.play()):nx(1,1);
 A.onplay=async()=>{$('#pp').textContent='⏸';try{navigator.mediaSession.playbackState='playing'}catch{}wlOn();};A.onpause=()=>{$('#pp').textContent='▶';try{navigator.mediaSession.playbackState=A.ended?'playing':'paused'}catch{}wlOff()};
-A.onloadedmetadata=()=>{$('#sk').max=A.duration;$('#td').textContent=mm(A.duration);const s=S[i];if(s&&(!hasSync(s.lyrics)||romLy(s.lyrics,s.artist,s.title))&&(!s.tried||((s.lyrics||'').trim()&&!SYR.has(s.id))))autoLy(s,A.duration)};
+A.onloadedmetadata=()=>{$('#sk').max=A.duration;$('#td').textContent=mm(A.duration);const s=S[i];if(s&&romLy(s.lyrics,s.artist,s.title)){s.lyrics='';s.tried=0;try{put(s)}catch{}lyr()}if(s&&!hasSync(s.lyrics)&&(!s.tried||((s.lyrics||'').trim()&&!SYR.has(s.id))))autoLy(s,A.duration)};
 A.ontimeupdate=()=>{$('#sk').value=A.currentTime;$('#tc').textContent=mm(A.currentTime);if(LY&&LY.sync){const t=A.currentTime+off+.2;let k=-1;for(let j=0;j<LY.l.length&&LY.l[j][0]<=t;j++)k=j;if(k!=li){li=k;const ps=$('#ly').children;[...ps].forEach((p,j)=>p.classList.toggle('on',j==k));if(ps[0])ps[0].classList.toggle('pre',k<0);if(ps[k])ps[k].scrollIntoView({block:'center',behavior:'smooth'});else if(ps[0])ps[0].scrollIntoView({block:'center'})}}};
 $('#sk').oninput=()=>A.currentTime=+$('#sk').value;
 $('#pp').onclick=()=>{if(i<0&&S.length)play(0);else A.paused?A.play():A.pause()};$('#pv').onclick=()=>nx(-1);$('#nt').onclick=()=>nx(1);
@@ -396,7 +396,7 @@ const bkSongs=()=>S.filter(s=>(s.lyrics||'').trim()||s.edited||s.bad);
 const bkMake=()=>JSON.stringify({v:2,songs:bkSongs().map(s=>({n:s.name,l:s.lyrics||'',o:s.off||0,t:s.title||'',a:s.artist||'',b:s.bad?1:0}))});
 async function bkApply(txt){let j;try{j=JSON.parse(txt)}catch{return stb('백업 내용을 읽을 수 없어요')}
  const a=(j&&j.songs)||[];let n=0,m=0,bl=0;
- for(let e of a){if(!e||!e.n)continue;if(e.l&&CJK.test(e.l)){e={...e,l:''};bl++}if(!e.l&&!e.t&&!e.b)continue;BK[e.n]=e;const s=S.find(x=>x.name==e.n);if(s){if(e.b!=null)s.bad=!!e.b;if(e.t)s.title=e.t;if(e.a!=null)s.artist=e.a;if(e.t)s.edited=1;if(e.l){s.lyrics=e.l;s.off=e.o||0;s.tried=1}try{await put(s)}catch{}n++}else m++}
+ for(let e of a){if(!e||!e.n)continue;if(e.l&&(CJK.test(e.l)||romLy(e.l,e.a,e.t))){e={...e,l:''};bl++}if(!e.l&&!e.t&&!e.b)continue;BK[e.n]=e;const s=S.find(x=>x.name==e.n);if(s){if(e.b!=null)s.bad=!!e.b;if(e.t)s.title=e.t;if(e.a!=null)s.artist=e.a;if(e.t)s.edited=1;if(e.l){s.lyrics=e.l;s.off=e.o||0;s.tried=1}try{await put(s)}catch{}n++}else m++}
  bkSave();if(S[i]){off=S[i].off||0;$('#ov').textContent=off.toFixed(1)+'s';lyr()}render();info();
  stb('적용 '+n+'곡'+(m?' · 목록에 없는 '+m+'곡은 음악을 추가하면 자동으로 적용돼요':'')+(bl?' · 일본어/중국어 가사 '+bl+'곡은 제외했어요':''))}
 const hiShow=()=>{const o=$('#bkh');o.innerHTML=HI.length?'':'<small>아직 기록이 없어요</small>';HI.forEach(h=>{const e=document.createElement('div');e.className='it';e.innerHTML='<div><b>'+esc(h.t)+'</b><small>'+h.c+'곡</small></div>';const b=document.createElement('button');b.textContent='되돌리기';b.onclick=()=>bkApply(h.d);e.append(b);o.append(e)})};
@@ -423,7 +423,7 @@ async function zipApply(buf){const u=new Uint8Array(buf),v=new DataView(buf),de=
  if(e<0)return stb('zip 파일을 읽을 수 없어요');const n=v.getUint16(e+10,true);let p=v.getUint32(e+16,true),a=0,m=0,sk=0,bl=0;
  for(let k=0;k<n;k++){const meth=v.getUint16(p+10,true),cs=v.getUint32(p+20,true),nl=v.getUint16(p+28,true),el=v.getUint16(p+30,true),cl=v.getUint16(p+32,true),lo=v.getUint32(p+42,true),nm=de.decode(u.subarray(p+46,p+46+nl));p+=46+nl+el+cl;
   if(!/\.lrc$/i.test(nm))continue;if(meth!==0){sk++;continue}
-  const ds=lo+30+v.getUint16(lo+26,true)+v.getUint16(lo+28,true),raw=de.decode(u.subarray(ds,ds+cs)),base=bn(nm),tg=k=>{const q=raw.match(new RegExp('^\\s*\\['+k+':([^\\]\\n]*)\\]','mi'));return q?q[1].trim():null},ti=tg('ti'),ar=tg('ar'),text0=raw.replace(/^\s*\[(ti|ar):[^\]\n]*\]\s*\n?/gmi,'').trim(),text=CJK.test(text0)?(bl++,''):text0;
+  const ds=lo+30+v.getUint16(lo+26,true)+v.getUint16(lo+28,true),raw=de.decode(u.subarray(ds,ds+cs)),base=bn(nm),tg=k=>{const q=raw.match(new RegExp('^\\s*\\['+k+':([^\\]\\n]*)\\]','mi'));return q?q[1].trim():null},ti=tg('ti'),ar=tg('ar'),text0=raw.replace(/^\s*\[(ti|ar):[^\]\n]*\]\s*\n?/gmi,'').trim(),text=(CJK.test(text0)||romLy(text0,ar,ti))?(bl++,''):text0;
   if(!text&&!ti&&ar==null)continue;
   BK['~'+base]={n:nm,l:text,o:0,t:ti||undefined,a:ar==null?undefined:ar};const s=S.find(x=>bn(x.name)==base);if(s){if(ti){s.title=ti;s.edited=1}if(ar!=null)s.artist=ar;if(text){s.lyrics=text;s.off=0;s.tried=1}try{await put(s)}catch{}a++}else m++}
  bkSave();if(S[i]){off=S[i].off||0;$('#ov').textContent=off.toFixed(1)+'s';lyr()}render();info();
