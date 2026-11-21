@@ -170,8 +170,24 @@ document.addEventListener('keydown',e=>{const k=e.key,c=e.keyCode;let m='';
 
 // 가사 자동 찾기 - 여러 가사 사이트(LRCLIB · 넷이즈 · 쿠거우 · 벅스 · 지니어스 · lyrics.ovh)를 함께 검색
 const LR='https://lrclib.net/api/',hasSync=t=>/\[\d+:\d+(?:[.:]\d+)?\]/.test(t||''),stt=m=>{$('#st').textContent=m||''};
-const cl=t=>t.replace(/\.[^.]+$/,'').replace(/[\[(（][^\])）]*[\])）]/g,' ').replace(/^\s*\d{1,3}[\s.\-_)]+/,'').replace(/_/g,' ').replace(/\s+/g,' ').trim();
-function guess(s){let ar=(s.artist||'').trim(),ti=cl(s.title);if(!ar&&ti.includes(' - ')){const k=ti.indexOf(' - ');ar=ti.slice(0,k).trim();ti=ti.slice(k+3).trim()}return[ar,ti]}
+const cl=t=>t.replace(/\.(mp3|m4a|flac|wav|ogg|aac|wma|lrc|mp4|webm|opus)$/i,'').replace(/[\[(（][^\])）]*[\])）]/g,' ').replace(/[\[(（][^\])）]*$/,' ').replace(/^\s*\d{1,3}[\s.\-_)]+/,'').replace(/_/g,' ').replace(/\s+/g,' ').trim();
+// 업로더·채널 이름(제목 맨 앞에 붙는 것)은 검색에서 뺌 — 필요하면 이름을 더 추가하세요
+const UPL=/^(hybe labels|smtown|starship|jyp entertainment|yg entertainment|kakao m|stone music|dingo music|웅키)(\s*및\s*.+)?$/i;
+const JUNKSEG=/^(가사(\s*(첨부|포함|有|유))?|lyrics?|lyric video|lyrics video|audio|official.*|m\/?-?v|synced lyrics|hq.*|\d+k(bps)?)$/i;
+function guess(s){let ar=(s.artist||'').trim(),raw=(s.title||'').replace(/^\s*[\[(（][^\])）]*[\])）]\s*/,'').replace(/^[^\p{L}\p{N}'‘“"]+/u,'').trim(),ti='';
+ const sp=x=>x.split(/\s+[-–—|│ㅣ]+\s+|\s+--+\s+/).map(a=>a.trim()).filter(a=>a&&!JUNKSEG.test(a)),ed=x=>x.replace(/[\s\-–—|]+$/,'');
+ const qm=raw.match(/(?:^|\s)[‘'“"]([^'‘“"]{2,}?)[’'”"](?=\s|$|[)\]])/);
+ if(qm){ti=cl(qm[1]);if(!ar){const ps=sp(ed(cl(raw.slice(0,qm.index))));ar=ps[ps.length-1]||''}}
+ else{let ps=sp(cl(raw));if(ps.length>1&&UPL.test(ps[0]))ps.shift();
+  if(ar){const r=ps.filter(p=>!tmatch(p,ar));if(r.length&&r.length<ps.length)ps=r}
+  else if(ps.length>=3){ar=ps[ps.length-2];ps=[ps[ps.length-1]]}
+  else if(ps.length==2){ar=ps[0];ps=[ps[1]]}
+  ti=ps.join(' - ')}
+ // 제목 정리: feat./MV/가사 같은 잡말과 제목에 섞인 가수 이름은 검색에서 뺌 (정리 결과가 비면 원래 제목 사용)
+ const t0=ti||cl(raw),dash=/^\s*[-–—|]\s*|\s*[-–—|]\s*$/g;
+ ti=(ti||t0).replace(/\s+(feat|ft|featuring|prod)\.?(\s.*)?$/i,'').replace(/[\s.,_]+가사(\s.*)?$/,'').replace(/\b(official|mv|m\/v|audio|lyrics?|hd|hq|4k|320k(bps)?)\b/gi,' ').replace(/가사|음원|고음질|뮤직비디오|공식/g,' ').replace(/\s*ㅣ.*$/,'').replace(/\bhq\s+sound\b/gi,' ').replace(/\s*_?\d{3}k(bps)?$/i,'').replace(/(^|\s)[.,]+(?=\s|$)/g,' ').replace(/[()\[\]（）]/g,' ');
+ if(ar){const a=ar.replace(/[.*+?^${}()|[\]\\]/g,'\\$&'),t1=ti.replace(new RegExp('(^|\\s)'+a+'(?=\\s|$)','gi'),' ').replace(dash,'').trim();if(t1)ti=t1}
+ ti=ti.replace(dash,'').replace(/\s+/g,' ').trim()||t0;return[ar,ti]}
 const qs=o=>Object.entries(o).filter(e=>e[1]).map(e=>e[0]+'='+encodeURIComponent(e[1])).join('&');
 const ok=r=>r.filter(x=>x&&(x.syncedLyrics||x.plainLyrics));
 const NM=t=>(t||'').toLowerCase().replace(/[\s\-_.,'"’!?()\[\]~·&]/g,''),tmatch=(a,b)=>{a=NM(a);b=NM(b);return !!a&&!!b&&(a.includes(b)||b.includes(a))};
@@ -246,20 +262,21 @@ const sAs=async(q,ar,ti)=>{if(!WK)return[];const j=await wf('/alsong?'+qs({artis
 const SRC=[{n:'LRCLIB',f:sLrc},{n:'알송',f:sAs},{n:'넷이즈',f:sNe},{n:'쿠거우',f:sKg},{n:'쿠워',f:sKw},{n:'벅스',f:sBg},{n:'지니',f:sGe},{n:'멜론',f:sMl},{n:'지니어스',f:sGn},{n:'미구',f:sMg},{n:'LrcApi',f:sLa},{n:'lyrics.ovh',f:sOv}];
 // 일본어(가나)·중국어(한자)가 포함된 가사 결과는 제외. 끄려면 아래 정규식을 /(?!)/ 로 바꾸세요
 const CJK=/[\u3040-\u30ff\u31f0-\u31ff\u3400-\u4dbf\u4e00-\u9fff\uf900-\ufaff\uff66-\uff9f]/;
-// 한국어 곡인데 가사에 한글이 거의 없으면(영문 발음 표기·영어 번역) 제외. 끄려면 아래 줄 맨 앞에 return false; 를 넣으세요
-const ROMW=/^(neo|neol|neoui|neon|nae|naega|naege|neoege|nan|nal|uri|geu|geunyeo|geudae|jigeum|saranghae|saranghaneun|haneun|hajiman|geurae|eotteoke|eodi|jinjja|jeongmal|oneul|naeil|modeun|gateun|ijen|ireon|geureon|neomu|kkeut|maeum|sarang|nunmul|bogosipeo|isseo|eopseo)$/i;
-function romLy(t,ar,ti,q){const hint=(ar||'')+(ti||'')+(q||'');if(!/[\uAC00-\uD7A3]/.test(hint))return false;
- const x=(t||'').replace(/\[[^\]]*\]/g,''),h=(x.match(/[\uAC00-\uD7A3\u3131-\u318E]/g)||[]).length,e=(x.match(/[A-Za-z]/g)||[]).length;
+// 영문 발음 표기(로마자) 가사 제외: 한글이 거의 없고, 한국어 로마자 특유의 철자(eo, eu, kk, neun, reul …)가 많은 가사만 제외 (진짜 영어 가사는 유지)
+// 끄려면 아래 romLy 함수 첫 줄에 return false; 를 넣으세요
+const ROMS=/(eo|eu|kk|jj|yeo|neun|reul|eul|eun$|deul|seyo|hae|nae|neol|ui$|ggeu|ddeu|jyo)/i,ENW=/^(people|peoples|video|videos|neon|leo|leon|leonard|europe|european|neutral|geometry|theory|theo|george|georgia|rodeo|stereo|cameo|pigeon|dungeon|surgeon|nucleus|feud|queue|euro|neuro|aeon|eon|dun)$/i;
+function romLy(t,ar,ti,q){const x=(t||'').replace(/\[[^\]]*\]/g,''),h=(x.match(/[\uAC00-\uD7A3\u3131-\u318E]/g)||[]).length,e=(x.match(/[A-Za-z]/g)||[]).length;
  if(e<30||h>e*.1)return false;
- const tt=ti||(q||'').replace(ar||'','').trim();if(/[\uAC00-\uD7A3]/.test(tt))return true;
- const w=x.toLowerCase().match(/[a-z]+/g)||[];let c=0;w.forEach(a=>{if(ROMW.test(a))c++});return c>=3||c/w.length>.03}
+ const w=x.toLowerCase().match(/[a-z']+/g)||[];let c=0;w.forEach(a=>{if(a.length>=3&&!ENW.test(a)&&ROMS.test(a))c++});
+ if(w.length>=40&&c/w.length>=.05)return true;
+ return false}
 const SO={};SRC.forEach((s,k)=>SO[s.n]=k);
 // 한 출처를 최대 28초까지만 기다림 (실패해도 다른 출처에 영향 없음)
 const runSrc=(s,q,ar,ti,d)=>Promise.race([(async()=>{let r=await s.f(q,ar,ti,d);if(!(r&&r.length)&&ti&&!['LRCLIB','LrcApi','lyrics.ovh'].includes(s.n)&&NM(ti)!=NM(q))r=await s.f(ti,ar,ti,d);return r||[]})(),new Promise((_,j)=>setTimeout(j,28000))]).then(r=>(r||[]).map(x=>({...x,src:s.n})).filter(x=>!CJK.test(x.syncedLyrics||x.plainLyrics||'')&&!romLy(x.syncedLyrics||x.plainLyrics,ar,ti,q)));
 // 점수: 싱크 있음 · 곡 길이 비슷함 · 제목/가수 일치 · 앞쪽 출처 순
 function score(x,d,ar,ti){if(!(x.syncedLyrics||x.plainLyrics))return null;let sc=x.syncedLyrics?3:0;
  if(d&&x.duration){const df=Math.abs(x.duration-d);if(df>60)return null;sc+=df<=3?3:df<=8?1.5:df<=15?0:-2}else if(d)sc-=1;
- if(ti&&x.src!='LRCLIB'&&!tmatch(x.trackName,ti)&&!(ar&&tmatch(x.artistName,ar)&&d&&x.duration&&Math.abs(x.duration-d)<=6))return null;
+ if(ti&&x.src!='LRCLIB'&&!tmatch(x.trackName,ti)&&!tmatch(x.trackName,ar)&&!(ar&&tmatch(x.artistName,ar)&&d&&x.duration&&Math.abs(x.duration-d)<=6))return null;
  if(ar&&tmatch(x.artistName,ar))sc+=1;
  return sc-(SO[x.src]||0)*.01}
 const lyKey=x=>(x.syncedLyrics?'s':'p')+NM((x.syncedLyrics||x.plainLyrics).replace(/\[[^\]]*\]/g,'')).slice(0,60);
