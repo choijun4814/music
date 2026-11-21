@@ -96,7 +96,7 @@ function play(k){const s=S[k];if(!s)return;i=k;off=s.off||0;$('#ov').textContent
 function nx(d,auto){const L=PL();if(!L.length)return;let k;if(sh&&L.length>1){if(d>0)k=peek();else{do k=L[Math.floor(Math.random()*L.length)];while(k==i)}}else{const p=L.indexOf(i);if(p<0)k=L[0];else{let q=p+d;if(q>=L.length){if(auto&&!rp)return;q=0}if(q<0)q=L.length-1;k=L[q]}}play(k)}
 A.onended=()=>rp==2?(A.currentTime=0,A.play()):nx(1,1);
 A.onplay=async()=>{$('#pp').textContent='⏸';try{navigator.mediaSession.playbackState='playing'}catch{}wlOn();};A.onpause=()=>{$('#pp').textContent='▶';try{navigator.mediaSession.playbackState=A.ended?'playing':'paused'}catch{}wlOff()};
-A.onloadedmetadata=()=>{$('#sk').max=A.duration;$('#td').textContent=mm(A.duration);const s=S[i];if(s&&!hasSync(s.lyrics)&&(!s.tried||((s.lyrics||'').trim()&&!SYR.has(s.id))))autoLy(s,A.duration)};
+A.onloadedmetadata=()=>{$('#sk').max=A.duration;$('#td').textContent=mm(A.duration);const s=S[i];if(s&&(!hasSync(s.lyrics)||romLy(s.lyrics,s.artist,s.title))&&(!s.tried||((s.lyrics||'').trim()&&!SYR.has(s.id))))autoLy(s,A.duration)};
 A.ontimeupdate=()=>{$('#sk').value=A.currentTime;$('#tc').textContent=mm(A.currentTime);if(LY&&LY.sync){const t=A.currentTime+off+.2;let k=-1;for(let j=0;j<LY.l.length&&LY.l[j][0]<=t;j++)k=j;if(k!=li){li=k;const ps=$('#ly').children;[...ps].forEach((p,j)=>p.classList.toggle('on',j==k));if(ps[0])ps[0].classList.toggle('pre',k<0);if(ps[k])ps[k].scrollIntoView({block:'center',behavior:'smooth'});else if(ps[0])ps[0].scrollIntoView({block:'center'})}}};
 $('#sk').oninput=()=>A.currentTime=+$('#sk').value;
 $('#pp').onclick=()=>{if(i<0&&S.length)play(0);else A.paused?A.play():A.pause()};$('#pv').onclick=()=>nx(-1);$('#nt').onclick=()=>nx(1);
@@ -246,9 +246,16 @@ const sAs=async(q,ar,ti)=>{if(!WK)return[];const j=await wf('/alsong?'+qs({artis
 const SRC=[{n:'LRCLIB',f:sLrc},{n:'알송',f:sAs},{n:'넷이즈',f:sNe},{n:'쿠거우',f:sKg},{n:'쿠워',f:sKw},{n:'벅스',f:sBg},{n:'지니',f:sGe},{n:'멜론',f:sMl},{n:'지니어스',f:sGn},{n:'미구',f:sMg},{n:'LrcApi',f:sLa},{n:'lyrics.ovh',f:sOv}];
 // 일본어(가나)·중국어(한자)가 포함된 가사 결과는 제외. 끄려면 아래 정규식을 /(?!)/ 로 바꾸세요
 const CJK=/[\u3040-\u30ff\u31f0-\u31ff\u3400-\u4dbf\u4e00-\u9fff\uf900-\ufaff\uff66-\uff9f]/;
+// 한국어 곡인데 가사에 한글이 거의 없으면(영문 발음 표기·영어 번역) 제외. 끄려면 아래 줄 맨 앞에 return false; 를 넣으세요
+const ROMW=/^(neo|neol|neoui|neon|nae|naega|naege|neoege|nan|nal|uri|geu|geunyeo|geudae|jigeum|saranghae|saranghaneun|haneun|hajiman|geurae|eotteoke|eodi|jinjja|jeongmal|oneul|naeil|modeun|gateun|ijen|ireon|geureon|neomu|kkeut|maeum|sarang|nunmul|bogosipeo|isseo|eopseo)$/i;
+function romLy(t,ar,ti,q){const hint=(ar||'')+(ti||'')+(q||'');if(!/[\uAC00-\uD7A3]/.test(hint))return false;
+ const x=(t||'').replace(/\[[^\]]*\]/g,''),h=(x.match(/[\uAC00-\uD7A3\u3131-\u318E]/g)||[]).length,e=(x.match(/[A-Za-z]/g)||[]).length;
+ if(e<30||h>e*.1)return false;
+ const tt=ti||(q||'').replace(ar||'','').trim();if(/[\uAC00-\uD7A3]/.test(tt))return true;
+ const w=x.toLowerCase().match(/[a-z]+/g)||[];let c=0;w.forEach(a=>{if(ROMW.test(a))c++});return c>=3||c/w.length>.03}
 const SO={};SRC.forEach((s,k)=>SO[s.n]=k);
 // 한 출처를 최대 28초까지만 기다림 (실패해도 다른 출처에 영향 없음)
-const runSrc=(s,q,ar,ti,d)=>Promise.race([(async()=>{let r=await s.f(q,ar,ti,d);if(!(r&&r.length)&&ti&&!['LRCLIB','LrcApi','lyrics.ovh'].includes(s.n)&&NM(ti)!=NM(q))r=await s.f(ti,ar,ti,d);return r||[]})(),new Promise((_,j)=>setTimeout(j,28000))]).then(r=>(r||[]).map(x=>({...x,src:s.n})).filter(x=>!CJK.test(x.syncedLyrics||x.plainLyrics||'')));
+const runSrc=(s,q,ar,ti,d)=>Promise.race([(async()=>{let r=await s.f(q,ar,ti,d);if(!(r&&r.length)&&ti&&!['LRCLIB','LrcApi','lyrics.ovh'].includes(s.n)&&NM(ti)!=NM(q))r=await s.f(ti,ar,ti,d);return r||[]})(),new Promise((_,j)=>setTimeout(j,28000))]).then(r=>(r||[]).map(x=>({...x,src:s.n})).filter(x=>!CJK.test(x.syncedLyrics||x.plainLyrics||'')&&!romLy(x.syncedLyrics||x.plainLyrics,ar,ti,q)));
 // 점수: 싱크 있음 · 곡 길이 비슷함 · 제목/가수 일치 · 앞쪽 출처 순
 function score(x,d,ar,ti){if(!(x.syncedLyrics||x.plainLyrics))return null;let sc=x.syncedLyrics?3:0;
  if(d&&x.duration){const df=Math.abs(x.duration-d);if(df>60)return null;sc+=df<=3?3:df<=8?1.5:df<=15?0:-2}else if(d)sc-=1;
@@ -266,7 +273,7 @@ async function autoLy(s,d){d=isFinite(d)?d:0;SYR.add(s.id);const was=!!(s.lyrics
   await new Promise(res=>{setTimeout(res,22000);SRC.slice(1).forEach(x=>runSrc(x,q,ar,ti,d).then(r=>{pool=pool.concat(r);const g=pk();if(g&&g.syncedLyrics&&score(g,d,ar,ti)>=5.5)res()}).catch(()=>{}).finally(()=>{n++;stt('🔍 다른 가사 사이트에서도 찾는 중... ('+n+'/'+tot+')');if(n>=tot)res()}))});
   b=pk()}
  s.tried=1;
- if(b&&(!(s.lyrics||'').trim()||(b.syncedLyrics&&!hasSync(s.lyrics)))){s.lyrics=b.syncedLyrics||b.plainLyrics;try{await put(s)}catch{}if(S[i]==s){lyr();A.ontimeupdate()}render();stt(b.syncedLyrics?(was?'✅ 일반 가사를 싱크 가사로 바꿨어요 (':'✅ 싱크 가사를 찾았어요 (')+b.src+(d&&b.duration?', 길이 차이 '+Math.abs(b.duration-d).toFixed(1)+'초':'')+')'+(d&&b.duration&&Math.abs(b.duration-d)>4?' · 🎯 첫 소절 맞추기를 눌러 주세요':''):'일반 가사를 찾았어요 ('+b.src+', 싱크 없음)')}
+ if(b&&(!(s.lyrics||'').trim()||romLy(s.lyrics,ar,ti)||(b.syncedLyrics&&!hasSync(s.lyrics)))){s.lyrics=b.syncedLyrics||b.plainLyrics;try{await put(s)}catch{}if(S[i]==s){lyr();A.ontimeupdate()}render();stt(b.syncedLyrics?(was?'✅ 일반 가사를 싱크 가사로 바꿨어요 (':'✅ 싱크 가사를 찾았어요 (')+b.src+(d&&b.duration?', 길이 차이 '+Math.abs(b.duration-d).toFixed(1)+'초':'')+')'+(d&&b.duration&&Math.abs(b.duration-d)>4?' · 🎯 첫 소절 맞추기를 눌러 주세요':''):'일반 가사를 찾았어요 ('+b.src+', 싱크 없음)')}
  else{try{await put(s)}catch{}stt(b||was?'':'가사를 못 찾았어요 · 🔍 가사 찾기에서 직접 검색해 보세요')}}
  catch{stt('가사 서버에 접속할 수 없어요 (인터넷 확인)')}
  setTimeout(()=>stt(''),6000)}
