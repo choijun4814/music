@@ -96,7 +96,7 @@ function play(k){const s=S[k];if(!s)return;i=k;off=s.off||0;$('#ov').textContent
 function nx(d,auto){const L=PL();if(!L.length)return;let k;if(sh&&L.length>1){if(d>0)k=peek();else{do k=L[Math.floor(Math.random()*L.length)];while(k==i)}}else{const p=L.indexOf(i);if(p<0)k=L[0];else{let q=p+d;if(q>=L.length){if(auto&&!rp)return;q=0}if(q<0)q=L.length-1;k=L[q]}}play(k)}
 A.onended=()=>rp==2?(A.currentTime=0,A.play()):nx(1,1);
 A.onplay=async()=>{$('#pp').textContent='⏸';try{navigator.mediaSession.playbackState='playing'}catch{}wlOn();};A.onpause=()=>{$('#pp').textContent='▶';try{navigator.mediaSession.playbackState=A.ended?'playing':'paused'}catch{}wlOff()};
-A.onloadedmetadata=()=>{$('#sk').max=A.duration;$('#td').textContent=mm(A.duration);const s=S[i];if(s&&!hasSync(s.lyrics)&&!s.tried)autoLy(s,A.duration)};
+A.onloadedmetadata=()=>{$('#sk').max=A.duration;$('#td').textContent=mm(A.duration);const s=S[i];if(s&&!hasSync(s.lyrics)&&(!s.tried||((s.lyrics||'').trim()&&!SYR.has(s.id))))autoLy(s,A.duration)};
 A.ontimeupdate=()=>{$('#sk').value=A.currentTime;$('#tc').textContent=mm(A.currentTime);if(LY&&LY.sync){const t=A.currentTime+off+.2;let k=-1;for(let j=0;j<LY.l.length&&LY.l[j][0]<=t;j++)k=j;if(k!=li){li=k;const ps=$('#ly').children;[...ps].forEach((p,j)=>p.classList.toggle('on',j==k));if(ps[0])ps[0].classList.toggle('pre',k<0);if(ps[k])ps[k].scrollIntoView({block:'center',behavior:'smooth'});else if(ps[0])ps[0].scrollIntoView({block:'center'})}}};
 $('#sk').oninput=()=>A.currentTime=+$('#sk').value;
 $('#pp').onclick=()=>{if(i<0&&S.length)play(0);else A.paused?A.play():A.pause()};$('#pv').onclick=()=>nx(-1);$('#nt').onclick=()=>nx(1);
@@ -257,7 +257,8 @@ function score(x,d,ar,ti){if(!(x.syncedLyrics||x.plainLyrics))return null;let sc
  return sc-(SO[x.src]||0)*.01}
 const lyKey=x=>(x.syncedLyrics?'s':'p')+NM((x.syncedLyrics||x.plainLyrics).replace(/\[[^\]]*\]/g,'')).slice(0,60);
 
-async function autoLy(s,d){d=isFinite(d)?d:0;stt('🔍 가사 찾는 중... (LRCLIB)');try{const[ar,ti]=guess(s),q=(ar+' '+ti).trim();let pool=[],b=null;
+const SYR=new Set(); // 일반 가사만 있는 곡은 앱을 켠 동안 곡마다 한 번씩 싱크 가사를 다시 찾아봄
+async function autoLy(s,d){d=isFinite(d)?d:0;SYR.add(s.id);const was=!!(s.lyrics||'').trim()&&!hasSync(s.lyrics);stt(was?'🔍 일반 가사 → 싱크 가사 찾는 중... (LRCLIB)':'🔍 가사 찾는 중... (LRCLIB)');try{const[ar,ti]=guess(s),q=(ar+' '+ti).trim();let pool=[],b=null;
  const pk=()=>{const o=pool.map(x=>({x,sc:score(x,d,ar,ti)})).filter(o=>o.sc!=null).sort((a,b)=>b.sc-a.sc);return o.length?o[0].x:null};
  try{pool=await runSrc(SRC[0],q,ar,ti,d)}catch{}
  b=pk();
@@ -265,8 +266,8 @@ async function autoLy(s,d){d=isFinite(d)?d:0;stt('🔍 가사 찾는 중... (LRC
   await new Promise(res=>{setTimeout(res,22000);SRC.slice(1).forEach(x=>runSrc(x,q,ar,ti,d).then(r=>{pool=pool.concat(r);const g=pk();if(g&&g.syncedLyrics&&score(g,d,ar,ti)>=5.5)res()}).catch(()=>{}).finally(()=>{n++;stt('🔍 다른 가사 사이트에서도 찾는 중... ('+n+'/'+tot+')');if(n>=tot)res()}))});
   b=pk()}
  s.tried=1;
- if(b&&(!(s.lyrics||'').trim()||(b.syncedLyrics&&!hasSync(s.lyrics)))){s.lyrics=b.syncedLyrics||b.plainLyrics;try{await put(s)}catch{}if(S[i]==s){lyr();A.ontimeupdate()}render();stt(b.syncedLyrics?'✅ 싱크 가사를 찾았어요 ('+b.src+(d&&b.duration?', 길이 차이 '+Math.abs(b.duration-d).toFixed(1)+'초':'')+')'+(d&&b.duration&&Math.abs(b.duration-d)>4?' · 🎯 첫 소절 맞추기를 눌러 주세요':''):'일반 가사를 찾았어요 ('+b.src+', 싱크 없음)')}
- else{try{await put(s)}catch{}stt(b?'':'가사를 못 찾았어요 · 🔍 가사 찾기에서 직접 검색해 보세요')}}
+ if(b&&(!(s.lyrics||'').trim()||(b.syncedLyrics&&!hasSync(s.lyrics)))){s.lyrics=b.syncedLyrics||b.plainLyrics;try{await put(s)}catch{}if(S[i]==s){lyr();A.ontimeupdate()}render();stt(b.syncedLyrics?(was?'✅ 일반 가사를 싱크 가사로 바꿨어요 (':'✅ 싱크 가사를 찾았어요 (')+b.src+(d&&b.duration?', 길이 차이 '+Math.abs(b.duration-d).toFixed(1)+'초':'')+')'+(d&&b.duration&&Math.abs(b.duration-d)>4?' · 🎯 첫 소절 맞추기를 눌러 주세요':''):'일반 가사를 찾았어요 ('+b.src+', 싱크 없음)')}
+ else{try{await put(s)}catch{}stt(b||was?'':'가사를 못 찾았어요 · 🔍 가사 찾기에서 직접 검색해 보세요')}}
  catch{stt('가사 서버에 접속할 수 없어요 (인터넷 확인)')}
  setTimeout(()=>stt(''),6000)}
 
