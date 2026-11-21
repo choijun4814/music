@@ -177,7 +177,7 @@ function rec(n,k,ms){const o=SST[n]||(SST[n]={t:0,s:0,sy:0,z:0,f:0,ms:0});o.t++;
 function hrec(h,ok,k){const o=SST._h[h]||(SST._h[h]={ok:0,f:0,px:[0,0,0,0,0]});if(ok){o.ok++;o.px[k]++}else o.f++;sstSave()}
 function sstText(){const d=new Date(SST._since),dt=d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
  const o=['[가사 출처 기록] '+dt+' 이후 누적'];
- SRC.forEach(s=>{const a=SST[s.n];if(!a||!a.t){o.push(s.n+' · 기록 없음');return}const ok=a.s+a.sy;o.push(s.n+' · 시도 '+a.t+' · 가사 찾음 '+ok+'('+Math.round(ok*100/a.t)+'%) · 싱크 '+a.sy+' · 결과없음 '+a.z+' · 접속실패 '+a.f+(ok+a.z?' · 평균 '+(a.ms/(ok+a.z)/1000).toFixed(1)+'초':''))});
+ SRC_ALL.forEach(s=>{const a=SST[s.n];if(!a||!a.t){o.push(s.n+(ON.includes(s.n)?' · 기록 없음':' · 꺼 둠'));return}const ok=a.s+a.sy;o.push(s.n+' · 시도 '+a.t+' · 가사 찾음 '+ok+'('+Math.round(ok*100/a.t)+'%) · 싱크 '+a.sy+' · 결과없음 '+a.z+' · 접속실패 '+a.f+(ok+a.z?' · 평균 '+(a.ms/(ok+a.z)/1000).toFixed(1)+'초':''))});
  const P=['중계서버','직접','corsproxy','allorigins','codetabs'],hs=Object.keys(SST._h);
  if(hs.length){o.push('','[사이트 접속 기록] 성공 · 실패 · 성공한 접속 경로');hs.sort().forEach(h=>{const a=SST._h[h];o.push(h+' · 성공 '+a.ok+' · 실패 '+a.f+' · '+a.px.map((n,k)=>n?P[k]+' '+n:'').filter(Boolean).join(', '))})}
  return o.join('\n')}
@@ -272,7 +272,9 @@ const sMg=async q=>{const j=await fj('https://m.music.migu.cn/migu/remoting/scr_
 const sLa=async(q,ar,ti)=>{const t=await ft('https://api.lrc.cx/lyrics?'+qs({title:ti||q,artist:ar}),x=>/\[\d+:\d+/.test(x));const o=mk({trackName:ti||q,artistName:ar||'',duration:null},t);return o?[o]:[]};
 const wf=async p=>{const c=new AbortController(),t=setTimeout(()=>c.abort(),15000);try{const r=await fetch(WK+p,{signal:c.signal});return r.ok?await r.json():null}finally{clearTimeout(t)}};
 const sAs=async(q,ar,ti)=>{if(!WK)return[];const j=await wf('/alsong?'+qs({artist:ar,title:ti||q}));return((j&&j.items)||[]).slice(0,8).map(x=>mk({trackName:x.title,artistName:x.artist,albumName:x.album,duration:null},x.lyric)).filter(Boolean)};
-const SRC=[{n:'LRCLIB',f:sLrc},{n:'알송',f:sAs},{n:'넷이즈',f:sNe},{n:'쿠거우',f:sKg},{n:'쿠워',f:sKw},{n:'벅스',f:sBg},{n:'지니',f:sGe},{n:'멜론',f:sMl},{n:'지니어스',f:sGn},{n:'미구',f:sMg},{n:'LrcApi',f:sLa},{n:'lyrics.ovh',f:sOv}];
+const SRC_ALL=[{n:'LRCLIB',f:sLrc},{n:'알송',f:sAs},{n:'넷이즈',f:sNe},{n:'쿠거우',f:sKg},{n:'쿠워',f:sKw},{n:'벅스',f:sBg},{n:'지니',f:sGe},{n:'멜론',f:sMl},{n:'지니어스',f:sGn},{n:'미구',f:sMg},{n:'LrcApi',f:sLa},{n:'lyrics.ovh',f:sOv}];
+// 안 되는 출처는 꺼 둠 (연결 점검 결과: LRCLIB·지니어스만 접속됨). 다시 켜려면 아래 목록에 출처 이름을 추가하세요
+const ON=['LRCLIB','지니어스'],SRC=SRC_ALL.filter(x=>ON.includes(x.n));
 // 일본어(가나)·중국어(한자)가 포함된 가사 결과는 제외. 끄려면 아래 정규식을 /(?!)/ 로 바꾸세요
 const CJK=/[\u3040-\u30ff\u31f0-\u31ff\u3400-\u4dbf\u4e00-\u9fff\uf900-\ufaff\uff66-\uff9f]/;
 // 영문 발음 표기(로마자) 가사 제외: 한글이 거의 없고, 한국어 로마자 특유의 철자(eo, eu, kk, neun, reul …)가 많은 가사만 제외 (진짜 영어 가사는 유지)
@@ -378,7 +380,7 @@ $('#cft').onclick=async()=>{WK=$('#cfu').value.trim().replace(/\/+$/,'');try{loc
  const row=n=>{const d=document.createElement('div');d.className='it';d.innerHTML='<div><b>'+esc(n)+'</b><small>확인 중…</small></div>';o.append(d);return d.querySelector('small')};
  const w=row('중계 서버(Worker)');
  try{const r=await fetch(WK+'/ping',{cache:'no-store'});const t=(await r.text()).trim();w.textContent=t==='ok'?'✅ 연결됨':'⚠ 연결은 되는데 코드가 아직 바뀌지 않았어요'}catch{w.textContent='❌ 연결 안 됨 (주소를 확인하세요)'}
- await Promise.all(SRC.map(async s=>{const el=row(s.n),t0=Date.now();try{const r=await runSrc(s,'아이유 좋은날','아이유','좋은날',0),sy=r.filter(x=>x.syncedLyrics).length,sec=((Date.now()-t0)/1000).toFixed(1)+'초';el.textContent=r.length?'✅ '+r.length+'건 (싱크 '+sy+'건) · '+sec:'❌ 결과 없음 · '+sec}catch{el.textContent='❌ 연결 실패'}}));
+ await Promise.all(SRC_ALL.map(async s=>{const el=row(s.n),t0=Date.now();try{const r=await runSrc(s,'아이유 좋은날','아이유','좋은날',0),sy=r.filter(x=>x.syncedLyrics).length,sec=((Date.now()-t0)/1000).toFixed(1)+'초';el.textContent=r.length?'✅ '+r.length+'건 (싱크 '+sy+'건) · '+sec:'❌ 결과 없음 · '+sec}catch{el.textContent='❌ 연결 실패'}}));
 };
 {const c0=$('#cft').onclick;$('#cft').onclick=async()=>{await c0();sstDraw()}}
 $('#sstc').onclick=async()=>{const b=$('#sstc');try{await navigator.clipboard.writeText(sstText());b.textContent='✅ 복사됨'}catch{try{const r=document.createRange();r.selectNodeContents($('#sstd'));const g=getSelection();g.removeAllRanges();g.addRange(r);b.textContent='글을 길게 눌러 복사'}catch{}}setTimeout(()=>b.textContent='복사',2500)};
