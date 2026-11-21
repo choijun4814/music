@@ -856,19 +856,23 @@ function asrFill(times,dur){const n=times.length,idx=[];times.forEach((t,k)=>{if
  for(let k=idx[idx.length-1]+1;k<n;k++)o[k]=Math.min(o[k-1]+3,Math.max(o[k-1],(dur||1e9)-1));
  for(let k=1;k<n;k++)if(o[k]<o[k-1]+.05)o[k]=o[k-1]+.05;return o}
 window.asrMap=asrMap;window.asrFill=asrFill;
+async function asrInit(MN,m){if(ASR&&ASRN!==MN)ASR=null;if(ASR)return;ASRN=MN;m.textContent='🎙 음성인식 모델 받는 중... (처음 한 번만)';
+ const T=await import('https://cdn.jsdelivr.net/npm/@huggingface/transformers@3.0.2');
+ const mk=()=>T.pipeline('automatic-speech-recognition',MN,{dtype:'q8',progress_callback:p=>{if(p.status==='progress')m.textContent='🎙 모델 받는 중 '+Math.round(p.progress)+'% ('+String(p.file||'').split('/').pop()+')'}});
+ try{T.env.backends.onnx.wasm.proxy=true;ASR=await mk()}catch(e){try{T.env.backends.onnx.wasm.proxy=false}catch{}ASR=await mk()}}
 const ASRF={tiny:.15,base:.3,small:1};
 const asrFac=MN=>{const k=MN.split('-').pop();try{const v=parseFloat(localStorage['asrf_'+k]);if(v>0)return v}catch{}return ASRF[k]||.5};
 const asrFmt=t=>{t=Math.max(0,Math.round(t));return Math.floor(t/60)+':'+String(t%60).padStart(2,'0')};
 function asrEst(){const e=$a('asre');if(!e)return;const MN=$a('asrm').value,d=A.duration;if(!isFinite(d)||!d){e.textContent='⏱ 곡을 재생하면 예상 소요 시간이 나와요';return}const k=MN.split('-').pop();let learned=0;try{learned=parseFloat(localStorage['asrf_'+k])>0}catch{}e.textContent='⏱ 예상 소요 약 '+asrFmt(d*asrFac(MN))+' (곡 '+asrFmt(d)+' · '+k+' 모델'+(learned?' · 이 폰에서 실제로 걸린 속도 기준':' · 대략적인 값, 한 번 돌리면 더 정확해져요')+')'}
-function asrTrack(m,dur,MN,what){const t0=Date.now(),tot=Math.max(1,Math.ceil(Math.max(0,dur-30)/20)+1),est=dur*asrFac(MN);let done=0;
- const draw=()=>{const el=(Date.now()-t0)/1000;const rem=done>0?el/done*(tot-done):Math.max(est-el,est*.1);m.textContent='🎙 '+what+' · 경과 '+asrFmt(el)+' · 남은 시간 약 '+asrFmt(rem)+' ('+Math.min(99,Math.round(done*100/tot))+'%)'};
+function asrTrack(m,dur,MN,what){let wl=null;try{navigator.wakeLock&&navigator.wakeLock.request('screen').then(x=>{wl=x}).catch(()=>{})}catch{}const t0=Date.now(),tot=Math.max(1,Math.ceil(Math.max(0,dur-30)/20)+1),est=dur*asrFac(MN);let done=0;
+ const draw=()=>{const el=(Date.now()-t0)/1000;const rem=done>0?el/done*(tot-done):Math.max(est-el,est*.1);m.textContent='🎙 '+what+' · 경과 '+asrFmt(el)+' · 남은 시간 약 '+asrFmt(rem)+' ('+Math.min(99,Math.round(done*100/tot))+'%)'+(done===0&&el>20?' · 첫 구간 처리 중이라 0%로 보여요 (30초 구간마다 올라가요)':'')};
  draw();const iv=setInterval(draw,1000);
- return{cb:()=>{done++;draw()},stop:()=>{clearInterval(iv);const el=(Date.now()-t0)/1000;if(dur>20){try{localStorage['asrf_'+MN.split('-').pop()]=(el/dur).toFixed(3)}catch{}}return el}}}
+ return{cb:()=>{done++;draw()},stop:()=>{clearInterval(iv);try{wl&&wl.release()}catch{}const el=(Date.now()-t0)/1000;if(dur>20){try{localStorage['asrf_'+MN.split('-').pop()]=(el/dur).toFixed(3)}catch{}}return el}}}
 window.asrTrack=asrTrack;window.asrEst=asrEst;
 $a('asrm').addEventListener('change',asrEst);$('#sx').addEventListener('click',()=>setTimeout(asrEst,50));
 $a('asrb').onclick=async()=>{const s=S[i],m=$a('sam'),b=$a('asrb');if(!s){m.textContent='먼저 곡을 재생하세요';return}const g=sig(s);if(!g){m.textContent='시간(싱크) 태그가 있는 가사가 있어야 해요';return}
  let tr=null;b.disabled=true;try{
-  const MN=$a('asrm').value;if(ASR&&ASRN!==MN)ASR=null;if(!ASR){ASRN=MN;m.textContent='🎙 음성인식 모델 받는 중... (처음 한 번만)';const T=await import('https://cdn.jsdelivr.net/npm/@huggingface/transformers@3.0.2');ASR=await T.pipeline('automatic-speech-recognition',MN,{dtype:'q8',progress_callback:p=>{if(p.status==='progress')m.textContent='🎙 모델 받는 중 '+Math.round(p.progress)+'% ('+String(p.file||'').split('/').pop()+')'}})}
+  const MN=$a('asrm').value;await asrInit(MN,m);
   m.textContent='🎙 노래 불러오는 중...';const pcm=await asrPcm(s.blob);tr=asrTrack(m,pcm.length/16000,MN,'노래 듣는 중');
   const tx=plrc(s.lyrics||'').l.map(x=>x[1]).join(''),ko=(tx.match(/[\uac00-\ud7a3]/g)||[]).length,la=(tx.match(/[a-z]/gi)||[]).length,lg=ko+la?(ko>la*.3?'korean':'english'):undefined;const out=await ASR(pcm,{return_timestamps:'word',chunk_length_s:30,stride_length_s:5,language:lg,task:'transcribe',chunk_callback:tr.cb});const EL=tr.stop();
   const r=asrAlign((out.chunks||[]),plrc(s.lyrics||'').l);
@@ -886,7 +890,7 @@ $a('asrc').onclick=async()=>{const s=S[i],m=$a('sam'),b=$a('asrc');if(!s){m.text
  const pl0=plrc(s.lyrics||''),ref=pl0.sync?[]:pl0.l.map(x=>x[1]).filter(x=>x&&!/^\[.*\]$/.test(x.trim()));
  if((s.lyrics||'').trim()&&!ref.length&&!confirm('이 곡에는 이미 가사가 있어요.\n음성인식 결과로 바꿀까요? (이전 가사는 되돌릴 수 없어요)'))return;
  let tr=null;b.disabled=true;try{
-  const MN=$a('asrm').value;if(ASR&&ASRN!==MN)ASR=null;if(!ASR){ASRN=MN;m.textContent='🎙 음성인식 모델 받는 중... (처음 한 번만)';const T=await import('https://cdn.jsdelivr.net/npm/@huggingface/transformers@3.0.2');ASR=await T.pipeline('automatic-speech-recognition',MN,{dtype:'q8',progress_callback:p=>{if(p.status==='progress')m.textContent='🎙 모델 받는 중 '+Math.round(p.progress)+'% ('+String(p.file||'').split('/').pop()+')'}})}
+  const MN=$a('asrm').value;await asrInit(MN,m);
   m.textContent='🎙 노래 불러오는 중...';const pcm=await asrPcm(s.blob);tr=asrTrack(m,pcm.length/16000,MN,'노래 듣고 가사 만드는 중');
   const rtx=ref.join(''),rko=(rtx.match(/[\uac00-\ud7a3]/g)||[]).length,rla=(rtx.match(/[a-z]/gi)||[]).length;const lg=$a('asrl').value||(rko+rla?(rko>rla*.3?'korean':'english'):undefined);const out=await ASR(pcm,{return_timestamps:'word',chunk_length_s:30,stride_length_s:5,language:lg,task:'transcribe',chunk_callback:tr.cb});const EL=tr.stop();
   let lrc,note='';
@@ -909,4 +913,4 @@ $a('sai').onclick=async()=>{const t=$a('sat');if(t.hidden||!t.value.trim()){t.hi
 /* 시작 시 DB 읽기: 내장 → 사용자가 불러온 것 */
 (async()=>{for(const t of [(document.getElementById('sydb')||{}).textContent,(()=>{try{return localStorage.sydb}catch{}})()]){try{await dbLoad(t)}catch{}}})();
 })();
-</script><script>if('serviceWorker' in navigator)addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}))</script><script>(()=>{const BUILD='2026-11-21 22:40',f=d=>d.toLocaleString('ko-KR',{month:'numeric',day:'numeric',hour:'2-digit',minute:'2-digit',hour12:false}),e=document.getElementById('ver');if(!e)return;let s='빌드 '+BUILD.slice(5);try{const d=new Date(document.lastModified);if(!isNaN(d)&&Math.abs(Date.now()-d)>20000)s+=' · 사이트 반영 '+f(d)}catch{}e.textContent=s;e.title='이 index.html의 빌드 '+BUILD+' (한국 시간)'})()</script></body></html>
+</script><script>if('serviceWorker' in navigator)addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}))</script><script>(()=>{const BUILD='2026-11-21 23:05',f=d=>d.toLocaleString('ko-KR',{month:'numeric',day:'numeric',hour:'2-digit',minute:'2-digit',hour12:false}),e=document.getElementById('ver');if(!e)return;let s='빌드 '+BUILD.slice(5);try{const d=new Date(document.lastModified);if(!isNaN(d)&&Math.abs(Date.now()-d)>20000)s+=' · 사이트 반영 '+f(d)}catch{}e.textContent=s;e.title='이 index.html의 빌드 '+BUILD+' (한국 시간)'})()</script></body></html>
