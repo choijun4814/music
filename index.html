@@ -82,7 +82,7 @@ function plrc(t){const l=[];let sy=0;t.split(/\r?\n/).forEach(x=>{const m=[...x.
 const cu=s=>s.cover?(s._c||(s._c=URL.createObjectURL(s.cover))):'';
 const cv=s=>'';
 function render(){try{fdUi()}catch{}const l=$('#list');l.innerHTML=S.length?'':'<p class="em">위의 「＋ 음악 추가」로 곡을 고르세요<br><small>같은 이름의 .lrc 가사 파일을 함께 고르면 자동으로 연결돼요</small></p>';
- rord().forEach(k=>{const s=S[k];const d=document.createElement('div');d.className='it'+(k==i?' on':'')+(s.bad?' bad':'')+(dm&&dsel.has(s.id)?' ds':'');d.innerHTML=`${dm?'<span class="dc">'+(dsel.has(s.id)?'✓':'')+'</span>':''}${cv(s)}<div><b>${esc(s.title)}</b><small>${esc(s.artist||'')}${s.lyrics?' · 가사 있음':''}${s.bad?' · 🚩 싱크 확인':''}${dm==2&&dgrp.has(s.id)?' · 중복 '+dgrp.get(s.id)+'번 묶음':''}</small></div>${dm?'':'<span class="x e1">✎</span><span class="x">✕</span>'}`;d.onclick=e=>{if(dm){dsel.has(s.id)?dsel.delete(s.id):dsel.add(s.id);d.classList.toggle('ds');d.querySelector('.dc').textContent=dsel.has(s.id)?'✓':'';dmUi();return}const c=e.target.className;c=='x'?del(k):c=='x e1'?editInfo(k):play(k)};l.append(d)})}
+ rord().forEach(k=>{const s=S[k];const d=document.createElement('div');d.className='it'+(k==i?' on':'')+(s.bad?' bad':'')+(dm&&dsel.has(s.id)?' ds':'');d.innerHTML=`${dm?'<span class="dc">'+(dsel.has(s.id)?'✓':'')+'</span>':''}${cv(s)}<div><b>${esc(s.title)}</b><small>${esc(s.artist||'')}${s.lyrics?' · 가사 있음':''}${s.sy&&s.sy.a?' · <span style="color:#6fe39a">🎚 싱크 완료</span>':''}${s.bad?' · 🚩 싱크 확인':''}${dm==2&&dgrp.has(s.id)?' · 중복 '+dgrp.get(s.id)+'번 묶음':''}</small></div>${dm?'':'<span class="x e1">✎</span><span class="x">✕</span>'}`;d.onclick=e=>{if(dm){dsel.has(s.id)?dsel.delete(s.id):dsel.add(s.id);d.classList.toggle('ds');d.querySelector('.dc').textContent=dsel.has(s.id)?'✓':'';dmUi();return}const c=e.target.className;c=='x'?del(k):c=='x e1'?editInfo(k):play(k)};l.append(d)})}
 async function del(k){if(!confirm(`"${S[k].title}" 삭제할까요?`))return;const s=S[k];await tx('readwrite',o=>o.delete(s.id));S.splice(k,1);if(k==i){A.pause();A.removeAttribute('src');i=-1;lyr();info()}else if(k<i)i--;render()}
 function badUi(){const b=$('#bd');if(b)b.classList.toggle('on',!!(S[i]&&S[i].bad))}
 function info(){try{badUi()}catch{}const s=S[i];$('#tt').textContent=s?s.title:'재생 중인 곡 없음';$('#ta').textContent=s?s.artist:'';$('#pc').innerHTML=cv(s)}
@@ -731,7 +731,7 @@ const sig=s=>{const L=plrc(s.lyrics||'');return L.sync?{n:L.l.length,t0:L.l[0]?L
 const origApply=()=>{const s=S[i];if(!s||!LY||!LY.sync)return;const y=s.sy;if(!y||!y.a||y.n!==LY.l.length||y.h!==lh(s)||!y.pl)return;
  const a=LY.l;a.forEach((x,j)=>{x.o=x[0];x[0]=x.o+(y.d[j]||0)*U});for(let j=1;j<a.length;j++)if(a[j][0]<a[j-1][0])a[j][0]=a[j-1][0]+.01};
 async function save(s){try{await put(s)}catch{}}
-function setSy(s,y,msg){s.sy=y;if(y.a){s.off=y.o;if(S[i]===s){off=y.o;$('#ov').textContent=off.toFixed(1)+'s';lyr();A.ontimeupdate()}}save(s);if(msg)stt(msg)}
+function setSy(s,y,msg){s.sy=y;if(y.a){s.off=y.o;if(S[i]===s){off=y.o;$('#ov').textContent=off.toFixed(1)+'s';lyr();A.ontimeupdate()}}save(s);try{render()}catch{}if(msg)stt(msg)}
 
 /* --- 분석 --- */
 async function decode(blob){const buf=await blob.arrayBuffer();let ctx;
@@ -764,7 +764,7 @@ function sched(){clearTimeout(tm);const s=S[i];if(!s||!auto()||busy)return;const
   const L=await run(s,false);if(L&&S[i]===s)commit(s,L,false)},1500)}
 
 /* lyr 가로채기: 줄별 보정 적용 + 자동 분석 예약 */
-const _lyr=lyr;lyr=function(){_lyr();try{origApply()}catch{}try{sched()}catch{}};
+const _lyr=lyr;lyr=function(){_lyr();try{$('#sx').classList.toggle('on',!!(S[i]&&S[i].sy&&S[i].sy.a))}catch{}try{origApply()}catch{}try{sched()}catch{}};
 
 /* --- 분석 창 --- */
 const $a=id=>document.getElementById(id);let win0=0,raf=0;
@@ -790,10 +790,10 @@ $('#sx').onclick=()=>{$a('sa').hidden=false;ui();dbInfo();clearInterval(raf);raf
 $a('sax').onclick=()=>{$a('sa').hidden=true;clearInterval(raf)};
 $a('sar').onclick=async()=>{const s=S[i];if(!s)return;$a('sar').disabled=true;const L=await run(s,true);$a('sar').disabled=false;if(L){if(L.good)commit(s,L,false);else{stt('신뢰도가 낮아요. 아래 「그래도 적용」으로 직접 판단하세요');}}ui();draw()};
 $a('sag').onclick=()=>{if(last&&last.s===S[i]){commit(S[i],last,true);ui()}};
-$a('sau').onclick=()=>{const s=S[i];if(!s)return;delete s.sy;off=0;s.off=0;$('#ov').textContent='0.0s';save(s);lyr();A.ontimeupdate();stt('원래 가사 시간으로 되돌렸어요');setTimeout(()=>stt(''),3000);ui()};
+$a('sau').onclick=()=>{const s=S[i];if(!s)return;delete s.sy;off=0;s.off=0;$('#ov').textContent='0.0s';save(s);lyr();A.ontimeupdate();try{render()}catch{}stt('원래 가사 시간으로 되돌렸어요');setTimeout(()=>stt(''),3000);ui()};
 $a('sal').onchange=e=>{const s=S[i];if(!s||!s.sy)return;s.sy.pl=e.target.checked?1:0;save(s);lyr();A.ontimeupdate()};
 $a('saa').onchange=e=>{try{localStorage.sxAuto=e.target.checked?'1':'0'}catch{}};
-document.querySelectorAll('#safine [data-k]').forEach(b=>b.onclick=()=>{const s=S[i];if(!s)return;const k=+b.dataset.k/100;const y=s.sy||(s.sy={v:1,a:1,pl:0,o:s.off||0,d:[],n:sig(s)?sig(s).n:0,t0:sig(s)?sig(s).t0:0,dur:A.duration||0,h:lh(s),z:0,src:'man'});y.a=1;y.o=Math.round((y.o+k)*100)/100;s.off=y.o;off=y.o;$('#ov').textContent=off.toFixed(1)+'s';if(y.d.length===0)y.pl=0;save(s);dbAdd(toE(s));A.ontimeupdate();ui()});
+document.querySelectorAll('#safine [data-k]').forEach(b=>b.onclick=()=>{const s=S[i];if(!s)return;const k=+b.dataset.k/100;const y=s.sy||(s.sy={v:1,a:1,pl:0,o:s.off||0,d:[],n:sig(s)?sig(s).n:0,t0:sig(s)?sig(s).t0:0,dur:A.duration||0,h:lh(s),z:0,src:'man'});y.a=1;y.o=Math.round((y.o+k)*100)/100;s.off=y.o;off=y.o;$('#ov').textContent=off.toFixed(1)+'s';if(y.d.length===0)y.pl=0;save(s);dbAdd(toE(s));A.ontimeupdate();try{render()}catch{}ui()});
 $a('sae').onclick=async()=>{const t=await dbInfo();const m=$a('sad');
  try{const r=await fetch(location.href,{cache:'no-store'});if(!r.ok)throw 0;let h=await r.text();const re=/(<script id="sydb" type="text\/plain">)[\s\S]*?(<\/script>)/;if(!re.test(h))throw 0;h=h.replace(re,(_,a,b)=>a+t+b);
   const bl=new Blob([h],{type:'text/html'}),a=document.createElement('a');a.href=URL.createObjectURL(bl);a.download='index.html';document.body.append(a);a.click();a.remove();m.textContent+=' · index.html로 저장했어요 (기존 파일 교체)'}
@@ -805,4 +805,4 @@ $a('sai').onclick=async()=>{const t=$a('sat');if(t.hidden||!t.value.trim()){t.hi
 /* 시작 시 DB 읽기: 내장 → 사용자가 불러온 것 */
 (async()=>{for(const t of [(document.getElementById('sydb')||{}).textContent,(()=>{try{return localStorage.sydb}catch{}})()]){try{await dbLoad(t)}catch{}}})();
 })();
-</script><script>if('serviceWorker' in navigator)addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}))</script><script>(()=>{const BUILD='2026-11-21 19:42',f=d=>d.toLocaleString('ko-KR',{month:'numeric',day:'numeric',hour:'2-digit',minute:'2-digit',hour12:false}),e=document.getElementById('ver');if(!e)return;let s='빌드 '+BUILD.slice(5);try{const d=new Date(document.lastModified);if(!isNaN(d)&&Math.abs(Date.now()-d)>20000)s+=' · 사이트 반영 '+f(d)}catch{}e.textContent=s;e.title='이 index.html의 빌드 '+BUILD+' (한국 시간)'})()</script></body></html>
+</script><script>if('serviceWorker' in navigator)addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}))</script><script>(()=>{const BUILD='2026-11-21 19:53',f=d=>d.toLocaleString('ko-KR',{month:'numeric',day:'numeric',hour:'2-digit',minute:'2-digit',hour12:false}),e=document.getElementById('ver');if(!e)return;let s='빌드 '+BUILD.slice(5);try{const d=new Date(document.lastModified);if(!isNaN(d)&&Math.abs(Date.now()-d)>20000)s+=' · 사이트 반영 '+f(d)}catch{}e.textContent=s;e.title='이 index.html의 빌드 '+BUILD+' (한국 시간)'})()</script></body></html>
