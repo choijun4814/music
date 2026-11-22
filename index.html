@@ -960,7 +960,7 @@ const SyncAI = (() => {
       if (x && s0 < 0) s0 = f; else if (!x && s0 >= 0) { runs.push([s0, f]); s0 = -1; }
     }
     // 0.22초 미만 끊김은 숨/자음으로 보고 메움
-    const minGap = Math.round(0.22 / hop), minLen = Math.round(0.18 / hop);
+    const minGap = Math.round(0.12 / hop), minLen = Math.round(0.18 / hop);
     const merged = [];
     for (const r of runs) {
       if (merged.length && r[0] - merged[merged.length - 1][1] < minGap) merged[merged.length - 1][1] = r[1];
@@ -987,25 +987,33 @@ const SyncAI = (() => {
       return { t: ws.map(w => { const t = (a + (b - a) * c / Wt) * hop; c += w; return t; }), runs: [], voiced: (b - a) * hop, strong: 0, rate: 0, cost: 9, fallback: 1 };
     }
     // 누적 목소리 시간 cv(frame)
-    const cvArr = new Float32Array(F.nF + 1);
-    { let c = 0, k = 0; for (let f = 0; f < F.nF; f++) { cvArr[f] = c; while (k < runs.length && runs[k][1] <= f) k++; if (k < runs.length && f >= runs[k][0]) c += hop; } cvArr[F.nF] = c; }
+    const wts0 = texts.map(lyricWeight), W0 = wts0.reduce((a, b) => a + b, 0), wmax = Math.max(...wts0);
+    const buildCv = cap => { // cap(초)보다 긴 구간은 cap까지만 '노래한 시간'으로 침 (간주·솔로 악기가 줄 길이 예측을 망치지 않게)
+      const arr = new Float32Array(F.nF + 1); let c = 0, k = 0, used = 0;
+      for (let f = 0; f < F.nF; f++) { arr[f] = c; while (k < runs.length && runs[k][1] <= f) { k++; used = 0; } if (k < runs.length && f >= runs[k][0]) { if (used * hop < cap) c += hop; used++; } }
+      arr[F.nF] = c; return arr; };
+    let cvArr = buildCv(1e9), capSec = 1e9;
+    for (let it = 0; it < 3; it++) { // 줄 하나가 길어야 하는 시간(가장 긴 줄 기준)의 2배를 넘는 구간은 반주로 보고 제한
+      const r0 = cvArr[F.nF] / W0; capSec = Math.max(8, 2.2 * wmax * r0); cvArr = buildCv(capSec); }
     const total = cvArr[F.nF];
     if (total < M * 0.4) return null;
     // 후보점
     const C = []; // {f, strong, gs}
     runs.forEach((r, k) => {
       const gap = k ? (r[0] - runs[k - 1][1]) * hop : 1.2;
-      C.push({ f: r[0], strong: 1, gs: Math.min(1, gap / 1.0) });
+      C.push({ f: r[0], strong: 1, gs: Math.min(1, gap / 1.0), rl: (r[1] - r[0]) * hop });
       for (let f = r[0] + Math.round(0.5 / hop); f < r[1] - Math.round(0.5 / hop); f += Math.round(0.4 / hop)) C.push({ f, strong: 0, gs: 0 });
     });
     C.sort((a, b) => a.f - b.f);
     const K = C.length, cv = C.map(c => cvArr[c.f]);
     const wts = texts.map(lyricWeight), W = wts.reduce((a, b) => a + b, 0);
-    const emit = C.map(c => c.strong ? 0.8 * (1 - c.gs) : 1.0);
+    const lineMax = 1.5 * wmax * (total / W0) + 2.5; // 가장 긴 줄이 이만큼보다 오래 걸릴 리 없음 → 이보다 긴 구간은 간주·솔로일 가능성
+    const emit = C.map(c => c.strong ? 0.4 * (1 - c.gs) + (c.rl > lineMax ? 2.2 : 0) : 1.6);
+    const firstStrong = C.findIndex(c => c.strong); // 보컬 시작 위치를 알려 준 경우, 첫 줄은 그 첫 구간의 시작이어야 함
     let rate = total / W, best = null;
     for (let it = 0; it < 3; it++) {
       const cost = new Float32Array(M * K).fill(1e9), back = new Int32Array(M * K).fill(-1);
-      for (let k = 0; k < K; k++) cost[k] = emit[k] + 0.4 * cv[k] / Math.max(1, total) * 4; // 첫 줄은 앞쪽에서 시작
+      for (let k = 0; k < K; k++) cost[k] = emit[k] + 0.4 * cv[k] / Math.max(1, total) * 4 + (opt.from > 0 && firstStrong >= 0 && k !== firstStrong ? 2.0 : 0); // 첫 줄은 앞쪽(알려 준 보컬 시작)에서
       for (let j = 1; j < M; j++) {
         const e = Math.max(0.6, wts[j - 1] * rate);
         for (let k = 0; k < K; k++) {
@@ -1014,7 +1022,7 @@ const SyncAI = (() => {
             const cp = cost[(j - 1) * K + p]; if (cp >= 1e8) continue;
             if ((C[k].f - C[p].f) * hop < 0.3) continue;
             const dv = Math.max(0.2, cv[k] - cv[p]);
-            const c = cp + 1.5 * Math.abs(Math.log(dv / e));
+            const lr = Math.abs(Math.log(dv / e)), c = cp + 0.9 * (lr < 0.9 ? lr : 0.9 + 0.4 * (lr - 0.9));
             if (c < bc) { bc = c; bp = p; }
           }
           if (bp >= 0) { cost[j * K + k] = bc + emit[k]; back[j * K + k] = bp; }
@@ -1296,7 +1304,7 @@ async function go(fromHere){
  }catch(e){say('분석 실패: '+(e&&e.message||e),1)}
  finally{busy=0;g('sya0').disabled=g('sya1').disabled=false}}
 g('sya0').onclick=()=>go(false);g('sya1').onclick=()=>go(true);
-})()</script><script>if('serviceWorker' in navigator)addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}))</script><script>(()=>{const BUILD='2026-11-22 20:51 목소리 싱크 자동',f=d=>d.toLocaleString('ko-KR',{month:'numeric',day:'numeric',hour:'2-digit',minute:'2-digit',hour12:false}),e=document.getElementById('ver');if(!e)return;let s='빌드 '+BUILD.slice(5);try{const d=new Date(document.lastModified);if(!isNaN(d)&&Math.abs(Date.now()-d)>20000)s+=' · 사이트 반영 '+f(d)}catch{}e.textContent=s;e.title='이 index.html의 빌드 '+BUILD+' (한국 시간)'})()</script><script>(()=>{
+})()</script><script>if('serviceWorker' in navigator)addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}))</script><script>(()=>{const BUILD='2026-11-22 21:16 자동 초안 정확도 개선',f=d=>d.toLocaleString('ko-KR',{month:'numeric',day:'numeric',hour:'2-digit',minute:'2-digit',hour12:false}),e=document.getElementById('ver');if(!e)return;let s='빌드 '+BUILD.slice(5);try{const d=new Date(document.lastModified);if(!isNaN(d)&&Math.abs(Date.now()-d)>20000)s+=' · 사이트 반영 '+f(d)}catch{}e.textContent=s;e.title='이 index.html의 빌드 '+BUILD+' (한국 시간)'})()</script><script>(()=>{
 const Q=s=>document.querySelector(s),ls=(k,v)=>{try{if(v===undefined)return localStorage[k];localStorage[k]=v}catch{}};
 const H=c=>[1,3,5].map(k=>parseInt(c.slice(k,k+2),16)),X=r=>'#'+r.map(v=>Math.round(Math.max(0,Math.min(255,v))).toString(16).padStart(2,'0')).join(''),mx=(a,b,t)=>{const p=H(a),q=H(b);return X(p.map((v,k)=>v+(q[k]-v)*t))},ra=(c,a)=>'rgba('+H(c).join(',')+','+a+')';
 const hs=(h,s,l)=>{h=((h%360)+360)%360;const a=s*Math.min(l,1-l),f=n=>{const k=(n+h/30)%12;return l-a*Math.max(-1,Math.min(k-3,9-k,1))};return X([f(0)*255,f(8)*255,f(4)*255])};
