@@ -58,7 +58,23 @@ html[data-lc="1"] #ly.sy p.pa,html[data-lc="1"] #ly.sy p.nx{opacity:.7}
 html[data-wd="1"] #ly.sy p.on{background:none!important}
 html[data-wd="1"] #ly.sy p.on .w{background:linear-gradient(90deg,var(--lg1,var(--g1)),var(--lg2,var(--g2))) 0 0/var(--wp,0%) 100% no-repeat,color-mix(in srgb,var(--tx) 58%,transparent);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent}
 .lcr{display:flex;gap:8px;align-items:center;flex-wrap:wrap;font-size:13.5px}.lcr label{display:flex;gap:5px;align-items:center}.lcr input{width:34px;height:30px;padding:0;border:0;background:none}.lcr button{padding:6px 10px;font-size:13px}
-/* 채움 중 네모 번쩍임 제거: drop-shadow 필터가 글자 뒤에 네모 후광을 만들었음 */#ly.sy p.on,#ly.sy p.on .w{filter:none!important;-webkit-tap-highlight-color:transparent}html[data-kr="1"] #ly.sy p.on,html[data-wd="1"] #ly.sy p.on{transform:none!important;transition:opacity .25s!important;will-change:auto}#ly p{-webkit-user-select:none;user-select:none;outline:0}#ly.sy p,#ly.sy p.on{transition:opacity .25s!important}</style></head><body>
+/* 채움 중 네모 번쩍임 제거: drop-shadow 필터가 글자 뒤에 네모 후광을 만들었음 */#ly.sy p.on,#ly.sy p.on .w{filter:none!important;-webkit-tap-highlight-color:transparent}html[data-kr="1"] #ly.sy p.on,html[data-wd="1"] #ly.sy p.on{transform:none!important;transition:opacity .25s!important;will-change:auto}#ly p{-webkit-user-select:none;user-select:none;outline:0}#ly.sy p,#ly.sy p.on{transition:opacity .25s!important}
+/* ── 스킨 v2: 유리 패널·알약 강조·배경 장식 ── */
+header{margin:8px 8px 0;border-radius:18px;background:color-mix(in srgb,var(--tx) 6%,transparent);border:1px solid color-mix(in srgb,var(--tx) 12%,transparent);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px)}
+footer{margin:0 8px 8px;border-radius:24px;border:1px solid color-mix(in srgb,var(--ac) 38%,transparent)!important;box-shadow:0 -6px 30px color-mix(in srgb,var(--ac) 18%,transparent)}
+#tt,#ta{font-family:var(--ff,inherit)}
+html[data-pl="1"] #ly.sy p.on{width:fit-content;max-width:100%;margin-left:auto;margin-right:auto;padding:.14em .6em;border-radius:.62em;background:linear-gradient(90deg,var(--g1),var(--g2))!important;-webkit-background-clip:border-box!important;background-clip:border-box!important;color:var(--onp,#fff)!important;-webkit-text-fill-color:var(--onp,#fff)!important;text-shadow:none!important;box-shadow:0 8px 28px var(--glow),inset 0 1px 0 rgba(255,255,255,.38)}
+html[data-pl="1"][data-kr="1"] #ly.sy p.on{background:linear-gradient(90deg,var(--onp,#fff),var(--onp,#fff)) 0 0/var(--kp,0%) 100% no-repeat,linear-gradient(color-mix(in srgb,var(--onp,#fff) 62%,transparent),color-mix(in srgb,var(--onp,#fff) 62%,transparent)),linear-gradient(90deg,var(--g1),var(--g2))!important;-webkit-background-clip:text,text,border-box!important;background-clip:text,text,border-box!important;color:transparent!important;-webkit-text-fill-color:transparent!important}
+html[data-pl="1"][data-wd="1"] #ly.sy p.on{background:linear-gradient(90deg,var(--g1),var(--g2))!important;-webkit-background-clip:border-box!important;background-clip:border-box!important;color:var(--onp,#fff)!important;-webkit-text-fill-color:var(--onp,#fff)!important}
+html[data-pl="1"][data-wd="1"] #ly.sy p.on .w{background:linear-gradient(90deg,var(--onp,#fff),var(--onp,#fff)) 0 0/var(--wp,0%) 100% no-repeat,color-mix(in srgb,var(--onp,#fff) 62%,transparent);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent}
+html[data-fx]::before{content:'';position:fixed;inset:0;z-index:-1;pointer-events:none}
+html[data-fx="grid"]::before{background:repeating-linear-gradient(0deg,color-mix(in srgb,var(--g1) 9%,transparent) 0 1px,transparent 1px 4px);-webkit-mask-image:linear-gradient(180deg,#000,transparent 55%,#000);mask-image:linear-gradient(180deg,#000,transparent 55%,#000)}
+html[data-fx="stars"]::before{opacity:.6;background:radial-gradient(1.6px 1.6px at 12% 18%,#fff,transparent 60%),radial-gradient(1.2px 1.2px at 28% 64%,rgba(255,255,255,.8),transparent 60%),radial-gradient(1.8px 1.8px at 44% 30%,#fff,transparent 60%),radial-gradient(1.2px 1.2px at 58% 78%,rgba(255,255,255,.7),transparent 60%),radial-gradient(1.6px 1.6px at 72% 14%,#fff,transparent 60%),radial-gradient(1.2px 1.2px at 86% 52%,rgba(255,255,255,.8),transparent 60%),radial-gradient(1.4px 1.4px at 92% 86%,#fff,transparent 60%),radial-gradient(1.2px 1.2px at 6% 82%,rgba(255,255,255,.7),transparent 60%),radial-gradient(1.4px 1.4px at 36% 8%,rgba(255,255,255,.9),transparent 60%),radial-gradient(1.2px 1.2px at 66% 46%,rgba(255,255,255,.6),transparent 60%)}
+html[data-an="1"][data-fx="stars"]::before{animation:twk 5s ease-in-out infinite alternate}
+@keyframes twk{from{opacity:.3}to{opacity:.85}}
+html[data-fx="petal"]::before{opacity:.7;background:radial-gradient(14px 9px at 10% 20%,rgba(255,140,185,.55),transparent 72%),radial-gradient(11px 7px at 82% 12%,rgba(255,160,200,.5),transparent 72%),radial-gradient(16px 10px at 90% 58%,rgba(255,130,180,.45),transparent 72%),radial-gradient(12px 8px at 22% 70%,rgba(255,170,205,.5),transparent 72%),radial-gradient(10px 7px at 60% 38%,rgba(255,150,190,.4),transparent 72%),radial-gradient(14px 9px at 44% 90%,rgba(255,140,185,.45),transparent 72%)}
+html[data-fx="bokeh"]::before{background:radial-gradient(70px 70px at 15% 25%,color-mix(in srgb,var(--g1) 22%,transparent),transparent 70%),radial-gradient(100px 100px at 88% 42%,color-mix(in srgb,var(--g2) 18%,transparent),transparent 70%),radial-gradient(80px 80px at 38% 86%,color-mix(in srgb,var(--ac) 16%,transparent),transparent 70%)}
+</style></head><body>
 <header><h1>🎵</h1><nav><button id="t1">목록</button><button id="t2" class="on">가사</button></nav><button id="bkb" title="백업">💾</button><button id="fu" title="도구줄 숨기기/보이기">⛶</button><button class="add" id="addb">＋ 추가</button></header>
 <div id="pfc" style="padding:4px 14px 6px;font-size:16px;color:var(--mu,#b9b9c6)"></div><div id="st" style="padding:0 14px;font-size:13px;color:var(--ac2,#ffb3a8);min-height:0"></div>
 <input id="fi" type="file" multiple hidden accept="audio/*,.mp3,.m4a,.flac,.wav,.ogg,.aac,.lrc,.txt"><input id="fi2" type="file" webkitdirectory multiple hidden>
@@ -76,7 +92,7 @@ html[data-wd="1"] #ly.sy p.on .w{background:linear-gradient(90deg,var(--lg1,var(
 <div id="cf" hidden><div class="mh"><b style="flex:1;align-self:center">⚙ 가사 중계 서버</b><button id="cfx">닫기</button></div><small>Cloudflare Worker 주소를 넣으면 알송·지니·멜론 등이 안정적으로 연결돼요</small><input id="cfu" placeholder="https://이름.계정.workers.dev" style="background:var(--pn,#1b1b22);color:var(--tx,#f2f2f6);border:1px solid var(--bd,#2b2b36);border-radius:12px;padding:11px;font-size:14px"><div class="mh"><button id="cfs">저장</button><button id="cft">연결 점검</button></div><div class="mh"><b style="flex:1;align-self:center;font-size:13px">📊 출처별 기록 (누적)</b><button id="sstc">복사</button><button id="sstr">지우기</button></div><div id="sstd" style="white-space:pre-wrap;font-size:12px;line-height:1.5;max-height:42vh;overflow:auto;user-select:text;-webkit-user-select:text;background:var(--pn,#1b1b22);border-radius:12px;padding:10px"></div><div id="cfr" style="flex:1;overflow:auto"></div></div>
 <div id="fd" hidden><div class="mh"><input id="fq" placeholder="제목 가수"><button id="fs">검색</button><button id="fcfg" title="중계 서버 설정">⚙</button><button id="fc">닫기</button></div><div id="fr"></div></div>
 <div id="sy" hidden><div class="mh"><b style="flex:1;align-self:center">⏱ 직접 싱크 맞추기</b><button id="syx">닫기</button></div><small>노래를 들으면서 <b>가사가 시작되는 순간마다 큰 버튼</b>을 탭하세요. 줄을 누르면 그 줄부터 다시 맞출 수 있어요.</small><div id="syl"></div><div class="syc"><button id="syp">▶ 재생</button><button id="syb">⏪ 5초</button><button id="syu">↶ 되돌리기</button><button id="syr">속도 1×</button></div><button id="syt" class="add">👆 탭</button><button id="syv" style="padding:12px;border-color:var(--ok,#6fe39a);color:var(--ok,#6fe39a)">💾 완료·저장</button></div>
-<div id="sa" hidden><div class="mh"><b style="flex:1;align-self:center">🎚 싱크 분석</b><button id="sax">닫기</button></div><small id="sam"></small><select id="asrm" style="padding:10px;border-radius:10px;background:var(--pn,#1b1b22);color:var(--tx,#f2f2f6);border:1px solid var(--bd,#2b2b36);font-size:14px"><option value="Xenova/whisper-tiny">tiny · 약 40MB · 빠름/인식률 낮음</option><option value="Xenova/whisper-base">base · 약 80MB · 추천</option><option value="Xenova/whisper-small">small · 약 250MB · 정확/느림</option><option value="onnx-community/whisper-large-v3-turbo_timestamped">large-v3-turbo · 최고 정확 · WebGPU 필요 · 용량 큼</option></select><small id="asre" style="color:var(--ac2,#ffb3a8);display:block;margin:2px 0"></small><div class="mh"><small id="asrs" style="flex:1;align-self:center"></small><button id="asrx" style="flex:none;padding:6px 10px;font-size:12px">🗑 모델 지우기</button></div><div class="mh"><button id="asrc" style="flex:1;padding:11px 6px">🎙 음성인식으로 가사+싱크 만들기<small style="display:block;font-weight:400;font-size:12px;margin-top:2px">일반 가사가 있으면 그 글자를 쓰고, 없으면 받아쓰기</small></button><select id="asrl" style="flex:none;width:96px;padding:10px 4px;border-radius:10px;background:var(--pn,#1b1b22);color:var(--tx,#f2f2f6);border:1px solid var(--bd,#2b2b36);font-size:14px"><option value="">언어 자동</option><option value="korean">한국어</option><option value="english">영어</option></select></div><label><input type="checkbox" id="asrf" checked> 목소리 대역 필터 (120~5000Hz, 곡마다 효과 달라요)</label><button id="asrb" style="padding:11px 6px">🎙 음성인식으로 맞추기<small style="display:block;font-weight:400;font-size:12px;margin-top:2px">시간 태그가 있는 가사의 시간만 보정 (처음 한 번 모델 받음)</small></button><button id="asrall" style="padding:11px 6px">📚 일반 가사 곡 전부 일괄 음성인식 싱크<small style="display:block;font-weight:400;font-size:12px;margin-top:2px">충전하면서 이 화면을 켜 두세요 · 다시 누르면 멈춰요</small></button><canvas id="sac"></canvas><div class="mh"><button id="sar" class="add" style="flex:2;border:0">🔬 분석 실행</button><button id="sau" style="flex:1">↩ 원래대로</button></div><button id="sag" style="display:none;border-color:var(--ac2,#ffb3a8);color:var(--ac2,#ffb3a8)">⚠️ 신뢰도 낮음 — 그래도 적용</button><div class="mh" id="safine"><button data-k="-10" style="flex:1">−0.1</button><button data-k="-1" style="flex:1">−0.01</button><span id="sao">0.00s</span><button data-k="1" style="flex:1">+0.01</button><button data-k="10" style="flex:1">+0.1</button></div><label><input type="checkbox" id="sal"> 줄별 보정 사용 (줄마다 시간을 따로 맞춤)</label><label><input type="checkbox" id="saa"> 곡을 재생하면 자동으로 분석</label><b style="margin-top:4px">📦 싱크 DB (HTML 안에 압축 내장)</b><small id="sad"></small><div class="mh"><button id="sae" style="flex:2">💾 HTML에 내장해 저장</button><button id="sac2" style="flex:1">복사</button><button id="sai" style="flex:1">불러오기</button></div><textarea id="sat" hidden></textarea></div>
+<div id="sa" hidden><div class="mh"><b style="flex:1;align-self:center">🎚 싱크 분석</b><button id="sax">닫기</button></div><small id="sam"></small><small style="color:var(--mu,#9a9aa8);display:block;margin:2px 0">목소리 대역(250~3800Hz) 하모닉을 분석해 가사 시간을 맞춰요. 곡을 재생하지 않고 파일만 읽어서 몇 초면 끝나요.</small><canvas id="sac"></canvas><div class="mh"><button id="sar" class="add" style="flex:2;border:0">🔬 분석 실행</button><button id="sau" style="flex:1">↩ 원래대로</button></div><button id="sag" style="display:none;border-color:var(--ac2,#ffb3a8);color:var(--ac2,#ffb3a8)">⚠️ 신뢰도 낮음 — 그래도 적용</button><div class="mh" id="safine"><button data-k="-10" style="flex:1">−0.1</button><button data-k="-1" style="flex:1">−0.01</button><span id="sao">0.00s</span><button data-k="1" style="flex:1">+0.01</button><button data-k="10" style="flex:1">+0.1</button></div><label><input type="checkbox" id="sal"> 줄별 보정 사용 (줄마다 시간을 따로 맞춤)</label><label><input type="checkbox" id="saa"> 곡을 재생하면 자동으로 분석</label><b style="margin-top:4px">📦 싱크 DB (HTML 안에 압축 내장)</b><small id="sad"></small><div class="mh"><button id="sae" style="flex:2">💾 HTML에 내장해 저장</button><button id="sac2" style="flex:1">복사</button><button id="sai" style="flex:1">불러오기</button></div><textarea id="sat" hidden></textarea></div>
 <div id="ei" hidden><div class="mh"><b style="flex:1;align-self:center">✏️ 곡 정보 수정</b><button id="eix">닫기</button></div><small>제목과 가수 이름이 정확하면 가사를 더 잘 찾아요 (예: To Heaven / 조성모)</small><input id="eit" placeholder="제목"><input id="eia" placeholder="가수"><input id="eif" placeholder="폴더 (예: 발라드 / 비워두면 폴더 없음)"><button id="eis" class="add" style="border:0">저장</button><button id="eir" style="padding:12px">저장하고 가사 다시 찾기</button></div>
 <div id="ed" hidden><b>가사 편집 (.lrc 시간 태그 [00:12.30] 지원)</b><textarea id="et" placeholder="가사를 붙여넣으세요"></textarea><div style="display:flex;gap:8px"><label class="add" style="flex:1;text-align:center;background:var(--bt,#22222c)">가사 파일 불러오기<input id="lf" type="file" hidden accept=".lrc,.txt"></label><button id="ec">취소</button><button id="es" class="add" style="border:0">저장</button></div></div>
 <script>
@@ -588,72 +604,102 @@ dmUi();
 })();
 </script><script id="sydb" type="text/plain"></script><script>/* SyncAI core: 순수 계산부 (브라우저/노드 공용) */
 const SyncAI = (() => {
-  const HOP = 160, WIN = 512; // sr=16000 기준 10ms 간격, 32ms 창
+  const HOP = 160, WIN = 1024; // sr=16000 기준 10ms 간격, 64ms 창 (주파수 해상도 15.6Hz)
   const HANN = new Float32Array(WIN);
   for (let i = 0; i < WIN; i++) HANN[i] = 0.5 - 0.5 * Math.cos(2 * Math.PI * i / WIN);
+  const TW_C = new Float32Array(WIN / 2), TW_S = new Float32Array(WIN / 2);
+  for (let i = 0; i < WIN / 2; i++) { TW_C[i] = Math.cos(-2 * Math.PI * i / WIN); TW_S[i] = Math.sin(-2 * Math.PI * i / WIN); }
+  const REV = new Uint16Array(WIN);
+  for (let i = 0, j = 0; i < WIN; i++) { REV[i] = j; let bit = WIN >> 1; for (; j & bit; bit >>= 1) j ^= bit; j ^= bit; }
 
-  // 간단한 radix-2 FFT (in-place)
+  // radix-2 FFT (in-place, 미리 계산한 회전값 사용)
   function fft(re, im) {
-    const n = re.length;
-    for (let i = 1, j = 0; i < n; i++) {
-      let bit = n >> 1;
-      for (; j & bit; bit >>= 1) j ^= bit;
-      j ^= bit;
-      if (i < j) { let t = re[i]; re[i] = re[j]; re[j] = t; t = im[i]; im[i] = im[j]; im[j] = t; }
-    }
+    const n = WIN;
+    for (let i = 0; i < n; i++) { const j = REV[i]; if (i < j) { let t = re[i]; re[i] = re[j]; re[j] = t; t = im[i]; im[i] = im[j]; im[j] = t; } }
     for (let len = 2; len <= n; len <<= 1) {
-      const ang = -2 * Math.PI / len, wr = Math.cos(ang), wi = Math.sin(ang);
+      const half = len >> 1, st = n / len;
       for (let i = 0; i < n; i += len) {
-        let cr = 1, ci = 0;
-        for (let k = 0; k < len / 2; k++) {
-          const a = i + k, b = a + len / 2;
+        for (let k = 0, w = 0; k < half; k++, w += st) {
+          const a = i + k, b = a + half, cr = TW_C[w], ci = TW_S[w];
           const xr = re[b] * cr - im[b] * ci, xi = re[b] * ci + im[b] * cr;
           re[b] = re[a] - xr; im[b] = im[a] - xi; re[a] += xr; im[a] += xi;
-          const t = cr * wr - ci * wi; ci = cr * wi + ci * wr; cr = t;
         }
       }
     }
   }
 
-  /* 1) 보컬 특징 곡선: 가운데 성분의 300~3400Hz 로그 스펙트럼 플럭스 + 보컬 존재 곡선 */
+  /* 1) 특징 곡선
+     - 가운데(보컬) 성분만 추출: |중앙| - 0.9|양옆|  (FFT 한 번으로 중앙/양옆 동시 계산)
+     - 250~3800Hz에서 사람 목소리 쪽 가중치를 주고, 비브라토에 안 흔들리는 스펙트럼 플럭스(SuperFlux)
+     - 하모닉 점수: 90~450Hz 기본음의 배음(1~8배)이 줄지어 서 있으면 '목소리', 드럼·잡음은 낮음
+  */
   async function features(L, R, sr, onProg) {
     const nF = Math.max(0, Math.floor((L.length - WIN) / HOP));
-    const k0 = Math.round(300 * WIN / sr), k1 = Math.round(3400 * WIN / sr);
-    const h0 = Math.round(5000 * WIN / sr), h1 = Math.min(WIN / 2 - 1, Math.round(7500 * WIN / sr));
-    const flux = new Float32Array(nF), pres = new Float32Array(nF), hi = new Float32Array(nF);
-    let prev = new Float32Array(k1 - k0 + 1), prevHi = 0;
-    const mr = new Float32Array(WIN), mi = new Float32Array(WIN), sr_ = new Float32Array(WIN), si = new Float32Array(WIN);
+    const bw = sr / WIN;
+    const k0 = Math.max(2, Math.round(250 / bw)), k1 = Math.min(WIN / 2 - 2, Math.round(3800 / bw));
+    const h0 = Math.round(5500 / bw), h1 = Math.min(WIN / 2 - 1, Math.round(8000 / bw));
+    const NB = k1 - k0 + 1;
+    const wt = new Float32Array(NB); // 목소리 대역 가중치 (사람 말소리 중심 ~1.2kHz 부근을 가장 크게)
+    for (let k = 0; k < NB; k++) { const f = (k + k0) * bw; wt[k] = 0.35 + 0.65 * Math.exp(-0.5 * ((Math.log(f / 1200)) / 0.75) ** 2); }
+    // 기본음 후보 (90~450Hz, 4Hz 간격)
+    const f0s = []; for (let f = 90; f <= 450; f += 4) f0s.push(f);
+    const flux = new Float32Array(nF), pres = new Float32Array(nF), hi = new Float32Array(nF), harm = new Float32Array(nF);
+    let prev = new Float32Array(NB), cur = new Float32Array(NB);
+    const xr = new Float32Array(WIN), xi = new Float32Array(WIN);
+    const mag = new Float32Array(k1 + 3);
     const stereo = R && R !== L;
     for (let f = 0; f < nF; f++) {
       const o = f * HOP;
       for (let i = 0; i < WIN; i++) {
         const l = L[o + i], r = stereo ? R[o + i] : l;
-        mr[i] = (l + r) * 0.5 * HANN[i]; mi[i] = 0;
-        sr_[i] = (l - r) * 0.5 * HANN[i]; si[i] = 0;
+        xr[i] = (l + r) * 0.5 * HANN[i];      // 중앙 = 실수부
+        xi[i] = stereo ? (l - r) * 0.5 * HANN[i] : 0; // 양옆 = 허수부
       }
-      fft(mr, mi);
-      if (stereo) fft(sr_, si);
+      fft(xr, xi);
       let fl = 0, en = 0, hh = 0;
-      for (let k = k0; k <= k1; k++) {
-        const m = Math.hypot(mr[k], mi[k]);
-        const s = stereo ? Math.hypot(sr_[k], si[k]) : 0;
-        const c = Math.max(0, m - 0.9 * s);           // 가운데(보컬) 성분
-        const lg = Math.log1p(c * 30);
-        const d = lg - prev[k - k0];
-        if (d > 0) fl += d;
-        prev[k - k0] = lg; en += c * c;
+      for (let k = k0 - 1; k <= k1 + 2; k++) { // 중앙/양옆 분리 후 가운데 성분
+        const nk = WIN - k;
+        const mr = (xr[k] + xr[nk]) * 0.5, mi = (xi[k] - xi[nk]) * 0.5;
+        const sr_ = (xi[k] + xi[nk]) * 0.5, si = (xr[nk] - xr[k]) * 0.5;
+        const m = Math.hypot(mr, mi), s = stereo ? Math.hypot(sr_, si) : 0;
+        mag[k] = Math.max(0, m - 0.9 * s);
       }
-      for (let k = h0; k <= h1; k++) hh += Math.hypot(mr[k], mi[k]);
+      for (let k = k0; k <= k1; k++) {
+        const c = mag[k], b = k - k0;
+        const lg = Math.log1p(c * 30);
+        cur[b] = lg;
+        // SuperFlux: 이전 프레임의 앞뒤 주파수 중 최댓값과 비교 → 음높이가 살짝 흔들려도 가짜 시작점이 안 생김
+        const pm = Math.max(b > 0 ? prev[b - 1] : 0, prev[b], b < NB - 1 ? prev[b + 1] : 0);
+        const d = lg - pm;
+        if (d > 0) fl += d * wt[b];
+        en += c * c * wt[b];
+      }
+      // 하모닉 점수
+      let best = 0, avg = 0;
+      for (let q = 0; q < f0s.length; q++) {
+        let s = 0;
+        for (let h = 1; h <= 8; h++) {
+          const kk = Math.round(h * f0s[q] / bw);
+          if (kk < k0 || kk > k1) continue;
+          const c = Math.max(cur[kk - k0], kk > k0 ? cur[kk - k0 - 1] : 0, kk < k1 ? cur[kk - k0 + 1] : 0);
+          s += c;
+        }
+        avg += s; if (s > best) best = s;
+      }
+      avg /= f0s.length;
+      harm[f] = Math.max(0, best - avg * 1.15);
+      for (let k = h0; k <= h1; k++) hh += Math.hypot(xr[k], xi[k]);
       flux[f] = fl; pres[f] = Math.log1p(Math.sqrt(en) * 30); hi[f] = hh;
+      const t = prev; prev = cur; cur = t;
       if (onProg && f % 400 === 0) { await onProg(f / nF); }
     }
     // 드럼/하이햇처럼 고음이 갑자기 튀는 프레임은 온셋 점수 감점
     for (let f = 1; f < nF; f++) {
       const dh = hi[f] - hi[f - 1];
       const ref = (hi[f - 1] + hi[Math.max(0, f - 2)]) * 0.5 + 1e-6;
-      if (dh / ref > 1.2) flux[f] *= 0.5;
+      if (dh / ref > 1.0) flux[f] *= 0.4;
     }
-    return { flux, pres, nF, hop: HOP / sr };
+    return { flux, pres, harm, nF, hop: HOP / sr };
   }
 
   const smooth = (a, w) => { // 이동평균(양쪽 w칸)
@@ -668,26 +714,34 @@ const SyncAI = (() => {
     for (let i = 0; i < n; i++) o[i] = Math.max(0, (a[i] - m[i]) / sd);
     return o;
   };
-
-  /* 2) 시작점 점수 곡선: (보컬 켜짐 경계) + (스펙트럼 플럭스) */
-  function onsetCurve(F) {
-    const { flux, pres, nF } = F;
-    const pm = smooth(pres, 2);
-    const edge = new Float32Array(nF), W = 30, G = 6; // 앞뒤 0.3초 비교, 0.06초 간격
-    for (let i = 0; i < nF; i++) {
+  const edgeOf = (x, W, G) => { // 앞 W칸 평균 vs 뒤 W칸 평균 (소리가 '켜지는' 경계)
+    const n = x.length, e = new Float32Array(n);
+    for (let i = 0; i < n; i++) {
       let a = 0, b = 0, na = 0, nb = 0;
       for (let k = G; k < G + W; k++) {
-        if (i - k >= 0) { a += pm[i - k]; na++; }
-        if (i + k < nF) { b += pm[i + k]; nb++; }
+        if (i - k >= 0) { a += x[i - k]; na++; }
+        if (i + k < n) { b += x[i + k]; nb++; }
       }
-      edge[i] = na && nb ? Math.max(0, b / nb - a / na) : 0;
+      e[i] = na && nb ? Math.max(0, b / nb - a / na) : 0;
     }
-    const fz = normZ(smooth(flux, 1)), ez = normZ(edge);
+    return e;
+  };
+
+  /* 2) 시작점 점수 곡선: (보컬 켜짐 경계) + (하모닉 켜짐 경계) + (스펙트럼 플럭스) */
+  function onsetCurve(F) {
+    const { flux, pres, harm, nF } = F;
+    const ez = normZ(edgeOf(smooth(pres, 2), 30, 6));
+    const hz = normZ(edgeOf(smooth(harm, 2), 25, 5));
+    const fz = normZ(smooth(flux, 1));
     const on = new Float32Array(nF);
-    for (let i = 0; i < nF; i++) on[i] = 0.55 * ez[i] + 0.45 * fz[i];
-    // 보컬이 전혀 없는 구간(조용한 구간)의 가짜 점수 억제
-    const lvl = smooth(pres, 25); let mx = 0; for (let i = 0; i < nF; i++) if (lvl[i] > mx) mx = lvl[i];
-    for (let i = 0; i < nF; i++) if (lvl[i] < mx * 0.18) on[i] *= 0.2;
+    for (let i = 0; i < nF; i++) on[i] = 0.35 * ez[i] + 0.35 * hz[i] + 0.30 * fz[i];
+    // 목소리가 전혀 없는 구간(조용하거나 하모닉이 없는 구간)의 가짜 점수 억제
+    const lvl = smooth(pres, 25), hl = smooth(harm, 25);
+    let mx = 0, mh = 0; for (let i = 0; i < nF; i++) { if (lvl[i] > mx) mx = lvl[i]; if (hl[i] > mh) mh = hl[i]; }
+    for (let i = 0; i < nF; i++) {
+      if (lvl[i] < mx * 0.18) on[i] *= 0.2;
+      else if (mh > 0 && hl[i] < mh * 0.08) on[i] *= 0.6;
+    }
     return on;
   }
 
@@ -699,7 +753,7 @@ const SyncAI = (() => {
     return o;
   };
 
-  /* 3) 정렬: 전역 이동량 → 줄별 비터비 → 미세 보정 */
+  /* 3) 정렬: 전역 이동량(+느린 속도 차이) → 줄별 비터비 → 미세 보정 */
   function align(onset, hop, T) {
     const n = onset.length, N = T.length;
     const at = (c, t) => { const x = t / hop; if (x < 0 || x >= c.length - 1) return 0; const i = x | 0, f = x - i; return c[i] * (1 - f) + c[i + 1] * f; };
@@ -710,11 +764,16 @@ const SyncAI = (() => {
     const sh = gauss(onset, 4);            // σ=0.04s (정밀)
     const dur = n * hop;
     const lo = -Math.min(45, T[0] + 5), hi = Math.min(60, dur - T[N - 1] + 5);
-    let best = -1e9, bd = 0; const all = [];
-    for (let d = lo; d <= hi; d += 0.02) {
-      let s = 0; for (let i = 0; i < N; i++) s += w[i] * at(sm, T[i] + d);
-      s = s / wsum - 0.0015 * Math.abs(d);   // 이동량이 작은 쪽을 아주 약하게 선호
-      all.push([d, s]); if (s > best) { best = s; bd = d; }
+    // 속도 차이 r: 가사 시간 T가 T*(1+r)+d 로 바뀜. 다른 버전의 음원이라 서서히 어긋나는 곡 대응 (±1%)
+    const rates = [0]; for (let r = 0.001; r <= 0.0101; r += 0.001) { rates.push(r, -r); }
+    let best = -1e9, bd = 0, br = 0; const all = []; // all: r=0 일 때의 분포(신뢰도 계산용)
+    for (const r of rates) {
+      for (let d = lo; d <= hi; d += 0.02) {
+        let s = 0; for (let i = 0; i < N; i++) s += w[i] * at(sm, T[i] * (1 + r) + d);
+        s = s / wsum - 0.0015 * Math.abs(d) - (r ? 0.004 + 40 * Math.abs(r) * 0.01 : 0); // 속도 차이는 확실할 때만 채택
+        if (r === 0) all.push([d, s]);
+        if (s > best) { best = s; bd = d; br = r; }
+      }
     }
     // 신뢰도: 최고점이 전체 분포·다른 봉우리보다 얼마나 뚜렷한가
     const ss = all.map(x => x[1]); const mean = ss.reduce((a, b) => a + b, 0) / ss.length;
@@ -723,8 +782,9 @@ const SyncAI = (() => {
     const z = (best - mean) / sd, margin = (best - second) / (Math.abs(best) + 1e-9);
     // 줄별 비터비: 전역 이동량 주변 ±3초, 점프에는 상수 비용, 완만한 변화는 저렴
     const S = 151, step = 0.04, mid = 75;
+    const base = T.map(t => t * br + bd);   // 줄마다 기준 이동량(속도 차이 포함)
     const cost = new Float32Array(N * S), back = new Int16Array(N * S);
-    const emit = (i, s) => -w[i] * at(sh, T[i] + bd + (s - mid) * step) + 0.12 * Math.abs(s - mid) * step;
+    const emit = (i, s) => -w[i] * at(sh, T[i] + base[i] + (s - mid) * step) + 0.12 * Math.abs(s - mid) * step;
     for (let s = 0; s < S; s++) cost[s] = emit(0, s);
     for (let i = 1; i < N; i++) {
       for (let s = 0; s < S; s++) {
@@ -742,15 +802,17 @@ const SyncAI = (() => {
     let s = 0, bc = 1e18; for (let k = 0; k < S; k++) if (cost[(N - 1) * S + k] < bc) { bc = cost[(N - 1) * S + k]; s = k; }
     const sel = new Array(N);
     for (let i = N - 1; i >= 0; i--) { sel[i] = s; s = back[i * S + s]; }
-    // 미세 보정(±0.15초): 뚜렷한 봉우리가 있을 때만
+    // 미세 보정(±0.15초): 뚜렷한 봉우리가 있을 때만. 줄 시작은 소리가 켜지는 '직전'이라 약간 앞쪽을 선호
+    let hit = 0;
     const shift = sel.map((si, i) => {
-      let d = bd + (si - mid) * step;
-      const base = at(sh, T[i] + d);
-      let bb = base, bo = 0;
+      let d = base[i] + (si - mid) * step;
+      const b0 = at(sh, T[i] + d);
+      let bb = b0, bo = 0;
       for (let o = -0.15; o <= 0.15; o += 0.01) { const v = at(sh, T[i] + d + o) - 0.5 * Math.abs(o); if (v > bb + 0.15) { bb = v; bo = o; } }
+      if (bb > 0.5) hit++;
       return d + bo;
     });
-    return { d: bd, z, margin, shift, score: best };
+    return { d: bd, rate: br, z, margin, shift, score: best, hit: hit / N };
   }
 
   /* 4) 전체 파이프라인: 결과는 줄별 총 이동량(sh_j = 오디오시간 − 가사시간) */
@@ -808,12 +870,12 @@ async function decode(blob){const buf=await blob.arrayBuffer();let ctx;
  return ab}
 async function run(s,manual){if(busy)return null;const L0=plrc(s.lyrics||'');if(!L0.sync||L0.l.length<3){if(manual)alert('시간(싱크)이 있는 가사가 3줄 이상 있어야 분석할 수 있어요');return null}
  if(!s.blob){return null}
- busy=1;const T=L0.l.map(x=>x[0]);const dur=A.duration&&isFinite(A.duration)?A.duration:0;
+ busy=1;const T=L0.l.map(x=>x[0]);const dur=0;
  try{stt('🎚 싱크 분석: 소리를 읽는 중…');const ab=await decode(s.blob);
   const ch0=ab.getChannelData(0),ch1=ab.numberOfChannels>1?ab.getChannelData(1):ch0;
   const r=await SyncAI.analyze(ch0,ch1,ab.sampleRate,T,async p=>{stt('🎚 싱크 분석 중 '+Math.round(p*100)+'%');await new Promise(q=>setTimeout(q,0))});
   if(!r){stt('분석할 수 없는 곡이에요');return null}
-  const good=r.z>=4.5&&r.margin>=.12;
+  const good=(r.z>=4.5&&r.margin>=.12)||(r.z>=3.5&&r.margin>=.06&&r.hit>=.6);
   last={s,r,T,dur:dur||ab.duration,good};lastK=s.id;
   return last}catch(e){stt('싱크 분석 실패: '+(e&&e.message||e));return null}finally{busy=0}}
 function commit(s,L,force){const r=L.r,med=r.med,o=Math.round(-med*100)/100;
@@ -861,194 +923,59 @@ $a('sag').onclick=()=>{if(last&&last.s===S[i]){commit(S[i],last,true);ui()}};
 $a('sau').onclick=()=>{const s=S[i];if(!s)return;delete s.sy;off=0;s.off=0;$('#ov').textContent='0.0s';save(s);lyr();A.ontimeupdate();try{render()}catch{}stt('원래 가사 시간으로 되돌렸어요');setTimeout(()=>stt(''),3000);ui()};
 $a('sal').onchange=e=>{const s=S[i];if(!s||!s.sy)return;s.sy.pl=e.target.checked?1:0;save(s);lyr();A.ontimeupdate()};
 $a('saa').onchange=e=>{try{localStorage.sxAuto=e.target.checked?'1':'0'}catch{}};
-/* 🎙 음성인식(Whisper) 정렬: 모델은 처음 한 번만 받고 브라우저에 저장됨 */
-let ASR=null,ASRN='';$a('asrm').value='Xenova/whisper-base';try{const q=localStorage.asrModel;if(q)$a('asrm').value=q}catch{}$a('asrm').onchange=e=>{try{localStorage.asrModel=e.target.value}catch{}};
-const nz=t=>(t||'').toLowerCase().replace(/[^0-9a-z\u3131-\u318e\uac00-\ud7a3]/g,'');
-const bg=t=>{const m=new Map();for(let k=0;k<t.length-1;k++){const x=t.slice(k,k+2);m.set(x,(m.get(x)||0)+1)}return m};
-function asrTxt(words){let T='';const tm=[];words.forEach(w=>{const c=nz(w.text);if(!c||!w.timestamp)return;const a=w.timestamp[0],e=w.timestamp[1]==null?a:w.timestamp[1];for(let k=0;k<c.length;k++){T+=c[k];tm.push(a+(e-a)*k/c.length)}});return{T,tm}}
-/* 가사 전체를 한 번에: 줄마다 후보 위치 여러 개 → 순서가 맞는 조합 중 점수 합이 가장 큰 것 (후렴 반복 곡에서 안 엉킴) */
-function asrDP(T,items,minS){const C=items.map(L=>{if(L.length<3||T.length<L.length)return[];const lb=bg(L),tot=L.length-1,W=L.length,n=T.length-W+1,sc=new Float32Array(n);for(let p=0;p<n;p++){const wb=bg(T.slice(p,p+W));let h=0;lb.forEach((c,k)=>{h+=Math.min(c,wb.get(k)||0)});sc[p]=h/tot}const c=[];for(let p=0;p<n;p++)if(sc[p]>=minS&&sc[p]>=(p?sc[p-1]:0)&&sc[p]>=(p<n-1?sc[p+1]:0))c.push({p,s:sc[p],W});c.sort((x,y)=>y.s-x.s);return c.slice(0,10)});
- const best=C.map(()=>[]);let top=null;
- C.forEach((cs,k)=>cs.forEach(c=>{let b=0,bp=null;for(let q=0;q<k;q++)C[q].forEach((d,j)=>{if(c.p>=d.p+(d.W>>1)&&d.v>b){b=d.v;bp=[q,j]}});c.v=b+c.s;c.bp=bp;c.k=k;best[k].push(c);if(!top||c.v>top.v)top=c}));
- const pos=items.map(()=>null);let cu=top;while(cu){pos[cu.k]=cu;cu=cu.bp?best[cu.bp[0]][cu.bp[1]]:null}return pos}
-/* 소리 없는 구간 / (시간 가사가 있으면) 가사에서 먼 구간은 건너뛰고, 나온 시간은 원래대로 되돌림 */
-function asrKeep(pcm,T){const sr=16000,F=.5,fl=sr*F,n=Math.floor(pcm.length/fl);if(n<40)return pcm;const rms=new Float32Array(n);let mxr=0;for(let k=0;k<n;k++){let s=0;const o=k*fl;for(let j=0;j<fl;j+=4)s+=pcm[o+j]*pcm[o+j];rms[k]=Math.sqrt(s/(fl/4));if(rms[k]>mxr)mxr=rms[k]}
- const keep=new Uint8Array(n).fill(1),th=mxr*.004;let a=0;while(a<n){if(rms[a]<th){let b=a;while(b<n&&rms[b]<th)b++;if((b-a)*F>=4)for(let k=a+1;k<b-1;k++)keep[k]=0;a=b}else a++}
- if(T&&T.length>2){const w=new Uint8Array(n);T.forEach(t=>{for(let k=Math.max(0,Math.floor((t-25)/F));k<=Math.min(n-1,Math.floor((t+20)/F));k++)w[k]=1});for(let k=0;k<n;k++)if(!w[k])keep[k]=0}
- let kept=0;keep.forEach(v=>kept+=v);if(kept>n*.92||kept*F<12)return pcm;
- const seg=[],parts=[],pad=sr*.3|0;let c=0,k=0;while(k<n){if(keep[k]){let e=k;while(e<n&&keep[e])e++;const s0=Math.max(0,k*fl-pad),e0=Math.min(pcm.length,e*fl+pad);parts.push(pcm.subarray(s0,e0));seg.push({c:c/sr,o:s0/sr,l:(e0-s0)/sr});c+=e0-s0;k=e}else k++}
- const out=new Float32Array(c);let p=0;parts.forEach(q=>{out.set(q,p);p+=q.length});out.seg=seg;out.od=pcm.length/sr;return out}
-function asrUn(ch,pcm){const sg=pcm.seg;if(!sg)return ch;const un=t=>{if(t==null)return t;for(let k=sg.length-1;k>=0;k--)if(t>=sg[k].c-.001)return sg[k].o+Math.min(t-sg[k].c,sg[k].l);return t};return ch.map(w=>w.timestamp?Object.assign({},w,{timestamp:[un(w.timestamp[0]),un(w.timestamp[1])]}):w)}
-function asrAlign(words,lines){const{T,tm}=asrTxt(words),pos=asrDP(T,lines.map(x=>nz(x[1])),.5),res=[];lines.forEach((x,k)=>{if(pos[k])res.push({tl:x[0],ta:tm[pos[k].p],s:pos[k].s})});
- if(!res.length)return{n:0,lines:lines.length,o:0,mad:99,rate:0,sim:0,res};
- const d=res.map(r=>r.tl-r.ta).sort((a,b)=>a-b),med=d[d.length>>1],dv=d.map(x=>Math.abs(x-med)).sort((a,b)=>a-b);
- return{n:res.length,lines:lines.length,o:med,mad:dv[dv.length>>1],rate:res.length/lines.length,sim:res.reduce((a,r)=>a+r.s,0)/res.length,res}}
-window.asrAlign=asrAlign;
-function asrFit(r,T,dur){const P=(r.res||[]).map(x=>[x.tl,x.tl-x.ta]),n=P.length,c={o:Math.round(r.o*100)/100,pl:0,d:[],lin:0};if(n<6)return c;
- const md=a=>{const s=a.slice().sort((x,y)=>x-y);return s[s.length>>1]},m0=md(P.map(p=>p[1])),mad0=md(P.map(p=>Math.abs(p[1]-m0)));
- const Q=P.filter(p=>Math.abs(p[1]-m0)<=Math.max(1.5,3*mad0));if(Q.length<6)return c;
- const mt=Q.reduce((a,p)=>a+p[0],0)/Q.length,my=Q.reduce((a,p)=>a+p[1],0)/Q.length;let sxy=0,sxx=0;Q.forEach(p=>{sxy+=(p[0]-mt)*(p[1]-my);sxx+=(p[0]-mt)**2});if(!sxx)return c;
- const q=sxy/sxx,p0=my-q*mt,res=Q.map(p=>Math.abs(p[1]-(p0+q*p[0]))),madL=md(res),madC=md(Q.map(p=>Math.abs(p[1]-m0))),span=Math.max(...T)-Math.min(...T);
- if(Math.abs(q)*span<1.0||madL>madC*.8)return c;
- const o=Math.round((p0+q*mt)*100)/100;return{o,pl:1,lin:1,q,d:T.map(t=>Math.round((o-(p0+q*t))/0.02))}}
-window.asrFit=asrFit;
-function asrClean(ws){const o=[];let br=0,bn=0;for(const w of ws||[]){let t=String(w.text||'');const op=/[(\[（【]/.test(t),cl=/[)\]）】]/.test(t);if(op){br=1;bn=0}if(br){bn++;if(bn>10)br=0}const bad=br||/^[\s♪♫♬🎵🎶*#~.\-–—]*$/.test(t);if(cl)br=0;if(bad)continue;t=t.replace(/[♪♫♬🎵🎶]/g,'');if(!nz(t))continue;o.push(Object.assign({},w,{text:t}))}return o}
-const asrPcm=async blob=>{const ab=await blob.arrayBuffer();const ac=new(window.AudioContext||window.webkitAudioContext)();const buf=await ac.decodeAudioData(ab);try{ac.close()}catch{}const oc=new OfflineAudioContext(1,Math.ceil(buf.duration*16000),16000);const src=oc.createBufferSource();src.buffer=buf;let nd=src;const fe=document.getElementById('asrf');if(!fe||fe.checked){const F=(t,f,q,g)=>{const b=oc.createBiquadFilter();b.type=t;b.frequency.value=f;if(q)b.Q.value=q;if(g)b.gain.value=g;nd.connect(b);nd=b};F('highpass',120);F('peaking',2200,.8,4);F('lowpass',5000)}nd.connect(oc.destination);src.start();return(await oc.startRendering()).getChannelData(0)};
-const lrcT=t=>{t=Math.max(0,t);const m=Math.floor(t/60),x=t-m*60;return '['+String(m).padStart(2,'0')+':'+(x<10?'0':'')+x.toFixed(2)+']'};
-function asrMap(words,texts){const{T,tm}=asrTxt(words),pos=asrDP(T,texts.map(nz),.45),times=texts.map((_,k)=>pos[k]?tm[pos[k].p]:null);return{times,hits:times.filter(x=>x!=null).length}}
-function asrFill(times,dur){const n=times.length,idx=[];times.forEach((t,k)=>{if(t!=null)idx.push(k)});if(!idx.length)return null;const o=times.slice();
- for(let k=idx[0]-1;k>=0;k--)o[k]=Math.max(0,o[k+1]-3);
- for(let q=0;q<idx.length-1;q++){const a=idx[q],b=idx[q+1];for(let k=a+1;k<b;k++)o[k]=o[a]+(o[b]-o[a])*(k-a)/(b-a)}
- for(let k=idx[idx.length-1]+1;k<n;k++)o[k]=Math.min(o[k-1]+3,Math.max(o[k-1],(dur||1e9)-1));
- for(let k=1;k<n;k++)if(o[k]<o[k-1]+.05)o[k]=o[k-1]+.05;return o}
-window.asrMap=asrMap;window.asrFill=asrFill;
-let ASRT0=0;
-const asrIDB=()=>asrIDB.p||(asrIDB.p=new Promise((res,rej)=>{const r=indexedDB.open('asrModelCache',1);r.onupgradeneeded=()=>r.result.createObjectStore('f');r.onsuccess=()=>res(r.result);r.onerror=()=>{asrIDB.p=null;rej(r.error)}}));
-const asrCache={async match(k){try{const db=await asrIDB();const v=await new Promise((res,rej)=>{const q=db.transaction('f').objectStore('f').get(String(k));q.onsuccess=()=>res(q.result);q.onerror=()=>rej(q.error)});if(!v||!v.b)return undefined;return new Response(v.b,{status:200,headers:{'content-type':v.t||'application/octet-stream','content-length':String(v.b.size)}})}catch{return undefined}},
- async put(k,resp){try{const b=await resp.blob();const t=resp.headers.get('content-type')||'';const db=await asrIDB();await new Promise((res,rej)=>{const tx=db.transaction('f','readwrite');tx.objectStore('f').put({b,t,s:b.size,at:Date.now()},String(k));tx.oncomplete=res;tx.onerror=()=>rej(tx.error);tx.onabort=()=>rej(tx.error)})}catch(e){console.warn('모델 저장 실패',e)}}};
-async function asrScan(MN,del){const db=await asrIDB();let n=0,b=0;await new Promise(res=>{const tx=db.transaction('f',del?'readwrite':'readonly'),q=tx.objectStore('f').openCursor();q.onsuccess=()=>{const c=q.result;if(!c){return}if(String(c.key).includes(MN)){n++;b+=(c.value&&c.value.s)||0;if(del)c.delete()}c.continue()};q.onerror=()=>res();tx.oncomplete=()=>res();tx.onabort=()=>res()});return{n,b}}
-async function asrStat(){const e=$a('asrs');if(!e)return;const MN=$a('asrm').value;try{const r=await asrScan(MN,0);e.style.color=r.n&&r.b>1e6?'var(--ok,#6fe39a)':'var(--mu,#9a9aa8)';e.textContent=r.n&&r.b>1e6?'💾 이 모델은 폰에 저장돼 있어요 ('+(r.b/1048576).toFixed(0)+'MB) · 다시 안 받아요':(ASR&&ASRN===MN?'⚠ 모델은 불러왔지만 저장이 안 됐어요 (저장 공간 부족이거나 막힌 환경)':'⬇ 아직 안 받은 모델이에요 · 처음 한 번만 받아요')}catch{e.style.color='var(--ac2,#ffb3a8)';e.textContent='⚠ 이 환경에서는 모델 저장이 안 될 수 있어요 (매번 받음)'}}
-let ASRGPU=0,ASRNOGPU=0;try{ASRNOGPU=localStorage.asrNoGpu==='1'}catch{}
-async function asrInit(MN,m){if(ASR&&ASRN!==MN)ASR=null;if(ASR)return;ASRN=MN;
- const L0=Date.now();let lt='🎙 음성인식 모델 준비 중...';const tick=()=>{m.textContent=lt+' · 경과 '+asrFmt((Date.now()-(ASRT0||L0))/1000)};tick();const iv=setInterval(tick,500);
- try{
-  const T=await import('https://cdn.jsdelivr.net/npm/@huggingface/transformers@3.0.2');
-  try{T.env.allowLocalModels=false;T.env.useBrowserCache=false;T.env.useCustomCache=true;T.env.customCache=asrCache}catch{}
-  try{navigator.storage&&navigator.storage.persist&&navigator.storage.persist()}catch{}
-  const pc=p=>{const f=String(p.file||'').split('/').pop();if(p.status==='progress')lt='🎙 모델 받는 중 '+Math.round(p.progress)+'% ('+f+') · 한 번만 받으면 폰에 저장돼요';else if(p.status==='initiate')lt='🎙 모델 확인 중 ('+f+')';else if(p.status==='done')lt='🎙 모델 파일 확인 끝 ('+f+')';else if(p.status==='ready')lt='🎙 모델 올리는 중...'};
-  const mk=o=>T.pipeline('automatic-speech-recognition',MN,Object.assign({progress_callback:pc},o));ASRGPU=0;
-  const big=/turbo/.test(MN);
-  if(!ASRNOGPU&&navigator.gpu){try{if(await navigator.gpu.requestAdapter()){ASR=await mk({device:'webgpu',dtype:big?{encoder_model:'q4',decoder_model_merged:'q4'}:{encoder_model:'fp32',decoder_model_merged:'q4'}});ASRGPU=1;return}}catch(e){ASR=null;if(big)throw e}}
-  if(big)throw new Error('large-v3-turbo 모델은 WebGPU가 되는 폰/브라우저에서만 돌아가요. base나 small을 써 주세요');
-  try{T.env.backends.onnx.wasm.proxy=true;ASR=await mk({dtype:'q8'})}catch(e){try{T.env.backends.onnx.wasm.proxy=false}catch{}ASR=await mk({dtype:'q8'})}
- }finally{clearInterval(iv);try{asrStat()}catch{}}}
-async function asrCall(MN,m,pcm,o){try{return await ASR(pcm,o)}catch(e){if(!ASRGPU)throw e;ASRNOGPU=1;try{localStorage.asrNoGpu='1'}catch{}ASR=null;m.textContent='⚡ GPU가 불안정해서 일반 방식(CPU)으로 다시 돌려요...';await asrInit(MN,m);return await asrCall(MN,m,pcm,o)}}
-const ASRF={tiny:.15,base:.3,small:1,turbo:.6};function asrKey(MN){return /turbo/.test(MN)?'turbo':String(MN).split('-').pop()}
-const asrFac=MN=>{const k=asrKey(MN);try{const v=parseFloat(localStorage['asrf_'+k]);if(v>0)return v}catch{}return ASRF[k]||.5};
-const asrFmt=t=>{t=Math.max(0,Math.round(t));return Math.floor(t/60)+':'+String(t%60).padStart(2,'0')};
-function asrEst(){const e=$a('asre');if(!e)return;const MN=$a('asrm').value,d=A.duration;if(!isFinite(d)||!d){e.textContent='⏱ 곡을 재생하면 예상 소요 시간이 나와요';return}const k=asrKey(MN);let learned=0;try{learned=parseFloat(localStorage['asrf_'+k])>0}catch{}e.textContent='⏱ 예상 소요 약 '+asrFmt(d*asrFac(MN))+' (곡 '+asrFmt(d)+' · '+k+' 모델'+(learned?' · 이 폰에서 실제로 걸린 속도 기준':' · 대략적인 값, 한 번 돌리면 더 정확해져요')+')'}
-function asrTrack(m,dur,MN,what,T0){let wl=null;try{navigator.wakeLock&&navigator.wakeLock.request('screen').then(x=>{wl=x}).catch(()=>{})}catch{}
- const t0=Date.now(),A0=T0||t0,tot=Math.max(1,Math.ceil(Math.max(0,dur-30)/20)+1),est=Math.max(1,dur*asrFac(MN));let n=0,tk=0;
- const draw=()=>{const now=Date.now(),el=(now-A0)/1000,pe=(now-t0)/1000,dn=Math.min(tot,n+Math.min(.9,tk/70));let rem,pc;if(dn>=.4){rem=pe/dn*(tot-dn);pc=dn/tot}else{rem=Math.max(est-pe,est*.05);pc=Math.min(.95,pe/est)}m.textContent='🎙 '+what+' · 경과 '+asrFmt(el)+' · 남은 시간 약 '+asrFmt(rem)+' ('+Math.min(99,Math.round(pc*100))+'%)'};
- draw();const iv=setInterval(draw,500);
- return{st:{put(){tk++},end(){n++;tk=0;draw()}},stop:()=>{clearInterval(iv);try{wl&&wl.release()}catch{}const now=Date.now(),pe=(now-t0)/1000;if(dur>20){try{localStorage['asrf_'+asrKey(MN)]=(pe/dur).toFixed(3)}catch{}}ASRT0=0;return(now-A0)/1000}}}
-window.asrTrack=asrTrack;window.asrEst=asrEst;
-$a('asrm').addEventListener('change',asrEst);$a('asrm').addEventListener('change',asrStat);$a('asrx').onclick=async()=>{const MN=$a('asrm').value;if(!confirm('저장된 이 모델을 지울까요?\n다시 쓰려면 새로 받아야 해요.'))return;try{await asrScan(MN,1)}catch{}if(ASRN===MN)ASR=null;asrStat()};setTimeout(asrStat,300);$('#sx').addEventListener('click',()=>setTimeout(()=>{asrEst();asrStat()},50));
-$a('asrb').onclick=async()=>{const s=S[i],m=$a('sam'),b=$a('asrb');if(!s){m.textContent='먼저 곡을 재생하세요';return}const g=sig(s);if(!g){m.textContent='시간(싱크) 태그가 있는 가사가 있어야 해요';return}
- let tr=null;b.disabled=true;ASRT0=Date.now();try{
-  const MN=$a('asrm').value;await asrInit(MN,m);
-  m.textContent='🎙 노래 불러오는 중...';let pcm=await asrPcm(s.blob);pcm=asrKeep(pcm,plrc(s.lyrics||'').l.map(x=>x[0]));tr=asrTrack(m,pcm.length/16000,MN,'노래 듣는 중',ASRT0);
-  const tx=plrc(s.lyrics||'').l.map(x=>x[1]).join(''),ko=(tx.match(/[\uac00-\ud7a3]/g)||[]).length,la=(tx.match(/[a-z]/gi)||[]).length,lg=ko+la?(ko>la*.3?'korean':'english'):undefined;const out=await asrCall(MN,m,pcm,{return_timestamps:'word',chunk_length_s:30,stride_length_s:5,language:lg,task:'transcribe',streamer:tr.st});const EL=tr.stop();
-  const r=asrAlign((asrClean(asrUn(out.chunks||[],pcm))),plrc(s.lyrics||'').l);
-  const RT=Math.round(r.rate*100),SM=Math.round(r.sim*100),MS=asrKey(MN);if(r.n<3||r.mad>2){m.textContent='🎙 인식률 '+RT+'% (줄 '+r.n+'/'+r.lines+' 일치 · 유사도 '+SM+'%) · 편차 '+r.mad.toFixed(1)+'초 · 모델 '+MS+' — 확신하기 어려워 적용 안 함';b.disabled=false;return}
-  const FT=asrFit(r,plrc(s.lyrics||'').l.map(x=>x[0]),(pcm.od||pcm.length/16000)),o=FT.o;setSy(s,{v:1,a:1,pl:FT.pl,o,d:FT.d,n:g.n,t0:g.t0,dur:A.duration||(pcm.od||pcm.length/16000),h:lh(s),z:0,src:'asr',rate:RT},'🎙 음성인식 보정 '+(o>=0?'+':'')+o.toFixed(2)+'초'+(FT.lin?' (시작·끝 따로 맞춤)':'')+' · 인식률 '+RT+'%');m.textContent='🎙 인식률 '+RT+'% (줄 '+r.n+'/'+r.lines+' 일치 · 유사도 '+SM+'%) · 보정 '+(o>=0?'+':'')+o.toFixed(2)+'초 · 모델 '+MS+' · 걸린 시간 '+asrFmt(EL)+' · 원래대로는 ↩'
- }catch(e){try{tr&&tr.stop()}catch{}ASRT0=0;m.textContent='🎙 실패: '+(e&&e.message||e)}b.disabled=false};
-function asrLines(words){const L=[];let cur=null;const mk=t=>{const m=Math.floor(t/60),x=t-m*60;return '['+String(m).padStart(2,'0')+':'+(x<10?'0':'')+x.toFixed(2)+']'};
- words.forEach(w=>{if(!w.timestamp||w.timestamp[0]==null)return;const t=(w.text||'');if(!t.trim())return;const a=w.timestamp[0],e=w.timestamp[1]==null?a:w.timestamp[1];
-  if(cur&&(a-cur.e>0.7||cur.t.length>38||cur.n>=9)){L.push(cur);cur=null}
-  if(!cur)cur={a,e,t:'',n:0};cur.t+=t;cur.e=e;cur.n++});
- if(cur)L.push(cur);
- const out=[];let rep=0,prev='';L.forEach(l=>{const tx=l.t.replace(/\s+/g,' ').trim();if(tx.length<2)return;if(tx===prev){if(++rep>=2)return}else{rep=0;prev=tx}out.push(mk(l.a)+tx)});return out.join('\n')}
-window.asrLines=asrLines;
-$a('asrc').onclick=async()=>{const s=S[i],m=$a('sam'),b=$a('asrc');if(!s){m.textContent='먼저 곡을 재생하세요';return}
- const pl0=plrc(s.lyrics||''),ref=pl0.sync?[]:pl0.l.map(x=>x[1]).filter(x=>x&&!/^\[.*\]$/.test(x.trim()));
- if((s.lyrics||'').trim()&&!ref.length&&!confirm('이 곡에는 이미 가사가 있어요.\n음성인식 결과로 바꿀까요? (이전 가사는 되돌릴 수 없어요)'))return;
- let tr=null;b.disabled=true;ASRT0=Date.now();try{
-  const MN=$a('asrm').value;await asrInit(MN,m);
-  m.textContent='🎙 노래 불러오는 중...';let pcm=await asrPcm(s.blob);pcm=asrKeep(pcm,null);tr=asrTrack(m,pcm.length/16000,MN,'노래 듣고 가사 만드는 중',ASRT0);
-  const rtx=ref.join(''),rko=(rtx.match(/[\uac00-\ud7a3]/g)||[]).length,rla=(rtx.match(/[a-z]/gi)||[]).length;const lg=$a('asrl').value||(rko+rla?(rko>rla*.3?'korean':'english'):undefined);const out=await asrCall(MN,m,pcm,{return_timestamps:'word',chunk_length_s:30,stride_length_s:5,language:lg,task:'transcribe',streamer:tr.st});const EL=tr.stop();
-  let lrc,note='';
-  if(ref.length){const r=asrMap(asrClean(asrUn(out.chunks||[],pcm)),ref),RT=Math.round(r.hits*100/ref.length);if(r.hits<3||r.hits<ref.length*.3){m.textContent='🎙 인식률 '+RT+'% (줄 '+r.hits+'/'+ref.length+' 일치) — 소리와 가사가 잘 안 맞아서 적용 안 함';b.disabled=false;return}const t=asrFill(r.times,(pcm.od||pcm.length/16000));lrc=ref.map((x,k)=>lrcT(t[k])+x.trim()).join('\n');note=' · 일반 가사 참고 · 인식률 '+RT+'% (줄 '+r.hits+'/'+ref.length+' 일치, 나머지는 사이 시간으로 채움)'}
-  else{lrc=asrLines(asrClean(asrUn(out.chunks||[],pcm)));if(lrc.split('\n').length<3){m.textContent='🎙 가사를 거의 못 알아들었어요 (인식된 줄 '+(lrc?lrc.split('\n').length:0)+'개) — 적용 안 함';b.disabled=false;return}}
-  s.lyrics=lrc;s.off=0;s.tried=1;delete s.sy;if(S[i]===s)off=0;try{BK[s.name]=Object.assign(BK[s.name]||{n:s.name},{l:lrc,o:0});bkSave()}catch{}
-  try{await put(s)}catch{}if(S[i]===s){$('#ov').textContent='0.0s';lyr();A.ontimeupdate()}try{render()}catch{}
-  m.textContent='🎙 가사+싱크 '+lrc.split('\n').length+'줄 만들었어요 (걸린 시간 '+asrFmt(EL)+')'+(note||' · 틀린 글자는 📝 가사 편집에서 고치세요 (시간은 유지돼요)')
- }catch(e){try{tr&&tr.stop()}catch{}ASRT0=0;m.textContent='🎙 실패: '+(e&&e.message||e)}b.disabled=false};
-let ASRALL=0;
-$a('asrall').onclick=async()=>{const m=$a('sam'),b=$a('asrall');if(ASRALL){ASRALL=0;m.textContent='📚 멈추는 중... (지금 곡까지만)';return}
- const todo=S.filter(s=>s.blob&&(s.lyrics||'').trim()&&!plrc(s.lyrics).sync&&!s.asrTried);
- if(!todo.length){m.textContent='📚 대상 곡이 없어요 (일반 가사만 있고 아직 시도 안 한 곡)';return}
- if(!confirm('일반 가사만 있는 '+todo.length+'곡을 차례로 돌려요.\n충전하면서 이 화면을 켜 두세요. 계속할까요?'))return;
- ASRALL=1;const bh=b.innerHTML;b.innerHTML='⏹ 일괄 멈추기';let ok=0,fail=0,wl=null;try{navigator.wakeLock&&(wl=await navigator.wakeLock.request('screen'))}catch{}
- const MN=$a('asrm').value;
- try{await asrInit(MN,m);
-  for(let n=0;n<todo.length&&ASRALL;n++){const s=todo[n],pre='📚 '+(n+1)+'/'+todo.length+' · '+s.title+' · ',mm2={set textContent(v){m.textContent=pre+v}};
-   try{m.textContent=pre+'소리 불러오는 중';let pcm=await asrPcm(s.blob);pcm=asrKeep(pcm,null);
-    const ref=plrc(s.lyrics).l.map(x=>x[1]).filter(x=>x&&!/^\[.*\]$/.test(x.trim())),rtx=ref.join(''),rko=(rtx.match(/[\uac00-\ud7a3]/g)||[]).length,rla=(rtx.match(/[a-z]/gi)||[]).length,lg=$a('asrl').value||(rko+rla?(rko>rla*.3?'korean':'english'):undefined);
-    const tr=asrTrack(mm2,pcm.length/16000,MN,'듣는 중');let out;try{out=await asrCall(MN,mm2,pcm,{return_timestamps:'word',chunk_length_s:30,stride_length_s:5,language:lg,task:'transcribe',streamer:tr.st})}finally{tr.stop()}
-    const r=asrMap(asrClean(asrUn(out.chunks||[],pcm)),ref);s.asrTried=1;
-    if(r.hits>=3&&r.hits>=ref.length*.3){const t=asrFill(r.times,pcm.od||pcm.length/16000);s.lyrics=ref.map((x,k)=>lrcT(t[k])+x.trim()).join('\n');s.off=0;delete s.sy;try{BK[s.name]=Object.assign(BK[s.name]||{n:s.name},{l:s.lyrics,o:0});bkSave()}catch{}ok++;if(S[i]===s){lyr();A.ontimeupdate()}}else fail++;
-    try{await put(s)}catch{}}catch(e){fail++;s.asrTried=1;try{await put(s)}catch{}}}
- }catch(e){m.textContent='📚 실패: '+(e&&e.message||e);ASRALL=0;b.innerHTML=bh;try{wl&&wl.release()}catch{};return}
- const stopped=!ASRALL;ASRALL=0;b.innerHTML=bh;try{wl&&wl.release()}catch{}try{render()}catch{}
- m.textContent='📚 '+(stopped?'멈춤':'일괄 끝')+' · 싱크 입힘 '+ok+'곡 · 인식 부족으로 건너뜀 '+fail+'곡'};
-/* 🌙 전곡 자동 싱크 (자는 동안): 곡 종류별 선택 → 시작/예상 종료/실제 종료 시각 표시 */
+/* 🌙 전곡 자동 싱크 (자는 동안): 음성인식 없이 목소리 대역 파형 분석으로 차례 처리 */
 (()=>{
 const css=document.createElement('style');css.textContent='#bsy{position:fixed;inset:0;background:var(--bg,#141418);display:flex;flex-direction:column;padding:14px;gap:8px;z-index:30}#bsy[hidden]{display:none}#bsy .r{display:flex;gap:8px;align-items:center;flex-wrap:wrap}#bsy button{padding:10px 8px;font-size:14px}#bsy .r label{font-size:13px;display:flex;gap:5px;align-items:center}#bsl{flex:1;min-height:90px;overflow:auto;background:var(--pn,#1a1a20);border-radius:12px;padding:4px}#bsl label{display:flex;gap:8px;align-items:center;padding:7px 8px;border-radius:8px;font-size:14px}#bsl label small{margin-left:auto;flex:none;font-size:11.5px}#bsl input{flex:none;width:18px;height:18px;accent-color:var(--ac,#ff5a4d)}#bsl label span{min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}#bss{background:var(--pn,#1a1a20);border-radius:12px;padding:10px 12px;font-size:13.5px;line-height:1.55}#bss b{color:var(--ac2,#ffb3a8)}#bsg{height:20vh;overflow:auto;font-size:12px;line-height:1.45;background:var(--pn,#1a1a20);border-radius:12px;padding:6px 8px;color:var(--mu,#b9b9c6)}';document.head.append(css);
 const d=document.createElement('div');d.id='bsy';d.hidden=true;
-d.innerHTML='<div class="r" style="flex-wrap:nowrap"><b style="flex:1;font-size:16px">🌙 전곡 자동 싱크</b><button id="bsx">닫기</button></div><small style="color:var(--mu,#9a9aa8)">곡 종류를 고르고 시작하면 음성인식으로 차례로 맞춰요. 충전기를 꽂고 이 화면을 켜 둔 채로 주무세요.</small><div class="r"><label><input type="checkbox" id="bk1" checked> 싱크 있는 곡 (시간 보정)</label><label><input type="checkbox" id="bk2" checked> 일반 가사 곡 (싱크 만들기)</label><label><input type="checkbox" id="bk3"> 가사 없는 곡 (받아쓰기·정확도 낮음)</label></div><div class="r"><button id="bsa" style="flex:1">전체 선택</button><button id="bsn" style="flex:1">전체 해제</button><button id="bsf" style="flex:1">🔍 가사 먼저 일괄 찾기</button><label style="flex:none"><input type="checkbox" id="bsd"> 이미 한 곡 포함</label></div><div id="bsl"></div><div id="bss"></div><div class="r" style="flex-wrap:nowrap"><button id="bsgo" class="add" style="flex:2;border:0">▶ 선택한 곡 자동 시작</button><button id="bsst" style="flex:1" disabled>⏹ 멈추기</button></div><div id="bsg"></div>';
+d.innerHTML='<div class="r" style="flex-wrap:nowrap"><b style="flex:1;font-size:16px">🌙 전곡 자동 싱크</b><button id="bsx">닫기</button></div><small style="color:var(--mu,#9a9aa8)">시간(싱크) 태그가 있는 가사의 시간을 목소리 대역 파형 분석으로 차례로 보정해요. 곡을 재생하지 않고 파일만 읽어서 곡당 수 초면 끝나요.</small><div class="r"><button id="bsa" style="flex:1">전체 선택</button><button id="bsn" style="flex:1">전체 해제</button><button id="bsf" style="flex:1">🔍 가사 먼저 일괄 찾기</button><label style="flex:none"><input type="checkbox" id="bsd"> 이미 한 곡 포함</label></div><div id="bsl"></div><div id="bss"></div><div class="r" style="flex-wrap:nowrap"><button id="bsgo" class="add" style="flex:2;border:0">▶ 선택한 곡 자동 시작</button><button id="bsst" style="flex:1" disabled>⏹ 멈추기</button></div><div id="bsg"></div>';
 document.body.append(d);
 const q=id=>document.getElementById(id);
 const clk=t=>{const x=new Date(t),p=n=>String(n).padStart(2,'0');return (x.getMonth()+1)+'/'+x.getDate()+' '+p(x.getHours())+':'+p(x.getMinutes())+':'+p(x.getSeconds())};
 const dmin=s=>{s=Math.max(0,Math.round(s));const h=Math.floor(s/3600),m=Math.floor(s%3600/60);return h?h+'시간 '+m+'분':m+'분 '+(s%60)+'초'};
-let SEL=new Set(),RUN=0,CAND=[],DUR=240,logEl=q('bsg');
-const kind=s=>{const t=(s.lyrics||'').trim();return !t?'none':plrc(t).sync?'sync':'plain'};
-const KN={sync:'싱크',plain:'일반',none:'없음'};
-const stOf=s=>s.perfect?'완벽 표시':(s.asrFix===1||(s.sy&&s.sy.src==='asr'))?'✓ 보정됨':s.asrFix===2?'건너뜀':s.asrFix===3?'실패':'';
+let SEL=new Set(),RUN=0,CAND=[],logEl=q('bsg'),AVG=12;
+const stOf=s=>s.perfect?'완벽 표시':s.sy&&s.sy.a?'✓ 보정됨':s.wvFix===2?'건너뜀':s.wvFix===3?'실패':'';
 const logL=t=>{const e=document.createElement('div');e.textContent=t;logEl.append(e);while(logEl.children.length>400)logEl.firstChild.remove();logEl.scrollTop=1e9};
-const want=()=>({sync:q('bk1').checked,plain:q('bk2').checked,none:q('bk3').checked});
-function pick(){const w=want(),inc=q('bsd').checked;SEL=new Set(CAND.filter(s=>w[kind(s)]&&!s.perfect&&(inc||!stOf(s))))}
-function build(){CAND=S.filter(s=>s.blob);pick();list();sum()}
-function list(){q('bsl').innerHTML='';CAND.forEach((s,k)=>{const l=document.createElement('label'),c=document.createElement('input');c.type='checkbox';c.checked=SEL.has(s);c.disabled=!!RUN;c.onchange=()=>{c.checked?SEL.add(s):SEL.delete(s);sum()};const t=document.createElement('span');t.textContent=(s.title||s.name)+(s.artist?' · '+s.artist:'');const g=document.createElement('small');g.textContent=KN[kind(s)]+(stOf(s)?' · '+stOf(s):'');g.dataset.k=k;l.append(c,t,g);q('bsl').append(l)})}
-function sum(){if(RUN)return;const n=SEL.size,MN=$a('asrm').value,e=n*DUR*asrFac(MN),c={sync:0,plain:0,none:0};CAND.forEach(s=>c[kind(s)]++);let last='';try{const L=JSON.parse(localStorage.bsyLast||'null');if(L)last='<br>지난 실행: '+clk(L.a)+' → '+clk(L.b)+' · 보정 '+L.ok+' · 건너뜀 '+L.sk+' · 실패 '+L.fl}catch{}q('bss').innerHTML='전체 <b>'+CAND.length+'</b>곡 · 싱크 있음 '+c.sync+' · 일반 가사 '+c.plain+' · 가사 없음 '+c.none+'<br>선택 <b>'+n+'</b>곡 · 예상 소요 약 <b>'+dmin(e)+'</b> (곡당 약 '+DUR+'초 가정 · 모델 '+asrKey(MN)+')'+last}
-['bk1','bk2','bk3','bsd'].forEach(id=>q(id).onchange=()=>{if(!RUN){pick();list();sum()}});
+function pick(){const inc=q('bsd').checked;SEL=new Set(CAND.filter(s=>!s.perfect&&(inc||!stOf(s))))}
+function build(){CAND=S.filter(s=>s.blob&&sig(s));pick();list();sum()}
+function list(){q('bsl').innerHTML='';if(!CAND.length){q('bsl').innerHTML='<p class="em">시간(싱크) 태그가 있는 가사가 있는 곡이 없어요<br><small>🔍 가사 먼저 일괄 찾기로 싱크 가사를 받아 주세요</small></p>';return}CAND.forEach((s,k)=>{const l=document.createElement('label'),c=document.createElement('input');c.type='checkbox';c.checked=SEL.has(s);c.disabled=!!RUN;c.onchange=()=>{c.checked?SEL.add(s):SEL.delete(s);sum()};const t=document.createElement('span');t.textContent=(s.title||s.name)+(s.artist?' · '+s.artist:'');const g=document.createElement('small');g.textContent=stOf(s);g.dataset.k=k;l.append(c,t,g);q('bsl').append(l)})}
+function sum(){if(RUN)return;const n=SEL.size,tot=S.filter(s=>s.blob).length;let last='';try{const L=JSON.parse(localStorage.bsyLast||'null');if(L)last='<br>지난 실행: '+clk(L.a)+' → '+clk(L.b)+' · 보정 '+L.ok+' · 건너뜀 '+L.sk+' · 실패 '+L.fl}catch{}q('bss').innerHTML='전체 <b>'+tot+'</b>곡 중 싱크 가사 있는 곡 '+CAND.length+'곡 · 선택 <b>'+n+'</b>곡<br>예상 소요 약 <b>'+dmin(n*AVG)+'</b> (곡당 약 '+Math.round(AVG)+'초 가정, 한 번 돌리면 이 기기 속도로 보정돼요)'+last}
+q('bsd').onchange=()=>{if(!RUN){pick();list();sum()}};
 q('bsa').onclick=()=>{if(RUN)return;SEL=new Set(CAND.filter(s=>!s.perfect));list();sum()};q('bsn').onclick=()=>{if(RUN)return;SEL=new Set();list();sum()};
 q('bsf').onclick=()=>{if(RUN)return;if(typeof bulkLy==='function'){d.hidden=true;$a('sa').hidden=true;bulkLy()}else alert('목록 화면의 🔍 가사 일괄 버튼을 눌러 주세요')};
-$a('asrall').insertAdjacentHTML('afterend','<button id="bsyb" style="padding:11px 6px">🌙 전곡 자동 싱크 (자는 동안)<small style="display:block;font-weight:400;font-size:12px;margin-top:2px">곡 종류 선택 → 시작·종료 시각 표시 · 싱크 보정/만들기</small></button>');
-q('bsyb').onclick=()=>{if(!RUN)build();else sum();d.hidden=false};
+$a('sax').insertAdjacentHTML('afterend','');
+const bb=document.createElement('button');bb.id='bsyb';bb.style.cssText='padding:11px 6px';bb.innerHTML='🌙 전곡 자동 싱크 (자는 동안)<small style="display:block;font-weight:400;font-size:12px;margin-top:2px">싱크 가사 있는 곡을 파형 분석으로 차례로 보정 · 시작·종료 시각 표시</small>';
+$a('sar').parentNode.parentNode.insertBefore(bb,$a('sar').parentNode);
+bb.onclick=()=>{if(!RUN)build();else sum();d.hidden=false};
 q('bsx').onclick=()=>{if(RUN&&!confirm('돌아가는 중이에요. 화면을 닫아도 계속 돌아가요. 닫을까요?'))return;d.hidden=true};
 q('bsst').onclick=()=>{if(RUN){RUN=2;q('bsst').disabled=true;logL('⏹ 현재 곡까지만 하고 멈춰요...')}};
 q('bsgo').onclick=async()=>{
  if(RUN)return;const todo=CAND.filter(s=>SEL.has(s));if(!todo.length){alert('선택한 곡이 없어요');return}
+ if(busy){alert('다른 분석이 돌고 있어요. 잠시 뒤에 다시 눌러 주세요');return}
  if(!confirm(todo.length+'곡을 차례로 자동 처리해요.\n충전기를 꽂고, 이 화면을 켜 둔 채로 두세요. 시작할까요?'))return;
  RUN=1;q('bsgo').disabled=true;q('bsst').disabled=false;list();logEl.innerHTML='';
- const MN=$a('asrm').value,T0=Date.now();let ok=0,sk=0,fl=0,audSec=0,wl=null;
+ const T0=Date.now();let ok=0,sk=0,fl=0,wl=null;
  const getWl=()=>{try{navigator.wakeLock&&navigator.wakeLock.request('screen').then(x=>{wl=x}).catch(()=>{})}catch{}};getWl();
  const vis=()=>{if(!document.hidden&&RUN)getWl()};document.addEventListener('visibilitychange',vis);
- let cur='',curEl='',doneN=0;const est0=todo.length*DUR*asrFac(MN);
- const paint=()=>{const now=Date.now(),el=(now-T0)/1000;let rem;if(doneN>0&&audSec>0){rem=(el/doneN)*(todo.length-doneN)}else rem=est0;q('bss').innerHTML='시작 <b>'+clk(T0)+'</b> · 예상 종료 <b>'+clk(now+Math.max(0,rem)*1000)+'</b><br>경과 '+dmin(el)+' · 남은 약 '+dmin(rem)+'<br>진행 <b>'+doneN+' / '+todo.length+'</b>곡 · 완료 '+ok+' · 건너뜀 '+sk+' · 실패 '+fl+'<br>지금: '+esc(cur)+'<br><span style="color:var(--mu,#9a9aa8)">'+esc(curEl)+'</span>'};
+ let cur='',doneN=0;
+ const paint=()=>{const now=Date.now(),el=(now-T0)/1000,per=doneN?el/doneN:AVG,rem=per*(todo.length-doneN);q('bss').innerHTML='시작 <b>'+clk(T0)+'</b> · 예상 종료 <b>'+clk(now+rem*1000)+'</b><br>경과 '+dmin(el)+' · 남은 약 '+dmin(rem)+'<br>진행 <b>'+doneN+' / '+todo.length+'</b>곡 · 완료 '+ok+' · 건너뜀 '+sk+' · 실패 '+fl+'<br>지금: '+esc(cur)};
  const iv=setInterval(paint,1000);paint();
- const mm2={set textContent(v){curEl=v}};
- logL('▶ 시작 '+clk(T0)+' · '+todo.length+'곡 · 모델 '+asrKey(MN));
+ logL('▶ 시작 '+clk(T0)+' · '+todo.length+'곡 · 목소리 대역 파형 분석');
  try{
-  ASRT0=Date.now();await asrInit(MN,mm2);ASRT0=0;
-  for(let n=0;n<todo.length&&RUN===1;n++){const s=todo[n],t1=Date.now(),K=kind(s),tg=(n+1)+'. ['+KN[K]+'] '+(s.title||s.name),tm=()=>' · '+clk(t1)+'→'+clk(Date.now());cur=(n+1)+'/'+todo.length+' · '+(s.title||s.name);curEl='소리 불러오는 중';
+  for(let n=0;n<todo.length&&RUN===1;n++){const s=todo[n],t1=Date.now(),tg=(n+1)+'. '+(s.title||s.name),tm=()=>' · '+Math.round((Date.now()-t1)/1000)+'초';cur=(n+1)+'/'+todo.length+' · '+(s.title||s.name);
    try{
-    const L=plrc(s.lyrics||''),g=K==='sync'?sig(s):null;
-    let pcm=await asrPcm(s.blob);pcm=asrKeep(pcm,K==='sync'?L.l.map(x=>x[0]):null);const dur=pcm.od||pcm.length/16000;audSec+=dur;
-    const ref=K==='plain'?L.l.map(x=>x[1]).filter(x=>x&&!/^\[.*\]$/.test(x.trim())):[];
-    const tx=K==='sync'?L.l.map(x=>x[1]).join(''):ref.join(''),ko=(tx.match(/[\uac00-\ud7a3]/g)||[]).length,la=(tx.match(/[a-z]/gi)||[]).length,lg=$a('asrl').value||(ko+la?(ko>la*.3?'korean':'english'):undefined);
-    const tr=asrTrack(mm2,pcm.length/16000,MN,'듣는 중');
-    let out;try{out=await asrCall(MN,mm2,pcm,{return_timestamps:'word',chunk_length_s:30,stride_length_s:5,language:lg,task:'transcribe',streamer:tr.st})}finally{tr.stop()}
-    const W=asrClean(asrUn(out.chunks||[],pcm));
-    if(K==='sync'){
-     const r=asrAlign(W,L.l),RT=Math.round(r.rate*100);
-     if(r.n<3||r.mad>2){s.asrFix=2;sk++;logL('– '+tg+' · 건너뜀 (인식률 '+RT+'%, 일치 '+r.n+'/'+r.lines+')'+tm())}
-     else{const FT=asrFit(r,L.l.map(x=>x[0]),dur),o=FT.o;setSy(s,{v:1,a:1,pl:FT.pl,o,d:FT.d,n:g.n,t0:g.t0,dur,h:lh(s),z:0,src:'asr',rate:RT},'');s.asrFix=1;ok++;logL('✓ '+tg+' · 보정 '+(o>=0?'+':'')+o.toFixed(2)+'초 · 인식률 '+RT+'%'+tm())}
-    }else if(K==='plain'){
-     const r=asrMap(W,ref);
-     if(r.hits>=3&&r.hits>=ref.length*.3){const t=asrFill(r.times,dur);s.lyrics=ref.map((x,k)=>lrcT(t[k])+x.trim()).join('\n');s.off=0;s.tried=1;delete s.sy;s.asrFix=1;try{BK[s.name]=Object.assign(BK[s.name]||{n:s.name},{l:s.lyrics,o:0});bkSave()}catch{}ok++;if(S[i]===s){lyr();A.ontimeupdate()}logL('✓ '+tg+' · 싱크 만듦 (줄 '+r.hits+'/'+ref.length+' 일치)'+tm())}
-     else{s.asrFix=2;sk++;logL('– '+tg+' · 건너뜀 (줄 '+r.hits+'/'+ref.length+' 일치)'+tm())}
-    }else{
-     const lrc=asrLines(W);const nl=lrc?lrc.split('\n').length:0;
-     if(nl<3){s.asrFix=2;sk++;logL('– '+tg+' · 건너뜀 (인식된 줄 '+nl+'개)'+tm())}
-     else{s.lyrics=lrc;s.off=0;s.tried=1;delete s.sy;s.asrFix=1;try{BK[s.name]=Object.assign(BK[s.name]||{n:s.name},{l:lrc,o:0});bkSave()}catch{}ok++;if(S[i]===s){lyr();A.ontimeupdate()}logL('✓ '+tg+' · 받아쓰기 '+nl+'줄'+tm())}
+    const g=sig(s);
+    if(!g){s.wvFix=2;sk++;logL('– '+tg+' · 건너뜀 (싱크 가사 아님)')}
+    else{
+     const L=await run(s,false);
+     if(!L){s.wvFix=3;fl++;logL('✗ '+tg+' · 분석 실패'+tm())}
+     else if(L.good){commit(s,L,false);s.wvFix=1;ok++;const o=s.sy&&s.sy.o||0;logL('✓ '+tg+' · 보정 '+(o>=0?'+':'')+o.toFixed(2)+'초'+(L.r.rate?' · 속도차 '+(L.r.rate*100).toFixed(1)+'%':'')+' · 신뢰도 '+L.r.z.toFixed(1)+tm())}
+     else{s.wvFix=2;sk++;logL('– '+tg+' · 건너뜀 (신뢰도 낮음 '+L.r.z.toFixed(1)+', 줄 일치 '+Math.round(L.r.hit*100)+'%)'+tm())}
     }
-   }catch(e){s.asrFix=3;fl++;logL('✗ '+tg+' · 실패: '+(e&&e.message||e))}
-   try{await put(s)}catch{}doneN++;const gg=q('bsl').querySelector('small[data-k="'+CAND.indexOf(s)+'"]');if(gg)gg.textContent=KN[kind(s)]+(stOf(s)?' · '+stOf(s):'');paint()}
+   }catch(e){s.wvFix=3;fl++;logL('✗ '+tg+' · 실패: '+(e&&e.message||e))}
+   try{await put(s)}catch{}doneN++;AVG=(Date.now()-T0)/1000/doneN;const gg=q('bsl').querySelector('small[data-k="'+CAND.indexOf(s)+'"]');if(gg)gg.textContent=stOf(s);paint();await new Promise(r=>setTimeout(r,30))}
  }catch(e){logL('✗ 중단: '+(e&&e.message||e))}
  clearInterval(iv);document.removeEventListener('visibilitychange',vis);try{wl&&wl.release()}catch{}
- const T1=Date.now(),stopped=RUN===2;RUN=0;ASRT0=0;
+ const T1=Date.now(),stopped=RUN===2;RUN=0;stt('');
  try{localStorage.bsyLast=JSON.stringify({a:T0,b:T1,ok,sk,fl})}catch{}
  q('bss').innerHTML=(stopped?'⏹ 멈춤':'✅ 끝')+'<br>시작 <b>'+clk(T0)+'</b> · 종료 <b>'+clk(T1)+'</b> (총 '+dmin((T1-T0)/1000)+')<br>완료 <b>'+ok+'</b>곡 · 건너뜀 '+sk+'곡 · 실패 '+fl+'곡';
  logL((stopped?'⏹ 멈춤 ':'✅ 끝 ')+clk(T1)+' · 완료 '+ok+' · 건너뜀 '+sk+' · 실패 '+fl);
@@ -1073,38 +1000,39 @@ const Q=s=>document.querySelector(s),ls=(k,v)=>{try{if(v===undefined)return loca
 const H=c=>[1,3,5].map(k=>parseInt(c.slice(k,k+2),16)),X=r=>'#'+r.map(v=>Math.round(Math.max(0,Math.min(255,v))).toString(16).padStart(2,'0')).join(''),mx=(a,b,t)=>{const p=H(a),q=H(b);return X(p.map((v,k)=>v+(q[k]-v)*t))},ra=(c,a)=>'rgba('+H(c).join(',')+','+a+')';
 const hs=(h,s,l)=>{h=((h%360)+360)%360;const a=s*Math.min(l,1-l),f=n=>{const k=(n+h/30)%12;return l-a*Math.max(-1,Math.min(k-3,9-k,1))};return X([f(0)*255,f(8)*255,f(4)*255])};
 const SK=[
-['red','🔥','다크 레드',{bg:'#141418',ac:'#ff5a4d',g1:'#ff7a3d',g2:'#e8344e',bgi:'radial-gradient(120% 50% at 50% -8%,#5c1a20,transparent 65%),radial-gradient(60% 40% at 100% 100%,#2a0d18,transparent 70%)'}],
-['neon','💙','네온 블루',{bg:'#060a1a',ac:'#2fd8ff',g1:'#2fd8ff',g2:'#7b5cff',mu:'#8c9bc4',bgi:'radial-gradient(70% 40% at 0% 0%,rgba(47,216,255,.28),transparent 70%),radial-gradient(70% 45% at 100% 100%,rgba(255,60,200,.22),transparent 70%)'}],
-['forest','🌲','숲',{bg:'#0c1912',tx:'#e8f5ea',ac:'#7ddc8a',g1:'#b4e35f',g2:'#2e9e6b',mu:'#8fa99a',bgi:'radial-gradient(90% 40% at 50% -5%,#24502f,transparent 70%),radial-gradient(60% 40% at 0% 100%,#173a26,transparent 70%)'}],
-['sunset','🌇','노을',{bg:'#1a1024',ac:'#ff9a5a',g1:'#ffb347',g2:'#e0457b',mu:'#b9a3c9',bgi:'linear-gradient(180deg,#3b1a4a 0,#9c3560 26%,#e8744a 40%,#1a1024 68%)'}],
-['black','⚫','순수 블랙',{bg:'#000000',ac:'#ffffff',g1:'#f4f4f4',g2:'#b5b5b5',onad:'#000',bgi:'none'}],
-['light','☀️','라이트 (낮 야외)',{dk:0,bg:'#ffffff',tx:'#15161c',mu:'#5b5f6e',ac:'#d6336c',g1:'#ff6b6b',g2:'#d6336c',bgi:'linear-gradient(180deg,#ffd0d8 0,#ffffff 240px)'}],
-['sakura','🌸','벚꽃',{dk:0,bg:'#fff4f8',tx:'#3a2330',mu:'#8a6676',ac:'#e0568b',g1:'#f58fb0',g2:'#e0568b',bgi:'radial-gradient(60% 35% at 15% 0%,#ffd0e1,transparent 70%),radial-gradient(50% 30% at 95% 12%,#ffe8c8,transparent 70%),radial-gradient(60% 40% at 50% 100%,#f3d9ff,transparent 70%)'}],
-['ocean','🌊','바다',{dk:0,bg:'#eefaff',tx:'#0b2a3a',mu:'#4d7285',ac:'#0a8fb8',g1:'#35c2e6',g2:'#0a7fb8',bgi:'linear-gradient(180deg,#bfeaff 0,#eefaff 45%,#d9f5ef 100%)'}],
-['candy','🍬','캔디',{dk:0,bg:'#fff8e7',tx:'#33243f',mu:'#7d6a8c',ac:'#8e5cf7',g1:'#ff7ac6',g2:'#8e5cf7',bgi:'linear-gradient(135deg,#ffe0f1 0,#e0ecff 50%,#fff2cc 100%)'}],
-['grape','🍇','보랏빛 밤',{bg:'#130d21',ac:'#b388ff',g1:'#c89bff',g2:'#7c4dff',mu:'#a59bc0',bgi:'radial-gradient(90% 45% at 50% -6%,#43287a,transparent 70%),radial-gradient(60% 35% at 0% 100%,#2a1550,transparent 70%)'}],
-['cafe','☕','카페',{bg:'#1c1511',tx:'#f3e7da',ac:'#e0a56a',g1:'#e8b883',g2:'#b8733a',mu:'#a89484',bgi:'radial-gradient(90% 40% at 50% -5%,#4a3322,transparent 70%)'}],
-['aurora','🌌','오로라 (움직임)',{bg:'#050c17',ac:'#5cf2c8',g1:'#5cf2c8',g2:'#8a6bff',mu:'#8aa6b8',an:1,bgi:'linear-gradient(180deg,#0a1b2e,#050c17 60%)'}],
-['album','🖼','앨범색 자동',{bg:'#141418',ac:'#ff5a4d',bgi:'none'}]];
-function V(o){const dk=o.dk!==0,tx=o.tx||(dk?'#f2f2f6':'#17171c'),bg=o.bg,ac=o.ac;return{bg,tx,ac,g1:o.g1||ac,g2:o.g2||ac,mu:o.mu||mx(bg,tx,.6),pn:mx(bg,tx,.06),bt:mx(bg,tx,.1),bd:mx(bg,tx,.17),ft:dk?mx(bg,'#000000',.3):mx(bg,tx,.05),acb:mx(bg,ac,dk?.24:.16),ok:dk?'#6fe39a':'#12924a',ac2:dk?mx(ac,'#ffffff',.3):mx(ac,'#000000',.25),cur:o.cur||(dk?'#ffffff':tx),glow:ra(ac,dk?.45:.18),nx:ra(mx(bg,ac,.15),.96),ltb:ra(bg,.92),onad:o.onad||'#fff',top:bg,bgi:o.bgi||'none'}}
-let cur=ls('skin')||'red',mode=ls('skMode')||'fix',cuA=null,aoff=ls('skAn')==='0',aon=ls('skAn')==='1';
+['neon','💠','네온 시티',{bg:'#050816',tx:'#e8f4ff',mu:'#7f93bd',ac:'#2fe0ff',g1:'#12b5e6',g2:'#ff2e88',onp:'#ffffff',fx:'grid',bgi:'radial-gradient(80% 38% at 0% 0%,rgba(34,211,238,.32),transparent 70%),radial-gradient(75% 42% at 100% 100%,rgba(255,46,136,.30),transparent 70%),linear-gradient(180deg,#07102a,#050816 55%,#12061f)'},'도현'],
+['peach','🍑','피치 선셋',{dk:0,bg:'#fff1e6',tx:'#2b1d18',mu:'#9a7b6d',ac:'#ff6a4d',g1:'#ff9a5a',g2:'#ff5d6c',onp:'#ffffff',fx:'bokeh',bgi:'radial-gradient(90% 40% at 50% -6%,#ffd2b3,transparent 70%),radial-gradient(60% 35% at 100% 100%,#ffdccb,transparent 70%),linear-gradient(180deg,#fff6ee,#ffe9dc)'},'고운돋움'],
+['sakura','🌸','벚꽃',{dk:0,bg:'#fff2f7',tx:'#3b2231',mu:'#9b6f85',ac:'#ec4e8c',g1:'#ff7fb0',g2:'#e0428a',onp:'#ffffff',fx:'petal',bgi:'radial-gradient(70% 36% at 12% 0%,#ffd0e2,transparent 70%),radial-gradient(60% 30% at 100% 14%,#ffe6c9,transparent 70%),radial-gradient(70% 40% at 50% 104%,#ecd3ff,transparent 70%)'},'하이멜로디'],
+['aurora','🌌','오로라',{bg:'#040b16',tx:'#e9fbff',mu:'#86a8b8',ac:'#4df0c4',g1:'#12bfa0',g2:'#7c4dff',onp:'#ffffff',an:1,fx:'stars',bgi:'linear-gradient(180deg,#0a1f33,#040b16 62%)'},'IBM 플렉스'],
+['grape','🍇','보랏빛 밤',{bg:'#120a24',tx:'#f1eaff',mu:'#a89bd0',ac:'#c08bff',g1:'#9b5cff',g2:'#ff4fa8',onp:'#ffffff',fx:'stars',bgi:'radial-gradient(90% 45% at 50% -6%,#4a2a86,transparent 70%),radial-gradient(60% 35% at 0% 100%,#2c1356,transparent 70%)'},'송명'],
+['forest','🌲','깊은 숲',{bg:'#0b1a12',tx:'#eaf6ec',mu:'#8fb09a',ac:'#7fe38f',g1:'#1f9d62',g2:'#6cc24a',onp:'#04170b',bgi:'radial-gradient(90% 40% at 50% -5%,#256a3a,transparent 70%),radial-gradient(60% 40% at 0% 100%,#143d26,transparent 70%)'},'고운바탕'],
+['cafe','☕','카페 모카',{bg:'#1a120d',tx:'#f6eadf',mu:'#b09a88',ac:'#e9a566',g1:'#e0954f',g2:'#b9602f',onp:'#1b0e06',fx:'bokeh',bgi:'radial-gradient(90% 40% at 50% -5%,#5a3d26,transparent 70%),radial-gradient(60% 35% at 100% 100%,#3a2415,transparent 70%)'},'노토 세리프'],
+['ocean','🌊','푸른 바다',{dk:0,bg:'#eaf8ff',tx:'#0a2a3b',mu:'#5a8296',ac:'#0a9ac9',g1:'#0a7fc4',g2:'#0aa6a0',onp:'#ffffff',bgi:'linear-gradient(180deg,#b9e7ff 0,#eaf8ff 42%,#d3f3ec 100%)'},'나눔고딕'],
+['gold','👑','블랙 골드',{bg:'#0b0a08',tx:'#f5ecd7',mu:'#a89c80',ac:'#e8c25a',g1:'#f3d27a',g2:'#b8862b',onp:'#1a1203',fx:'stars',bgi:'radial-gradient(90% 40% at 50% -6%,#3d3010,transparent 70%),radial-gradient(60% 30% at 100% 100%,#241b08,transparent 70%)'},'명조'],
+['candy','🍬','캔디 팝',{dk:0,bg:'#fff7e0',tx:'#34213f',mu:'#8a6f9a',ac:'#9b5cf6',g1:'#ff5fae',g2:'#8b5cf6',onp:'#ffffff',fx:'bokeh',bgi:'linear-gradient(135deg,#ffe0f1 0,#e0ecff 52%,#fff0c9 100%)'},'주아']];
+function V(o){const dk=o.dk!==0,tx=o.tx||(dk?'#f2f2f6':'#17171c'),bg=o.bg,ac=o.ac;return{bg,tx,ac,g1:o.g1||ac,g2:o.g2||ac,mu:o.mu||mx(bg,tx,.6),pn:mx(bg,tx,.06),bt:mx(bg,tx,.1),bd:mx(bg,tx,.17),ft:dk?mx(bg,'#000000',.3):mx(bg,tx,.05),acb:mx(bg,ac,dk?.24:.16),ok:dk?'#6fe39a':'#12924a',ac2:dk?mx(ac,'#ffffff',.3):mx(ac,'#000000',.25),cur:o.cur||(dk?'#ffffff':tx),glow:ra(ac,dk?.45:.22),nx:ra(mx(bg,ac,.15),.96),ltb:ra(bg,.92),onad:o.onad||o.onp||'#fff',onp:o.onp||'#ffffff',top:bg,bgi:o.bgi||'none'}}
+let cur=ls('skin')||'neon',mode=ls('skMode')||'fix',cuA=null,aoff=ls('skAn')==='0',aon=ls('skAn')==='1';
 const find=id=>SK.find(s=>s[0]===id)||SK[0];
-function put(o,id){let st=document.getElementById('skcss');if(!st){st=document.createElement('style');st.id='skcss';document.head.append(st)}const v=V(o);st.textContent=':root{'+Object.entries(v).map(([k,x])=>'--'+k+':'+x).join(';')+'}';const r=document.documentElement;r.style.colorScheme=o.dk===0?'light':'dark';r.dataset.lt=o.dk===0?'1':'0';r.dataset.an=(aon||(!aoff&&o.an))?'1':'0';const m=document.querySelector('meta[name=theme-color]');if(m)m.content=v.bg}
+if(!SK.some(x=>x[0]===cur))cur='neon';
+const fidx=nm=>FONTS.findIndex(f=>f[0]===nm);
+function skinFont(){if(ls('skFont')==='0'||mode==='alb')return;const k=fidx(find(cur)[4]);if(k<0)return;fI=k;ls('lfont',k);fApply();try{fMenu()}catch{}}
+function put(o,id){let st=document.getElementById('skcss');if(!st){st=document.createElement('style');st.id='skcss';document.head.append(st)}const v=V(o);st.textContent=':root{'+Object.entries(v).map(([k,x])=>'--'+k+':'+x).join(';')+'}';const r=document.documentElement;r.style.colorScheme=o.dk===0?'light':'dark';r.dataset.lt=o.dk===0?'1':'0';r.dataset.fx=o.fx||'';r.dataset.sk=cur;r.dataset.an=(aon||(!aoff&&o.an))?'1':'0';const m=document.querySelector('meta[name=theme-color]');if(m)m.content=v.bg}
 function album(cb){const s=typeof S!=='undefined'&&S[i];if(!s||!s.cover)return cb(null);const im=new Image();im.onload=()=>{try{const c=document.createElement('canvas');c.width=c.height=24;const g=c.getContext('2d');g.drawImage(im,0,0,24,24);const d=g.getImageData(0,0,24,24).data;let r=0,gg=0,b=0,w=0;for(let k=0;k<d.length;k+=4){const R=d[k],G=d[k+1],B=d[k+2],t=Math.max(R,G,B)-Math.min(R,G,B),q=t*t+1;r+=R*q;gg+=G*q;b+=B*q;w+=q}r/=w;gg/=w;b/=w;const M=Math.max(r,gg,b),n=Math.min(r,gg,b),dl=M-n;let h=0;if(dl>8){h=M==r?((gg-b)/dl)%6:M==gg?(b-r)/dl+2:(r-gg)/dl+4;h*=60}cb(h)}catch{cb(null)}};im.onerror=()=>cb(null);im.src=cu(s)}
-function applyNow(){if(mode==='alb'||cur==='album'){album(h=>{if(h==null)return put(find(cur==='album'?'red':cur)[3]);put({bg:hs(h,.4,.08),ac:hs(h,.85,.63),g1:hs(h+28,.9,.6),g2:hs(h-12,.8,.5),bgi:'radial-gradient(100% 45% at 50% -6%,'+hs(h,.6,.24)+',transparent 70%)'})});return}put(find(cur)[3])}
-function onTrack(){try{cover()}catch{}if(mode==='trk'){const L=SK.filter(s=>s[0]!=='album'&&s[0]!==cur);cur=L[Math.floor(Math.random()*L.length)][0]}if(mode==='alb'||mode==='trk')applyNow()}
+function applyNow(){if(mode==='alb'||cur==='album'){album(h=>{if(h==null)return put(find(cur==='album'?'neon':cur)[3]);put({bg:hs(h,.4,.08),ac:hs(h,.85,.63),g1:hs(h+28,.9,.6),g2:hs(h-12,.8,.5),bgi:'radial-gradient(100% 45% at 50% -6%,'+hs(h,.6,.24)+',transparent 70%)'})});return}put(find(cur)[3])}
+function onTrack(){try{cover()}catch{}if(mode==='trk'){const L=SK.filter(s=>s[0]!=='album'&&s[0]!==cur);cur=L[Math.floor(Math.random()*L.length)][0];skinFont()}if(mode==='alb'||mode==='trk')applyNow()}
 if(mode==='boot'){const L=SK.filter(s=>s[0]!=='album');cur=L[Math.floor(Math.random()*L.length)][0]}
 applyNow();
+if(mode==='boot'||ls('skFontInit')!=='2'){skinFont();ls('skFontInit','2')}
 const _inf=info;info=function(){_inf.apply(this,arguments);try{onTrack()}catch{}};
 const sh=document.createElement('div');sh.id='skp';sh.hidden=true;document.body.append(sh);
-function ui(){sh.innerHTML='<div><div class="skh"><b style="font-size:16px">🎨 스킨</b><button id="skx">닫기</button></div><div class="skm">'+[['fix','선택 고정'],['boot','켤 때 랜덤'],['trk','곡마다 랜덤'],['alb','앨범색 자동']].map(([k,n])=>'<button data-m="'+k+'" class="'+(mode==k?'on':'')+'">'+n+'</button>').join('')+'</div><div class="skg">'+SK.filter(s=>s[0]!=='album').map(s=>{const v=V(s[3]);return '<div class="skc'+(s[0]==cur&&mode!=='alb'?' on':'')+'" data-s="'+s[0]+'" style="background:'+(v.bgi!='none'?v.bgi+',':'')+v.bg+';color:'+v.tx+'"><b>'+s[1]+' '+s[2]+'</b><span style="color:'+v.cur+';text-shadow:0 0 12px '+v.glow+'">가사 미리보기</span><i style="background:linear-gradient(90deg,'+v.g1+','+v.g2+')"></i></div>'}).join('')+'</div><label class="ska"><input type="checkbox" id="skan"'+((aon||(!aoff&&find(cur)[3].an))?' checked':'')+'> ✨ 움직이는 배경 (배터리를 조금 더 써요)</label><label class="ska"><input type="checkbox" id="skkr"'+(kr?' checked':'')+'> 🎤 노래방 채움 (현재 줄이 왼쪽부터 차올라요)</label><label class="ska"><input type="checkbox" id="skcv"'+(ls('skCv')!=='0'?' checked':'')+'> 🖼 앨범 이미지를 흐리게 배경으로</label><label class="ska"><input type="checkbox" id="skwd"'+(wd?' checked':'')+'> 🔤 단어별 채움 (단어 길이 비율로 나눠요)</label><b style="font-size:14px">🖍 가사 색</b><div class="lcr"><label>지난 줄<input type="color" id="lcPa" value="'+(ls('lcPa')||dv('mu'))+'"></label><label>현재 줄<input type="color" id="lcCu" value="'+(ls('lcCu')||dv('ac'))+'"></label><label>다음 줄<input type="color" id="lcNx" value="'+(ls('lcNx')||dv('mu'))+'"></label><button id="lcx">기본색</button></div></div>'}
+function ui(){sh.innerHTML='<div><div class="skh"><b style="font-size:16px">🎨 스킨 (10종)</b><button id="skx">닫기</button></div><div class="skm">'+[['fix','선택 고정'],['boot','켤 때 랜덤'],['trk','곡마다 랜덤'],['alb','앨범색 자동']].map(([k,n])=>'<button data-m="'+k+'" class="'+(mode==k?'on':'')+'">'+n+'</button>').join('')+'</div><div class="skg">'+SK.map(s=>{const v=V(s[3]),f=FONTS[fidx(s[4])]||FONTS[0],ff=(f[1]||'inherit').replace(/"/g,"'");return '<div class="skc'+(s[0]==cur&&mode!=='alb'?' on':'')+'" data-s="'+s[0]+'" style="min-height:104px;background:'+(v.bgi!='none'?v.bgi+',':'')+v.bg+';color:'+v.tx+'"><b style="font-family:'+ff+'">'+s[1]+' '+s[2]+'</b><span style="font-family:'+ff+';align-self:flex-start;padding:3px 10px;border-radius:10px;background:linear-gradient(90deg,'+v.g1+','+v.g2+');color:'+v.onp+';box-shadow:0 0 12px '+v.glow+'">가사 미리보기</span><small style="color:'+v.mu+';font-size:11px">글꼴 · '+f[0]+'</small></div>'}).join('')+'</div><label class="ska"><input type="checkbox" id="skft"'+(ls('skFont')!=='0'?' checked':'')+'> 🔤 스킨에 맞춰 글꼴 자동 변경</label><label class="ska"><input type="checkbox" id="skpl"'+(pl?' checked':'')+'> 💊 현재 줄 알약 강조</label><label class="ska"><input type="checkbox" id="skan"'+((aon||(!aoff&&find(cur)[3].an))?' checked':'')+'> ✨ 움직이는 배경 (배터리를 조금 더 써요)</label><label class="ska"><input type="checkbox" id="skkr"'+(kr?' checked':'')+'> 🎤 노래방 채움 (현재 줄이 왼쪽부터 차올라요)</label><label class="ska"><input type="checkbox" id="skcv"'+(ls('skCv')!=='0'?' checked':'')+'> 🖼 앨범 이미지를 흐리게 배경으로</label><label class="ska"><input type="checkbox" id="skwd"'+(wd?' checked':'')+'> 🔤 단어별 채움 (단어 길이 비율로 나눠요)</label><b style="font-size:14px">🖍 가사 색</b><div class="lcr"><label>지난 줄<input type="color" id="lcPa" value="'+(ls('lcPa')||dv('mu'))+'"></label><label>현재 줄<input type="color" id="lcCu" value="'+(ls('lcCu')||dv('ac'))+'"></label><label>다음 줄<input type="color" id="lcNx" value="'+(ls('lcNx')||dv('mu'))+'"></label><button id="lcx">기본색</button></div></div>'}
 sh.oninput=e=>{const t=e.target;if(/^lc(Pa|Cu|Nx)$/.test(t.id)){ls(t.id,t.value);lcApply()}};
-sh.onclick=e=>{const t=e.target;if(t===sh||t.id==='skx'){sh.hidden=true;return}const m=t.closest('[data-m]'),c=t.closest('[data-s]');if(m){mode=m.dataset.m;ls('skMode',mode);if(mode==='boot'||mode==='trk')onTrack();applyNow();ui()}else if(c){cur=c.dataset.s;if(mode==='alb'){mode='fix';ls('skMode',mode)}ls('skin',cur);aoff=aon=false;ls('skAn','');applyNow();ui()}else if(t.id==='skkr'){kr=t.checked;ls('skKr',kr?'1':'0');document.documentElement.dataset.kr=kr?'1':'0'}else if(t.id==='skcv'){ls('skCv',t.checked?'1':'0');cover()}else if(t.id==='skwd'){wd=t.checked;ls('skWd',wd?'1':'0');R.dataset.wd=wd?'1':'0';wdReset()}else if(t.id==='lcx'){['lcPa','lcCu','lcNx'].forEach(k=>ls(k,''));lcApply();ui()}else if(t.id==='skan'){aon=t.checked;aoff=!t.checked;ls('skAn',t.checked?'1':'0');applyNow()}};
+sh.onclick=e=>{const t=e.target;if(t===sh||t.id==='skx'){sh.hidden=true;return}const m=t.closest('[data-m]'),c=t.closest('[data-s]');if(m){mode=m.dataset.m;ls('skMode',mode);if(mode==='boot'||mode==='trk')onTrack();applyNow();ui()}else if(c){cur=c.dataset.s;if(mode==='alb'){mode='fix';ls('skMode',mode)}ls('skin',cur);aoff=aon=false;ls('skAn','');applyNow();skinFont();ui()}else if(t.id==='skft'){ls('skFont',t.checked?'1':'0');if(t.checked){skinFont()}}else if(t.id==='skpl'){pl=t.checked;ls('skPl',pl?'1':'0');document.documentElement.dataset.pl=pl?'1':'0'}else if(t.id==='skkr'){kr=t.checked;ls('skKr',kr?'1':'0');document.documentElement.dataset.kr=kr?'1':'0'}else if(t.id==='skcv'){ls('skCv',t.checked?'1':'0');cover()}else if(t.id==='skwd'){wd=t.checked;ls('skWd',wd?'1':'0');R.dataset.wd=wd?'1':'0';wdReset()}else if(t.id==='lcx'){['lcPa','lcCu','lcNx'].forEach(k=>ls(k,''));lcApply();ui()}else if(t.id==='skan'){aon=t.checked;aoff=!t.checked;ls('skAn',t.checked?'1':'0');applyNow()}};
 Q('#skb').onclick=e=>{e.stopPropagation();ui();sh.hidden=false};
 /* 도구줄 1/2 ↔ 2/2 */
 const lt=Q('.lt'),pg=()=>{const p=+lt.dataset.p;Q('#lpg').textContent=p?'◂ 1/2':'2/2 ▸'};
 lt.dataset.p=ls('lpg')==='1'?'1':'0';pg();Q('#lpg').onclick=()=>{lt.dataset.p=+lt.dataset.p?'0':'1';ls('lpg',lt.dataset.p);pg()};
-const R=document.documentElement;let kr=ls('skKr')!=='0';R.dataset.kr=kr?'1':'0';
+const R=document.documentElement;let kr=ls('skKr')!=='0';R.dataset.kr=kr?'1':'0';let pl=ls('skPl')!=='0';R.dataset.pl=pl?'1':'0';
 function cover(){const s=S[i];if(ls('skCv')!=='0'&&s&&s.cover){R.style.setProperty('--cov','url("'+cu(s)+'")');R.dataset.cv='1'}else R.dataset.cv='0'}
 let wd=ls('skWd')==='1',lastEl=null,lastLi=-2,prevP=null;R.dataset.wd=wd?'1':'0';
 const dv=k=>{const v=getComputedStyle(R).getPropertyValue('--'+k).trim();return /^#[0-9a-f]{6}$/i.test(v)?v:'#888888'};
