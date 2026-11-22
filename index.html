@@ -1130,9 +1130,9 @@ $a('sal').onchange=e=>{const s=S[i];if(!s||!s.sy)return;s.sy.pl=e.target.checked
 $a('saa').onchange=e=>{try{localStorage.sxAuto=e.target.checked?'1':'0'}catch{}};
 /* 🌙 전곡 자동 싱크 (자는 동안): 음성인식 없이 목소리 대역 파형 분석으로 차례 처리 */
 (()=>{
-const css=document.createElement('style');css.textContent='#bsy{position:fixed;inset:0;background:var(--bg,#141418);display:flex;flex-direction:column;padding:14px;gap:8px;z-index:30}#bsy[hidden]{display:none}#bsy .r{display:flex;gap:8px;align-items:center;flex-wrap:wrap}#bsy button{padding:10px 8px;font-size:14px}#bsy .r label{font-size:13px;display:flex;gap:5px;align-items:center}#bsl{flex:1;min-height:90px;overflow:auto;background:var(--pn,#1a1a20);border-radius:12px;padding:4px}#bsl label{display:flex;gap:8px;align-items:center;padding:7px 8px;border-radius:8px;font-size:14px}#bsl label small{margin-left:auto;flex:none;font-size:11.5px}#bsl input{flex:none;width:18px;height:18px;accent-color:var(--ac,#ff5a4d)}#bsl label span{min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}#bsl label button{flex:none;padding:5px 9px;font-size:12px;margin-left:8px}#bsq{flex:1;min-width:0;background:var(--pn,#1b1b22);color:var(--tx,#f2f2f6);border:1px solid var(--bd,#2b2b36);border-radius:12px;padding:10px;font-size:14px}#bss{background:var(--pn,#1a1a20);border-radius:12px;padding:10px 12px;font-size:13.5px;line-height:1.55}#bss b{color:var(--ac2,#ffb3a8)}#bsg{height:20vh;overflow:auto;font-size:12px;line-height:1.45;background:var(--pn,#1a1a20);border-radius:12px;padding:6px 8px;color:var(--mu,#b9b9c6)}';document.head.append(css);
+const css=document.createElement('style');css.textContent='#bsy{position:fixed;inset:0;background:var(--bg,#141418);display:flex;flex-direction:column;padding:14px;gap:8px;z-index:30}#bsy[hidden]{display:none}#bsy .r{display:flex;gap:8px;align-items:center;flex-wrap:wrap}#bsy button{padding:10px 8px;font-size:14px}#bsy .r label{font-size:13px;display:flex;gap:5px;align-items:center}#bsl{flex:1;min-height:90px;overflow:auto;background:var(--pn,#1a1a20);border-radius:12px;padding:4px}#bsl label{display:flex;gap:8px;align-items:center;padding:7px 8px;border-radius:8px;font-size:14px}#bsl label small{margin-left:auto;flex:none;font-size:11.5px}#bsl input{flex:none;width:18px;height:18px;accent-color:var(--ac,#ff5a4d)}#bsl label span{min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}#bsl label button{flex:none;padding:5px 9px;font-size:12px;margin-left:8px}#bsc{display:flex;gap:6px;flex-wrap:wrap}#bsc button{padding:6px 10px;font-size:12.5px}#bsc button.on{border-color:var(--ac,#ff5a4d);background:var(--acb,#3a1a1c)}#bsq{flex:1;min-width:0;background:var(--pn,#1b1b22);color:var(--tx,#f2f2f6);border:1px solid var(--bd,#2b2b36);border-radius:12px;padding:10px;font-size:14px}#bss{background:var(--pn,#1a1a20);border-radius:12px;padding:10px 12px;font-size:13.5px;line-height:1.55}#bss b{color:var(--ac2,#ffb3a8)}#bsg{height:20vh;overflow:auto;font-size:12px;line-height:1.45;background:var(--pn,#1a1a20);border-radius:12px;padding:6px 8px;color:var(--mu,#b9b9c6)}';document.head.append(css);
 const d=document.createElement('div');d.id='bsy';d.hidden=true;
-d.innerHTML='<div class="r" style="flex-wrap:nowrap"><b style="flex:1;font-size:16px">🌙 전곡 자동 싱크</b><button id="bsx">닫기</button></div><small style="color:var(--mu,#9a9aa8)">시간(싱크) 태그가 있는 가사의 시간을 목소리 대역 파형 분석으로 차례로 보정해요. 곡을 재생하지 않고 파일만 읽어서 곡당 수 초면 끝나요.</small><div class="r"><button id="bsa" style="flex:1">전체 선택</button><button id="bsn" style="flex:1">전체 해제</button><button id="bsf" style="flex:1">🔍 가사 먼저 일괄 찾기</button><label style="flex:none"><input type="checkbox" id="bsd"> 이미 한 곡 포함</label></div><div class="r" style="flex-wrap:nowrap"><input id="bsq" type="search" placeholder="🔎 곡 제목·가수 검색 (초성도 가능: ㅅㄹㅎ)" autocomplete="off"><button id="bsqx" style="flex:none">✕</button></div><div id="bsl"></div><div id="bss"></div><div class="r" style="flex-wrap:nowrap"><button id="bsgo" class="add" style="flex:2;border:0">▶ 선택한 곡 자동 시작</button><button id="bsst" style="flex:1" disabled>⏹ 멈추기</button></div><div id="bsg"></div>';
+d.innerHTML='<div class="r" style="flex-wrap:nowrap"><b style="flex:1;font-size:16px">🌙 전곡 자동 싱크</b><button id="bsx">닫기</button></div><small style="color:var(--mu,#9a9aa8)">시간(싱크) 태그가 있는 가사의 시간을 목소리 대역 파형 분석으로 차례로 보정해요. 곡을 재생하지 않고 파일만 읽어서 곡당 수 초면 끝나요.</small><div class="r"><button id="bsa" style="flex:1">전체 선택</button><button id="bsn" style="flex:1">전체 해제</button><button id="bsf" style="flex:1">🔍 가사 먼저 일괄 찾기</button><label style="flex:none"><input type="checkbox" id="bsd"> 이미 한 곡 포함</label></div><div class="r" style="flex-wrap:nowrap"><input id="bsq" type="search" placeholder="🔎 곡 제목·가수 검색 (초성도 가능: ㅅㄹㅎ)" autocomplete="off"><button id="bsqx" style="flex:none">✕</button></div><div id="bsc"></div><div id="bsl"></div><div id="bss"></div><div class="r" id="bsx2" style="display:none"><button id="bsmk" style="flex:1"></button><button id="bsfd" style="flex:1"></button></div><div class="r" style="flex-wrap:nowrap"><button id="bsgo" class="add" style="flex:2;border:0">▶ 선택한 곡 자동 시작</button><button id="bsst" style="flex:1" disabled>⏹ 멈추기</button></div><div id="bsg"></div>';
 document.body.append(d);
 const q=id=>document.getElementById(id);
 const clk=t=>{const x=new Date(t),p=n=>String(n).padStart(2,'0');return (x.getMonth()+1)+'/'+x.getDate()+' '+p(x.getHours())+':'+p(x.getMinutes())+':'+p(x.getSeconds())};
@@ -1140,15 +1140,55 @@ const dmin=s=>{s=Math.max(0,Math.round(s));const h=Math.floor(s/3600),m=Math.flo
 let SEL=new Set(),RUN=0,CAND=[],logEl=q('bsg'),AVG=12,Q='';
 const CHO='ㄱㄲㄴㄷㄸㄹㅁㅂㅃㅅㅆㅇㅈㅉㅊㅋㅌㅍㅎ',cho=t=>[...t].map(c=>{const n=c.charCodeAt(0)-44032;return n>=0&&n<11172?CHO[Math.floor(n/588)]:c}).join('');
 const hit=(s,qs)=>{if(!qs)return true;const h=((s.title||'')+' '+(s.artist||'')+' '+(s.name||'')).toLowerCase(),hc=cho(h);return qs.toLowerCase().split(/\s+/).filter(Boolean).every(k=>h.includes(k)||(/^[ㄱ-ㅎ]+$/.test(k)&&hc.includes(k)))};
-const vis=()=>CAND.filter(s=>hit(s,Q));
+let F='',ALL=[];
+const catOf=s=>s.perfect?'pf':sig(s)?(s.bad?'bad':'ok'):(s.lyrics||'').trim()?'pl':'no';
+const CATS=[['','전체'],['ok','🎚 싱크·미확인'],['bad','🚩 싱크 다름'],['pf','✅ 완벽'],['pl','일반 가사'],['no','가사 없음']];
+const CL={pf:'완벽 표시',bad:'🚩 싱크 다름',ok:'미확인',pl:'일반 가사',no:'가사 없음'};
+const vis=()=>ALL.filter(s=>(!F||catOf(s)==F)&&hit(s,Q));
 const stOf=s=>s.perfect?'완벽 표시':s.sy&&s.sy.a?'✓ 보정됨':s.wvFix===2?'건너뜀':s.wvFix===3?'실패':'';
 const logL=t=>{const e=document.createElement('div');e.textContent=t;logEl.append(e);while(logEl.children.length>400)logEl.firstChild.remove();logEl.scrollTop=1e9};
 function pick(){const inc=q('bsd').checked;SEL=new Set(CAND.filter(s=>!s.perfect&&(inc||!stOf(s))))}
-function build(){Q='';q('bsq').value='';CAND=S.filter(s=>s.blob&&sig(s));pick();list();sum()}
-function list(){q('bsl').innerHTML='';if(!CAND.length){q('bsl').innerHTML='<p class="em">시간(싱크) 태그가 있는 가사가 있는 곡이 없어요<br><small>🔍 가사 먼저 일괄 찾기로 싱크 가사를 받아 주세요</small></p>';return}const V=vis();if(!V.length){const o=Q?S.filter(s=>s.blob&&!sig(s)&&hit(s,Q)).length:0;q('bsl').innerHTML='<p class="em">검색 결과가 없어요'+(o?'<br><small>같은 이름의 곡이 '+o+'곡 있지만 싱크 가사가 없어서 목록에 안 나와요 (🔍 가사 찾기 먼저)</small>':'')+'</p>';return}V.forEach(s=>{const k=CAND.indexOf(s),l=document.createElement('label'),c=document.createElement('input');c.type='checkbox';c.checked=SEL.has(s);c.disabled=!!RUN;c.onchange=()=>{c.checked?SEL.add(s):SEL.delete(s);sum()};const t=document.createElement('span');t.textContent=(s.title||s.name)+(s.artist?' · '+s.artist:'');const g=document.createElement('small');g.textContent=stOf(s);g.dataset.k=k;const bt=document.createElement('button');bt.textContent='▶ 이 곡만';bt.disabled=!!RUN;bt.onclick=e=>{e.preventDefault();e.stopPropagation();runTodo([s],false)};l.append(c,t,g,bt);q('bsl').append(l)})}
-function sum(){if(RUN)return;const n=SEL.size,tot=S.filter(s=>s.blob).length;let last='';try{const L=JSON.parse(localStorage.bsyLast||'null');if(L)last='<br>지난 실행: '+clk(L.a)+' → '+clk(L.b)+' · 보정 '+L.ok+' · 건너뜀 '+L.sk+' · 실패 '+L.fl}catch{}q('bss').innerHTML='전체 <b>'+tot+'</b>곡 중 싱크 가사 있는 곡 '+CAND.length+'곡'+(Q?' · 검색 결과 <b>'+vis().length+'</b>곡':'')+' · 선택 <b>'+n+'</b>곡<br>예상 소요 약 <b>'+dmin(n*AVG)+'</b> (곡당 약 '+Math.round(AVG)+'초 가정, 한 번 돌리면 이 기기 속도로 보정돼요)'+last}
+function build(){Q='';F='';q('bsq').value='';ALL=S.filter(s=>s.blob);CAND=ALL.filter(sig);pick();list();sum()}
+async function mkDraft(s,prog){
+ const tag=t=>/^\[[^\]]*\]$/.test(t),rows=(s.lyrics||'').split(/\r?\n/).map(t=>t.trim()).filter(t=>t&&!tag(t));
+ if(rows.length<3)return{ok:0,msg:'가사가 3줄 이상 있어야 해요'};
+ const ab=await decode(s.blob),c0=ab.getChannelData(0),c1=ab.numberOfChannels>1?ab.getChannelData(1):c0;
+ const F2=await SyncAI.features(c0,c1,ab.sampleRate,async p=>{prog&&prog(p);await new Promise(r=>setTimeout(r,0))});
+ const D=F2.nF<400?null:SyncAI.draft(F2,rows,{from:0});
+ if(!D)return{ok:0,msg:'목소리 구간을 찾지 못했어요 (⏱ 직접 싱크로 맞춰 주세요)'};
+ s.lyrics=rows.map((t,k)=>{const c=Math.round(Math.max(0,D.t[k]||0)*100),m=Math.floor(c/6000),se=(c%6000)/100;return '['+String(m).padStart(2,'0')+':'+se.toFixed(2).padStart(5,'0')+']'+t}).join('\n');
+ s.tried=1;s.off=0;try{await put(s)}catch{}
+ if(S[i]===s){try{lyr();A.ontimeupdate()}catch{}}
+ return{ok:1,fb:!!D.fallback}}
+async function makeSync(s,bt){
+ if(busy)return alert('다른 분석이 돌고 있어요. 잠시 뒤에 다시 눌러 주세요');
+ busy=1;const old=bt.textContent;bt.disabled=true;bt.textContent='소리 읽는 중…';
+ try{const r=await mkDraft(s,p=>{bt.textContent='분석 '+Math.round(p*100)+'%'});
+  if(!r.ok)alert(r.msg);else{stt(r.fb?'⚠️ 끊기는 구간을 못 찾아 글자 수 비례로 배치했어요 (많이 틀릴 수 있어요)':'✅ 싱크 초안을 만들었어요 · ▶ 이 곡만으로 보정하세요');setTimeout(()=>stt(''),6000)}
+ }catch(e){alert('분석 실패: '+(e&&e.message||e))}
+ finally{busy=0;bt.textContent=old;bt.disabled=false;refresh()}}
+function refresh(){ALL=S.filter(s=>s.blob);CAND=ALL.filter(sig);SEL=new Set([...SEL].filter(x=>ALL.includes(x)));list();sum()}
+function chips(){const c=q('bsc');c.innerHTML='';CATS.forEach(([k,n])=>{const cnt=k?ALL.filter(s=>catOf(s)==k).length:ALL.length,b=document.createElement('button');b.textContent=n+' '+cnt;if(F==k)b.className='on';b.onclick=()=>{if(RUN)return;F=k;if(k)SEL=new Set(vis());else pick();list();sum()};c.append(b)})}
+function list(){chips();const L=q('bsl');L.innerHTML='';const V=vis();
+ if(!V.length){L.innerHTML='<p class="em">'+(Q||F?'해당하는 곡이 없어요<br><small>앱에 표시된 곡 제목과 다를 수 있어요 (띄어쓰기·받침 확인). 파일 이름·가수로도 찾아 보세요</small>':'곡이 없어요')+'</p>';return}
+ V.forEach(s=>{const c=catOf(s),k=CAND.indexOf(s),l=document.createElement('label'),ck=document.createElement('input');ck.type='checkbox';ck.checked=SEL.has(s);ck.disabled=!!RUN;ck.onchange=()=>{ck.checked?SEL.add(s):SEL.delete(s);sum()};
+  const t=document.createElement('span');t.textContent=(s.title||s.name)+(s.artist?' · '+s.artist:'');const g=document.createElement('small');g.dataset.k=k;g.textContent=(c=='ok'||c=='bad')?(stOf(s)||CL[c]):CL[c];
+  l.append(ck,t,g);
+  const mk=(txt,fn)=>{const bt=document.createElement('button');bt.textContent=txt;bt.disabled=!!RUN;bt.onclick=e=>{e.preventDefault();e.stopPropagation();fn(bt)};l.append(bt)};
+  if(c=='ok'||c=='bad'||c=='pf')mk('▶ 이 곡만',()=>runTodo([s],false));
+  else{if(c=='pl')mk('🤖 싱크 만들기',bt=>makeSync(s,bt));mk('🔍 찾기',async bt=>{bt.disabled=true;bt.textContent='찾는 중…';try{await autoLy(s,await durOf(s))}catch{}refresh()})}
+  L.append(l)})}
+function sum(){if(RUN)return;{const p=[...SEL].filter(x=>catOf(x)=='pl').length,z=[...SEL].filter(x=>catOf(x)=='no').length;q('bsx2').style.display=p||z?'flex':'none';q('bsmk').style.display=p?'':'none';q('bsfd').style.display=p+z?'':'none';q('bsmk').textContent='🤖 일반 가사 '+p+'곡 싱크 만들기';q('bsfd').textContent='🔍 가사 '+(p+z)+'곡 찾기'}const n=[...SEL].filter(x=>sig(x)).length,nx=SEL.size-n,tot=S.filter(s=>s.blob).length;let last='';try{const L=JSON.parse(localStorage.bsyLast||'null');if(L)last='<br>지난 실행: '+clk(L.a)+' → '+clk(L.b)+' · 보정 '+L.ok+' · 건너뜀 '+L.sk+' · 실패 '+L.fl}catch{}q('bss').innerHTML='전체 <b>'+tot+'</b>곡 중 싱크 가사 있는 곡 '+CAND.length+'곡'+(Q?' · 검색 결과 <b>'+vis().length+'</b>곡':'')+' · 선택 <b>'+n+'</b>곡'+(nx?' (+싱크 없는 곡 '+nx+'곡)':'')+'<br>예상 소요 약 <b>'+dmin(n*AVG)+'</b> (곡당 약 '+Math.round(AVG)+'초 가정, 한 번 돌리면 이 기기 속도로 보정돼요)'+last}
 q('bsd').onchange=()=>{if(!RUN){pick();list();sum()}};
-q('bsa').onclick=()=>{if(RUN)return;const v=vis().filter(s=>!s.perfect);if(!Q)SEL=new Set(v);else v.forEach(s=>SEL.add(s));list();sum()};q('bsn').onclick=()=>{if(RUN)return;if(!Q)SEL=new Set();else vis().forEach(s=>SEL.delete(s));list();sum()};
+q('bsa').onclick=()=>{if(RUN)return;const v=vis().filter(s=>F=='pf'||!s.perfect);if(!Q&&!F)SEL=new Set(v.filter(s=>sig(s)));else v.forEach(s=>SEL.add(s));list();sum()};q('bsn').onclick=()=>{if(RUN)return;if(!Q&&!F)SEL=new Set();else vis().forEach(s=>SEL.delete(s));list();sum()};
+q('bsmk').onclick=async()=>{if(RUN||busy)return;const T=[...SEL].filter(x=>catOf(x)=='pl');if(!T.length)return;if(!confirm(T.length+'곡의 싱크 초안을 차례로 만들어요 (곡당 수 초~수십 초). 시작할까요?'))return;
+ busy=1;let ok=0,fl=0;const b=q('bsmk');b.disabled=true;
+ try{for(let n=0;n<T.length;n++){const s=T[n];try{const r=await mkDraft(s,p=>{b.textContent='🤖 '+(n+1)+'/'+T.length+' · '+Math.round(p*100)+'%'});r.ok?ok++:fl++}catch{fl++}}}finally{busy=0;b.disabled=false}
+ stt('🤖 싱크 만들기 끝: 완료 '+ok+' · 실패 '+fl+' · 위 목록의 ▶ 이 곡만으로 보정하세요');setTimeout(()=>stt(''),8000);refresh()};
+q('bsfd').onclick=async()=>{if(RUN)return;const T=[...SEL].filter(x=>{const c=catOf(x);return c=='pl'||c=='no'});if(!T.length)return;if(!confirm(T.length+'곡의 싱크 가사를 사이트에서 차례로 찾아요 (시간이 걸려요). 시작할까요?'))return;
+ const b=q('bsfd');b.disabled=true;
+ try{for(let n=0;n<T.length;n++){b.textContent='🔍 '+(n+1)+'/'+T.length;try{await autoLy(T[n],await durOf(T[n]))}catch{}}}finally{b.disabled=false}
+ refresh()};
 q('bsq').oninput=()=>{Q=q('bsq').value.trim();list();sum()};q('bsqx').onclick=()=>{Q='';q('bsq').value='';list();sum()};
 q('bsf').onclick=()=>{if(RUN)return;if(typeof bulkLy==='function'){d.hidden=true;$a('sa').hidden=true;bulkLy()}else alert('목록 화면의 🔍 가사 일괄 버튼을 눌러 주세요')};
 $a('sax').insertAdjacentHTML('afterend','');
