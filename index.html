@@ -88,7 +88,7 @@ html[data-fx="bokeh"]::before{background:radial-gradient(70px 70px at 15% 25%,co
 <footer><div class="pi"><div id="pc" style="display:contents"></div><div><b id="tt">재생 중인 곡 없음</b><small id="ta"></small></div></div>
 <div class="sb"><span id="tc">0:00</span><input id="sk" type="range" min="0" max="1" step="0.1" value="0"><span id="td">0:00</span></div>
 <div class="cb"><button id="sf">⇄</button><button id="pv">⏮</button><button id="pp">▶</button><button id="nt">⏭</button><button id="rp">↻</button><button id="sl"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l3 2M9 2h6M12 2v3"/></svg></button></div><audio id="a"></audio><div id="ver"></div></footer>
-<div id="bk" hidden><div class="mh"><b style="flex:1;align-self:center">💾 가사 백업 / 복원</b><button id="bkx">닫기</button></div><small>곡 파일 이름으로 가사·싱크와 제목·가수를 저장해요 (음악 파일은 포함되지 않아요)</small><button id="lrca">💾 전체 저장 (zip 파일)</button><label class="add" style="text-align:center;background:var(--bt,#22222c)">백업 파일 불러오기<input id="bkf" type="file" hidden accept=".zip,.json,.txt,application/zip,application/json"></label><b style="margin-top:6px">앱 안 최근 기록 (최대 5개)</b><div id="bkh" style="flex:1;overflow:auto"></div><div id="bkm" style="color:var(--ac2,#ffb3a8);font-size:13px"></div></div>
+<div id="bk" hidden><div class="mh"><b style="flex:1;align-self:center">💾 가사 백업 / 복원</b><button id="bkx">닫기</button></div><small>곡 파일 이름으로 가사·싱크와 제목·가수를 저장해요 (음악 파일은 포함되지 않아요)</small><button id="lrca">💾 전체 저장 (zip 파일)</button><label class="add" style="text-align:center;background:var(--bt,#22222c)">백업 파일 불러오기<input id="bkf" type="file" hidden accept=".zip,.json,.txt,application/zip,application/json"></label><div id="gd" style="display:flex;flex-direction:column;gap:6px;border:1px solid var(--bd,#2b2b36);border-radius:12px;padding:10px"><b>☁️ 구글 드라이브 자동 백업</b><input id="gdc" placeholder="Google 클라이언트 ID (…apps.googleusercontent.com)" style="background:var(--pn,#1b1b22);color:var(--tx,#f2f2f6);border:1px solid var(--bd,#2b2b36);border-radius:12px;padding:10px;font-size:13px"><div class="mh"><button id="gdl" style="flex:1">🔑 연결</button><button id="gdn" style="flex:1">☁️ 지금 백업</button><button id="gdr" style="flex:1">⬇️ 복원</button></div><label style="font-size:13px;display:flex;gap:8px;align-items:center"><input type="checkbox" id="gda"> 가사·싱크가 바뀌면 자동 백업</label><small id="gds" style="min-height:16px;line-height:1.35"></small></div><b style="margin-top:6px">앱 안 최근 기록 (최대 5개)</b><div id="bkh" style="flex:1;overflow:auto"></div><div id="bkm" style="color:var(--ac2,#ffb3a8);font-size:13px"></div></div>
 <div id="cf" hidden><div class="mh"><b style="flex:1;align-self:center">⚙ 가사 중계 서버</b><button id="cfx">닫기</button></div><small>Cloudflare Worker 주소를 넣으면 알송·지니·멜론 등이 안정적으로 연결돼요</small><input id="cfu" placeholder="https://이름.계정.workers.dev" style="background:var(--pn,#1b1b22);color:var(--tx,#f2f2f6);border:1px solid var(--bd,#2b2b36);border-radius:12px;padding:11px;font-size:14px"><div class="mh"><button id="cfs">저장</button><button id="cft">연결 점검</button></div><div class="mh"><b style="flex:1;align-self:center;font-size:13px">📊 출처별 기록 (누적)</b><button id="sstc">복사</button><button id="sstr">지우기</button></div><div id="sstd" style="white-space:pre-wrap;font-size:12px;line-height:1.5;max-height:42vh;overflow:auto;user-select:text;-webkit-user-select:text;background:var(--pn,#1b1b22);border-radius:12px;padding:10px"></div><div id="cfr" style="flex:1;overflow:auto"></div></div>
 <div id="fd" hidden><div class="mh"><input id="fq" placeholder="제목 가수"><button id="fs">검색</button><button id="fcfg" title="중계 서버 설정">⚙</button><button id="fc">닫기</button></div><div id="fr"></div></div>
 <div id="sy" hidden><div class="mh"><b style="flex:1;align-self:center">⏱ 직접 싱크 맞추기</b><button id="syx">닫기</button></div><small>노래를 들으면서 <b>가사가 시작되는 순간마다 큰 버튼</b>을 탭하세요. 줄을 누르면 그 줄부터 다시 맞출 수 있어요.</small><div id="syl"></div><div class="syc"><button id="syp">▶ 재생</button><button id="syb">⏪ 5초</button><button id="syu">↶ 되돌리기</button><button id="syr">속도 1×</button></div><div class="syc"><button id="sya0" title="전주 포함 곡 전체에서 목소리 구간을 찾아 줄 시간을 채워요">🤖 처음부터 자동 초안</button><button id="sya1" title="노래를 첫 가사가 나오는 곳에 두고 누르면 전주를 건너뛰고 맞춰요">🤖 현재 위치부터</button></div><small id="syas" style="min-height:16px;line-height:1.35"></small><button id="syt" class="add">👆 탭</button><button id="syv" style="padding:12px;border-color:var(--ok,#6fe39a);color:var(--ok,#6fe39a)">💾 완료·저장</button></div>
@@ -487,6 +487,92 @@ async function zipApply(buf){const u=new Uint8Array(buf),v=new DataView(buf),de=
  bkSave();if(S[i]){off=S[i].off||0;$('#ov').textContent=off.toFixed(1)+'s';lyr()}render();info();
  stb('적용 '+a+'곡'+(m?' · 목록에 없는 '+m+'곡은 음악을 추가하면 자동으로 적용돼요':'')+(sk?' · 압축된 항목 '+sk+'개는 읽지 못했어요':'')+(bl?' · 일본어/중국어 가사 '+bl+'곡은 제외했어요':''))}
 
+// ☁️ 구글 드라이브 자동 백업 (drive.file 권한: 이 앱이 만든 파일만 접근, 내 드라이브에 zip 한 개로 저장)
+const GD_FN='음악재생기_가사백업.zip',GD_SC='https://www.googleapis.com/auth/drive.file';
+let gdBusy=0,gdPend=0;
+const gdG=k=>{try{return localStorage.getItem(k)}catch{return null}},gdS=(k,v)=>{try{v==null?localStorage.removeItem(k):localStorage.setItem(k,v)}catch{}};
+const GD_CID='150007225114-vactuonjlkbrsboasu4t55m15qgrldcl.apps.googleusercontent.com'; // 공개 값(비밀 아님)
+const gdCid=()=>(gdG('gdCid')||GD_CID).trim();
+const gdSt=(m,bad)=>{const e=$('#gds');if(e){e.textContent=m||'';e.style.color=bad?'var(--ac2,#ffb3a8)':'var(--ok,#6fe39a)'}};
+const gdNow=()=>new Date().toLocaleString('ko-KR',{month:'numeric',day:'numeric',hour:'2-digit',minute:'2-digit'});
+function gdTok(){try{const o=JSON.parse(gdG('gdT')||'null');return o&&o.e-60000>Date.now()?o.t:null}catch{return null}}
+function gdLoad(){return new Promise((ok,no)=>{if(window.google&&google.accounts&&google.accounts.oauth2)return ok();const sc=document.createElement('script');sc.src='https://accounts.google.com/gsi/client';sc.onload=ok;sc.onerror=()=>no(new Error('구글 로그인 스크립트를 불러오지 못했어요 (인터넷 확인)'));document.head.append(sc)})}
+async function gdAuth(prompt){
+ const t0=gdTok();if(t0)return t0;
+ const cid=gdCid();if(!cid)throw new Error('클라이언트 ID를 먼저 입력하세요');
+ await gdLoad();
+ return await new Promise((ok,no)=>{
+  const tc=google.accounts.oauth2.initTokenClient({client_id:cid,scope:GD_SC,
+   callback:r=>{if(r.error)return no(new Error(r.error_description||r.error));gdS('gdT',JSON.stringify({t:r.access_token,e:Date.now()+(+r.expires_in||3600)*1000}));ok(r.access_token)},
+   error_callback:e=>no(new Error('로그인 창을 열지 못했거나 닫혔어요'+(e&&e.type?' ('+e.type+')':'')))});
+  tc.requestAccessToken({prompt})})}
+async function gdFetch(url,o,t){
+ const r=await fetch(url,{...(o||{}),headers:{...((o&&o.headers)||{}),Authorization:'Bearer '+t}});
+ if(r.status===401){gdS('gdT',null);const e=new Error('로그인이 만료됐어요');e.auth=1;throw e}
+ return r}
+async function gdFind(t){
+ const r=await gdFetch('https://www.googleapis.com/drive/v3/files?q='+encodeURIComponent("name='"+GD_FN+"' and trashed=false")+'&orderBy='+encodeURIComponent('modifiedTime desc')+'&fields='+encodeURIComponent('files(id,modifiedTime)'),{},t);
+ if(!r.ok)throw new Error('드라이브 오류 '+r.status+(r.status===403?' (Drive API를 사용 설정했는지 확인하세요)':''));
+ const j=await r.json();return(j.files&&j.files[0])||null}
+function gdBuild(){
+ const a=bkSongs(),used={},fl=a.map(s=>{const b=lrcName(s);let n=b;if(used[b])n=b.replace(/\.lrc$/,' ('+used[b]+').lrc');used[b]=(used[b]||0)+1;return{name:n,text:'[ti:'+(s.title||'').replace(/[\]\n]/g,' ')+']\n[ar:'+(s.artist||'').replace(/[\]\n]/g,' ')+']\n'+lrcOf(s)}});
+ return{n:a.length,h:String(hsh(bkMake())),blob:zipOf(fl)}}
+async function gdUp(t,blob,fid){
+ const mp=meta=>{const bd='gd'+Date.now();return{h:'multipart/related; boundary='+bd,b:new Blob(['--'+bd+'\r\nContent-Type: application/json; charset=UTF-8\r\n\r\n',JSON.stringify(meta),'\r\n--'+bd+'\r\nContent-Type: application/zip\r\n\r\n',blob,'\r\n--'+bd+'--'])}};
+ let r;
+ if(fid){const m=mp({name:GD_FN});r=await gdFetch('https://www.googleapis.com/upload/drive/v3/files/'+fid+'?uploadType=multipart&fields=id',{method:'PATCH',headers:{'Content-Type':m.h},body:m.b},t);if(r.status===404)fid=null}
+ if(!fid){const m=mp({name:GD_FN,mimeType:'application/zip'});r=await gdFetch('https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart&fields=id',{method:'POST',headers:{'Content-Type':m.h},body:m.b},t)}
+ if(!r.ok)throw new Error('드라이브 저장 실패 '+r.status);
+ const j=await r.json();gdS('gdF',j.id);return j.id}
+/* man: 버튼으로 직접 실행 / gest: 화면을 터치한 순간(로그인 창을 띄울 수 있음) */
+async function gdRun(man,gest){
+ if(gdBusy)return;
+ if(!gdCid()){if(man)gdSt('클라이언트 ID를 먼저 입력하세요',1);return}
+ const a=bkSongs();if(!a.length){if(man)gdSt('백업할 가사가 아직 없어요',1);return}
+ const pk=gdBuild();
+ if(!man){
+  if(!gdG('gdH'))return;                       // 이 기기에서 첫 백업은 직접 눌러서 (드라이브 내용을 실수로 덮지 않도록)
+  if(pk.h===gdG('gdH'))return;                  // 바뀐 게 없음
+  const n0=+gdG('gdN')||0;if(n0>=10&&pk.n<n0*0.5){gdSt('⚠️ 곡 수가 절반 넘게 줄어서 자동 백업을 멈췄어요. 확인 후 「지금 백업」을 눌러 주세요',1);return}
+ }
+ gdBusy=1;
+ try{
+  let t=gdTok();
+  if(!t){if(!man&&!gest){gdPend=1;gdSt('☁️ 로그인이 만료됐어요. 화면을 한 번 터치하면 이어서 백업해요',1);return}t=await gdAuth(man?'':'none')}
+  gdSt('☁️ 업로드 중…');
+  let fid=gdG('gdF');
+  if(!fid){const f=await gdFind(t);fid=f&&f.id;
+   if(fid&&!gdG('gdH')&&!confirm('드라이브에 이미 백업이 있어요 ('+(f.modifiedTime||'').slice(0,10)+').\n이 기기 내용('+pk.n+'곡)으로 덮어쓸까요?\n\n다른 기기의 백업을 가져오려면 「취소」 후 ⬇️ 복원을 먼저 누르세요.')){gdSt('취소했어요');return}}
+  fid=await gdUp(t,pk.blob,fid);
+  gdS('gdH',pk.h);gdS('gdN',String(pk.n));gdS('gdL',gdNow());gdPend=0;
+  gdSt('✅ '+pk.n+'곡 백업 완료 · '+gdG('gdL'));
+ }catch(e){
+  if(e&&e.auth){gdPend=1;gdSt('로그인이 만료됐어요. 화면을 한 번 터치하면 이어서 백업해요',1)}
+  else{gdPend=0;gdSt('백업 실패: '+(e&&e.message||e),1)}
+ }finally{gdBusy=0}}
+async function gdRestore(){
+ if(gdBusy)return;if(!gdCid())return gdSt('클라이언트 ID를 먼저 입력하세요',1);
+ gdBusy=1;
+ try{
+  const t=await gdAuth('');gdSt('☁️ 드라이브에서 찾는 중…');
+  const f=await gdFind(t);if(!f)return gdSt('드라이브에 백업 파일이 없어요',1);
+  if(!confirm('드라이브 백업('+(f.modifiedTime||'').slice(0,16).replace('T',' ')+')으로 가사를 복원할까요?\n이 기기의 같은 곡 가사·싱크가 덮어써져요.'))return gdSt('취소했어요');
+  const r=await gdFetch('https://www.googleapis.com/drive/v3/files/'+f.id+'?alt=media',{},t);
+  if(!r.ok)throw new Error('내려받기 실패 '+r.status);
+  await zipApply(await r.arrayBuffer());
+  const pk=gdBuild();gdS('gdF',f.id);gdS('gdH',pk.h);gdS('gdN',String(pk.n));gdS('gdL',gdNow());
+  gdSt('✅ 드라이브에서 복원했어요');
+ }catch(e){gdSt('복원 실패: '+(e&&e.message||e),1)}
+ finally{gdBusy=0}}
+$('#gdc').value=gdCid();$('#gda').checked=gdG('gdA')==='1';if(gdG('gdL'))gdSt('마지막 백업: '+gdG('gdL'));
+$('#gdc').onchange=()=>{gdS('gdCid',$('#gdc').value.trim());gdS('gdT',null)};
+$('#gda').onchange=()=>gdS('gdA',$('#gda').checked?'1':'0');
+$('#gdl').onclick=async()=>{if(gdBusy)return;gdS('gdCid',$('#gdc').value.trim());try{gdSt('🔑 로그인 창을 여는 중…');await gdAuth('');gdS('gdA','1');$('#gda').checked=true;gdSt('✅ 연결됐어요. 「지금 백업」(이 기기 내용을 올림) 또는 「복원」(드라이브 내용을 가져옴)을 눌러 주세요')}catch(e){gdSt('연결 실패: '+(e&&e.message||e),1)}};
+$('#gdn').onclick=()=>gdRun(true);
+$('#gdr').onclick=gdRestore;
+setInterval(()=>{if(!document.hidden&&gdG('gdA')==='1')gdRun(false)},45000);
+document.addEventListener('visibilitychange',()=>{if(document.hidden&&gdG('gdA')==='1')gdRun(false)});
+document.addEventListener('pointerdown',()=>{if(gdPend&&!gdBusy&&gdG('gdA')==='1'){gdPend=0;gdRun(false,true)}},true);
 // ── 🪟 백그라운드 가사 창 (화면 위에 작은 창으로 가사 표시: Picture-in-Picture)
 const pc=document.createElement('canvas');pc.width=720;pc.height=405;const px=pc.getContext('2d');
 const pv=document.createElement('video');pv.muted=true;pv.playsInline=true;pv.setAttribute('playsinline','');pv.style.cssText='position:fixed;left:0;bottom:0;width:2px;height:2px;opacity:.01;pointer-events:none';
@@ -1147,7 +1233,7 @@ async function go(fromHere){
  }catch(e){say('분석 실패: '+(e&&e.message||e),1)}
  finally{busy=0;g('sya0').disabled=g('sya1').disabled=false}}
 g('sya0').onclick=()=>go(false);g('sya1').onclick=()=>go(true);
-})()</script><script>if('serviceWorker' in navigator)addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}))</script><script>(()=>{const BUILD='2026-11-22 11:03 소리 싱크 초안',f=d=>d.toLocaleString('ko-KR',{month:'numeric',day:'numeric',hour:'2-digit',minute:'2-digit',hour12:false}),e=document.getElementById('ver');if(!e)return;let s='빌드 '+BUILD.slice(5);try{const d=new Date(document.lastModified);if(!isNaN(d)&&Math.abs(Date.now()-d)>20000)s+=' · 사이트 반영 '+f(d)}catch{}e.textContent=s;e.title='이 index.html의 빌드 '+BUILD+' (한국 시간)'})()</script><script>(()=>{
+})()</script><script>if('serviceWorker' in navigator)addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}))</script><script>(()=>{const BUILD='2026-11-22 11:03 소리 싱크 초안·드라이브 백업',f=d=>d.toLocaleString('ko-KR',{month:'numeric',day:'numeric',hour:'2-digit',minute:'2-digit',hour12:false}),e=document.getElementById('ver');if(!e)return;let s='빌드 '+BUILD.slice(5);try{const d=new Date(document.lastModified);if(!isNaN(d)&&Math.abs(Date.now()-d)>20000)s+=' · 사이트 반영 '+f(d)}catch{}e.textContent=s;e.title='이 index.html의 빌드 '+BUILD+' (한국 시간)'})()</script><script>(()=>{
 const Q=s=>document.querySelector(s),ls=(k,v)=>{try{if(v===undefined)return localStorage[k];localStorage[k]=v}catch{}};
 const H=c=>[1,3,5].map(k=>parseInt(c.slice(k,k+2),16)),X=r=>'#'+r.map(v=>Math.round(Math.max(0,Math.min(255,v))).toString(16).padStart(2,'0')).join(''),mx=(a,b,t)=>{const p=H(a),q=H(b);return X(p.map((v,k)=>v+(q[k]-v)*t))},ra=(c,a)=>'rgba('+H(c).join(',')+','+a+')';
 const hs=(h,s,l)=>{h=((h%360)+360)%360;const a=s*Math.min(l,1-l),f=n=>{const k=(n+h/30)%12;return l-a*Math.max(-1,Math.min(k-3,9-k,1))};return X([f(0)*255,f(8)*255,f(4)*255])};
