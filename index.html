@@ -86,6 +86,23 @@ main{overscroll-behavior:contain;-webkit-overflow-scrolling:touch}
 #ly{contain:layout style}
 *{-webkit-tap-highlight-color:transparent}
 @media (prefers-reduced-motion:reduce){html body::before,html::before{animation:none!important}}
+
+/* ── 실시간 음악 분석 패널 (고급형 추가) ── */
+#va{position:fixed;inset:0;z-index:35;background:var(--bg,#141418);display:flex;flex-direction:column;padding:14px;gap:10px;overflow:auto}
+#va[hidden]{display:none}
+#va .vah{display:flex;align-items:center;gap:8px}
+#va .vah b{flex:1;font-size:17px}
+#va .vagrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+#va .vabox{background:var(--pn,#1b1b22);border:1px solid var(--bd,#2b2b36);border-radius:13px;padding:10px;min-width:0}
+#va .vabox small{display:block;font-size:11px;color:var(--mu,#9a9aa8)}
+#va .vabox strong{display:block;font-size:20px;line-height:1.35;font-variant-numeric:tabular-nums;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#vac,#vas{display:block;width:100%;height:112px;background:var(--pn,#1a1a20);border:1px solid var(--bd,#2b2b36);border-radius:13px;flex:none}
+#va .vacap{font-size:12px;color:var(--mu,#9a9aa8);margin:0 2px -6px}
+#va .vact{display:flex;gap:8px}
+#va .vact button{flex:1;padding:11px 8px}
+#va label{display:flex;align-items:center;gap:8px;font-size:13px}
+#va .vanote{font-size:12px;line-height:1.5;color:var(--mu,#9a9aa8);background:var(--pn,#1b1b22);padding:10px;border-radius:12px}
+
 </style></head><body>
 <header><h1>🎵</h1><nav><button id="t1">목록</button><button id="t2" class="on">가사</button></nav><button id="bkb" title="백업">💾</button><button id="fu" title="도구줄 숨기기/보이기">⛶</button><button class="add" id="addb">＋ 추가</button></header>
 <div id="pfc" style="padding:4px 14px 6px;font-size:16px;color:var(--mu,#b9b9c6)"></div><div id="st" style="padding:0 14px;font-size:13px;color:var(--ac2,#ffb3a8);min-height:0"></div>
@@ -96,7 +113,7 @@ main{overscroll-behavior:contain;-webkit-overflow-scrolling:touch}
 <button id="adp">🎵 파일 선택<small>곡을 여러 개 고른 뒤, 다음 화면에서 한 번 더 체크할 수 있어요 (녹음 파일은 자동 해제)</small></button>
 <div id="adm"></div><button id="adx">닫기</button></div></div>
 <div id="fpm" hidden></div><div id="nxb" hidden></div><main><section id="v-list" hidden><div id="lqb" style="display:flex;gap:6px;align-items:center;padding:4px 0 6px"><input id="lq" type="search" placeholder="🔎 곡 검색 (제목·가수·초성 ㅅㄹㅎ)" autocomplete="off" style="flex:1;min-width:0;background:var(--pn,#1b1b22);color:var(--tx,#f2f2f6);border:1px solid var(--bd,#2b2b36);border-radius:12px;padding:10px;font-size:14px"><button id="lqx" style="flex:none">✕</button><small id="lqn" style="flex:none;color:var(--mu,#8e8e9c)"></small></div><div id="fdb" class="mh" style="padding:4px 0 6px"></div><div id="dmb" class="mh"></div><div id="list"></div></section>
-<section id="v-ly"><div class="lt" data-p="0"><button data-pg="0" id="fm" title="글자 작게">A−</button><button data-pg="0" id="fp" title="글자 크게">A＋</button><button data-pg="0" id="ff" title="글꼴 선택">🔤</button><button data-pg="0" id="skb" title="스킨">🎨</button><button data-pg="0" id="bd" title="싱크 안 맞는 곡으로 표시">🚩</button><button data-pg="0" id="pf" title="싱크 완벽한 곡으로 표시">✅</button><button id="om" style="display:none" title="싱크 −0.5초">−0.5</button><span id="ov" style="display:none">0.0s</span><button id="op" style="display:none" title="싱크 +0.5초">+0.5</button><button data-pg="1" id="fs1" title="첫 소절 맞추기">🎯</button><button data-pg="1" id="sx" title="자동 싱크 분석">🎚</button><button data-pg="1" id="af" title="가사 찾기">🔍</button><button data-pg="1" id="le" title="가사 편집">📝</button><button data-pg="1" id="eio" title="제목·가수 수정">✏️</button><button data-pg="1" id="syo" title="직접 싱크">⏱</button><button id="lpg" title="도구 더보기">2/2 ▸</button><button id="pip" style="display:none" title="가사 창 띄우기 (백그라운드)">🪟</button></div><div id="ly"><p class="em">곡을 추가하고 선택하면<br>가사가 여기에 크게 표시돼요</p></div></section></main>
+<section id="v-ly"><div class="lt" data-p="0"><button data-pg="0" id="fm" title="글자 작게">A−</button><button data-pg="0" id="fp" title="글자 크게">A＋</button><button data-pg="0" id="ff" title="글꼴 선택">🔤</button><button data-pg="0" id="skb" title="스킨">🎨</button><button data-pg="0" id="bd" title="싱크 안 맞는 곡으로 표시">🚩</button><button data-pg="0" id="pf" title="싱크 완벽한 곡으로 표시">✅</button><button id="om" style="display:none" title="싱크 −0.5초">−0.5</button><span id="ov" style="display:none">0.0s</span><button id="op" style="display:none" title="싱크 +0.5초">+0.5</button><button data-pg="1" id="fs1" title="첫 소절 맞추기">🎯</button><button data-pg="1" id="sx" title="자동 싱크 분석">🎚</button><button data-pg="1" id="vax" title="실시간 음악·음정 분석">🎛</button><button data-pg="1" id="af" title="가사 찾기">🔍</button><button data-pg="1" id="le" title="가사 편집">📝</button><button data-pg="1" id="eio" title="제목·가수 수정">✏️</button><button data-pg="1" id="syo" title="직접 싱크">⏱</button><button id="lpg" title="도구 더보기">2/2 ▸</button><button id="pip" style="display:none" title="가사 창 띄우기 (백그라운드)">🪟</button></div><div id="ly"><p class="em">곡을 추가하고 선택하면<br>가사가 여기에 크게 표시돼요</p></div></section></main>
 <footer><div class="pi"><div id="pc" style="display:contents"></div><div><b id="tt">재생 중인 곡 없음</b><small id="ta"></small></div></div>
 <div class="sb"><span id="tc">0:00</span><input id="sk" type="range" min="0" max="1" step="0.1" value="0"><span id="td">0:00</span></div>
 <div class="cb"><button id="sf">⇄</button><button id="pv">⏮</button><button id="pp">▶</button><button id="nt">⏭</button><button id="rp">↻</button><button id="sl"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l3 2M9 2h6M12 2v3"/></svg></button></div><audio id="a"></audio><div id="ver"></div></footer>
@@ -105,6 +122,29 @@ main{overscroll-behavior:contain;-webkit-overflow-scrolling:touch}
 <div id="fd" hidden><div class="mh"><input id="fq" placeholder="제목 가수"><button id="fs">검색</button><button id="fcfg" title="중계 서버 설정">⚙</button><button id="fc">닫기</button></div><div id="fr"></div></div>
 <div id="sy" hidden><div class="mh"><b style="flex:1;align-self:center">⏱ 직접 싱크 맞추기</b><button id="syx">닫기</button></div><small>노래를 들으면서 <b>가사가 시작되는 순간마다 큰 버튼</b>을 탭하세요. 줄을 누르면 그 줄부터 다시 맞출 수 있어요.</small><div id="syl"></div><div class="syc"><button id="syp">▶ 재생</button><button id="syb">⏪ 5초</button><button id="syu">↶ 되돌리기</button><button id="syr">속도 1×</button></div><div class="syc"><button id="sya0" title="전주 포함 곡 전체에서 목소리 구간을 찾아 줄 시간을 채워요">🤖 처음부터 자동 초안</button><button id="sya1" title="노래를 첫 가사가 나오는 곳에 두고 누르면 전주를 건너뛰고 맞춰요">🤖 현재 위치부터</button></div><small id="syas" style="min-height:16px;line-height:1.35"></small><button id="syt" class="add">👆 탭</button><button id="syv" style="padding:12px;border-color:var(--ok,#6fe39a);color:var(--ok,#6fe39a)">💾 완료·저장</button></div>
 <div id="sa" hidden><div class="mh"><b style="flex:1;align-self:center">🎚 싱크 분석</b><button id="sax">닫기</button></div><small id="sam"></small><small style="color:var(--mu,#9a9aa8);display:block;margin:2px 0">목소리 대역(250~3800Hz) 하모닉을 분석해 가사 시간을 맞춰요. 곡을 재생하지 않고 파일만 읽어서 몇 초면 끝나요.</small><canvas id="sac"></canvas><div class="mh"><button id="sar" class="add" style="flex:2;border:0">🔬 분석 실행</button><button id="sau" style="flex:1">↩ 원래대로</button></div><button id="sag" style="display:none;border-color:var(--ac2,#ffb3a8);color:var(--ac2,#ffb3a8)">⚠️ 신뢰도 낮음 — 그래도 적용</button><div class="mh" id="safine"><button data-k="-10" style="flex:1">−0.1</button><button data-k="-1" style="flex:1">−0.01</button><span id="sao">0.00s</span><button data-k="1" style="flex:1">+0.01</button><button data-k="10" style="flex:1">+0.1</button></div><label><input type="checkbox" id="sal"> 줄별 보정 사용 (줄마다 시간을 따로 맞춤)</label><label><input type="checkbox" id="saa"> 곡을 재생하면 자동으로 분석</label><b style="margin-top:4px">📦 싱크 DB (HTML 안에 압축 내장)</b><small id="sad"></small><div class="mh"><button id="sae" style="flex:2">💾 HTML에 내장해 저장</button><button id="sac2" style="flex:1">복사</button><button id="sai" style="flex:1">불러오기</button></div><textarea id="sat" hidden></textarea></div>
+
+<div id="va" hidden>
+ <div class="vah"><b>🎛 실시간 음악 분석</b><button id="vaxc">닫기</button></div>
+ <small id="vast">분석 패널을 열고 시작을 누르면 현재 재생 소리를 실시간으로 분석합니다.</small>
+ <div class="vagrid">
+  <div class="vabox"><small>실시간 음량 (RMS)</small><strong id="varms">—</strong></div>
+  <div class="vabox"><small>최대 음량 (Peak)</small><strong id="vapeak">—</strong></div>
+  <div class="vabox"><small>음성 가능 구간 추정</small><strong id="vavoice">대기</strong></div>
+  <div class="vabox"><small>음높이 추정 · 혼합음</small><strong id="vapitch">—</strong></div>
+ </div>
+ <p class="vacap">실시간 파형 · 시간 영역</p><canvas id="vac"></canvas>
+ <p class="vacap">주파수 분포 · 저음 / 중음 / 고음</p><canvas id="vas"></canvas>
+ <div class="vagrid">
+  <div class="vabox"><small>저음 (20–250Hz)</small><strong id="valow">—</strong></div>
+  <div class="vabox"><small>중음 (250–2,000Hz)</small><strong id="vamid">—</strong></div>
+  <div class="vabox"><small>고음 (2,000–8,000Hz)</small><strong id="vahi">—</strong></div>
+  <div class="vabox"><small>중심 주파수</small><strong id="vacent">—</strong></div>
+ </div>
+ <div class="vact"><button id="vastart" class="add" style="border:0">▶ 분석 시작</button><button id="vastop">■ 분석 중지</button></div>
+ <label><input type="checkbox" id="vaauto" checked> 패널을 열면 자동으로 분석 시작</label>
+ <div class="vanote">분석은 기존 MP3 재생 및 LRC 데이터를 변경하지 않습니다. 브라우저에서 재생 중인 혼합 오디오를 분석하며, 보컬과 반주를 완전히 분리하는 기능은 아닙니다. 따라서 음성 가능 구간과 음높이는 추정값이며 드럼·악기 소리도 감지될 수 있습니다.</div>
+</div>
+
 <div id="ei" hidden><div class="mh"><b style="flex:1;align-self:center">✏️ 곡 정보 수정</b><button id="eix">닫기</button></div><small>제목과 가수 이름이 정확하면 가사를 더 잘 찾아요 (예: To Heaven / 조성모)</small><input id="eit" placeholder="제목"><input id="eia" placeholder="가수"><input id="eif" placeholder="폴더 (예: 발라드 / 비워두면 폴더 없음)"><button id="eis" class="add" style="border:0">저장</button><button id="eir" style="padding:12px">저장하고 가사 다시 찾기</button></div>
 <div id="ed" hidden><b>가사 편집 (.lrc 시간 태그 [00:12.30] 지원)</b><textarea id="et" placeholder="가사를 붙여넣으세요"></textarea><div style="display:flex;gap:8px"><label class="add" style="flex:1;text-align:center;background:var(--bt,#22222c)">가사 파일 불러오기<input id="lf" type="file" hidden accept=".lrc,.txt"></label><button id="ec">취소</button><button id="es" class="add" style="border:0">저장</button></div></div>
 <script>
@@ -1347,4 +1387,54 @@ let _lt=0;(function loop(){const _n=performance.now();if(_n-_lt<(A.paused?120:33
   if(wd&&p._w)p._w.forEach(([sp,a,b])=>{const v=(Math.max(0,Math.min(1,(f-a)/(b-a)))*100).toFixed(1)+'%';if(sp._v!==v){sp._v=v;sp.style.setProperty('--wp',v)}});else{const v=(f*100).toFixed(1)+'%';if(p._kv!==v){p._kv=v;p.style.setProperty('--kp',v)}}}}}catch{}requestAnimationFrame(loop)})();
 /* 음성인식 필터 기억 */
 const af=document.getElementById('asrf');if(af){af.checked=ls('asrFilt')!=='0';af.onchange=()=>ls('asrFilt',af.checked?'1':'0')}
-})()</script><script>(()=>{const R=document.documentElement,A=document.getElementById('a');if(!A)return;const f=()=>{R.dataset.ap=(!A.paused&&!document.hidden)?'1':'0'};['play','playing','pause','ended','emptied'].forEach(e=>A.addEventListener(e,f));document.addEventListener('visibilitychange',f);f()})();</script></body></html>
+})()</script><script>(()=>{const R=document.documentElement,A=document.getElementById('a');if(!A)return;const f=()=>{R.dataset.ap=(!A.paused&&!document.hidden)?'1':'0'};['play','playing','pause','ended','emptied'].forEach(e=>A.addEventListener(e,f));document.addEventListener('visibilitychange',f);f()})();</script>
+<script>
+/* ── 실시간 음악 분석: Web Audio API / 파형 / FFT / 혼합음 피치 추정 ── */
+(()=>{
+ 'use strict';
+ const $=id=>document.getElementById(id), panel=$('va'), openBtn=$('vax');
+ if(!panel||!openBtn||!window.AudioContext&&!window.webkitAudioContext)return;
+ let ctx=null, analyser=null, raf=0, running=false, routed=false, attached=new WeakSet(), timeData=null,freqData=null;
+ const audioEls=()=>{try{return els}catch{return [$('a')]}};
+ const activeAudio=()=>{try{return audioEls()[cur]}catch{return $('a')}};
+ function status(t){$('vast').textContent=t}
+ function ensureGraph(){
+  if(!ctx){const C=window.AudioContext||window.webkitAudioContext;ctx=new C();analyser=ctx.createAnalyser();analyser.fftSize=2048;analyser.smoothingTimeConstant=.72;analyser.minDecibels=-90;analyser.maxDecibels=-18;timeData=new Uint8Array(analyser.fftSize);freqData=new Uint8Array(analyser.frequencyBinCount)}
+  for(const el of audioEls()){
+   if(!el||attached.has(el))continue;
+   try{const src=ctx.createMediaElementSource(el);src.connect(analyser);attached.add(el)}catch(e){/* 이미 다른 분석기에 연결된 요소는 건드리지 않음 */}
+  }
+  if(!routed){analyser.connect(ctx.destination);routed=true}
+ }
+ function fitCanvas(c){const dpr=Math.min(2,window.devicePixelRatio||1),w=Math.max(1,c.clientWidth),h=Math.max(1,c.clientHeight);if(c.width!==Math.round(w*dpr)||c.height!==Math.round(h*dpr)){c.width=Math.round(w*dpr);c.height=Math.round(h*dpr)}return {g:c.getContext('2d'),w:c.width,h:c.height,dpr}}
+ function drawWave(){const c=$('vac'),{g,w,h}=fitCanvas(c);g.clearRect(0,0,w,h);g.strokeStyle='rgba(111,227,154,.95)';g.lineWidth=1.5*(window.devicePixelRatio||1);g.beginPath();for(let i=0;i<timeData.length;i++){const x=i/(timeData.length-1)*w,y=(1-timeData[i]/255)*h; if(i===0)g.moveTo(x,y);else g.lineTo(x,y)}g.stroke();g.strokeStyle='rgba(255,255,255,.16)';g.beginPath();g.moveTo(0,h/2);g.lineTo(w,h/2);g.stroke()}
+ function drawSpectrum(){const c=$('vas'),{g,w,h}=fitCanvas(c);g.clearRect(0,0,w,h);const n=freqData.length,bars=64,bw=w/bars;for(let b=0;b<bars;b++){const a=Math.floor(Math.pow(b/bars,2)*n),z=Math.max(a+1,Math.floor(Math.pow((b+1)/bars,2)*n));let v=0;for(let k=a;k<z;k++)v=Math.max(v,freqData[k]);const bh=v/255*h*.92;g.fillStyle=b<18?'rgba(80,170,255,.85)':b<43?'rgba(111,227,154,.88)':'rgba(255,174,92,.88)';g.fillRect(b*bw+1,h-bh,Math.max(1,bw-2),bh)}}
+ function band(lo,hi,sr){const a=Math.max(0,Math.floor(lo/(sr/ analyser.fftSize))),b=Math.min(freqData.length-1,Math.ceil(hi/(sr/analyser.fftSize)));let sum=0,n=0;for(let k=a;k<=b;k++){sum+=freqData[k]/255;n++}return n?sum/n:0}
+ function pitchEstimate(){
+  // 2배 다운샘플 후 정규화 자기상관. 반주가 섞인 음원의 참고용 추정치.
+  const n=512, x=new Float32Array(n);let mean=0;
+  for(let i=0;i<n;i++){const v=(timeData[i*4]-128)/128;x[i]=v;mean+=v}mean/=n;let energy=0;for(let i=0;i<n;i++){x[i]-=mean;energy+=x[i]*x[i]}if(energy<.8)return null;
+  const sr=ctx.sampleRate/4,minLag=Math.max(2,Math.floor(sr/900)),maxLag=Math.min(n-2,Math.floor(sr/70));let best=-1,bLag=0;
+  for(let lag=minLag;lag<=maxLag;lag++){let ab=0,aa=0,bb=0;for(let j=0;j<n-lag;j++){const a=x[j],b=x[j+lag];ab+=a*b;aa+=a*a;bb+=b*b}const c=ab/Math.sqrt((aa*bb)||1);if(c>best){best=c;bLag=lag}}
+  if(best<.62||!bLag)return null;const hz=sr/bLag;if(hz<70||hz>900)return null;return {hz,conf:best};
+ }
+ const noteName=hz=>{const names=['도','도♯','레','레♯','미','파','파♯','솔','솔♯','라','라♯','시'];const m=Math.round(69+12*Math.log2(hz/440)),n=((m%12)+12)%12,oct=Math.floor(m/12)-1;return names[n]+oct+' · '+hz.toFixed(0)+'Hz'};
+ function tick(){if(!running||!analyser)return;analyser.getByteTimeDomainData(timeData);analyser.getByteFrequencyData(freqData);drawWave();drawSpectrum();
+  let sq=0,pk=0;for(let i=0;i<timeData.length;i++){const v=(timeData[i]-128)/128;sq+=v*v;pk=Math.max(pk,Math.abs(v))}const rms=Math.sqrt(sq/timeData.length);$('varms').textContent=(rms*100).toFixed(1)+'%';$('vapeak').textContent=(pk*100).toFixed(0)+'%';
+  const sr=ctx.sampleRate,lo=band(20,250,sr),mid=band(250,2000,sr),hi=band(2000,8000,sr);$('valow').textContent=(lo*100).toFixed(1)+'%';$('vamid').textContent=(mid*100).toFixed(1)+'%';$('vahi').textContent=(hi*100).toFixed(1)+'%';
+  let weighted=0,total=0;for(let k=1;k<freqData.length;k++){const v=freqData[k];weighted+=k*(sr/analyser.fftSize)*v;total+=v}$('vacent').textContent=total?(weighted/total).toFixed(0)+'Hz':'—';
+  // 에너지 + 중음 비율에 기반한 소리 구간 휴리스틱. 음성 판별 자체는 아님.
+  const voiceLike=rms>.018&&mid>lo*.35&&mid>hi*.28;$('vavoice').textContent=voiceLike?'발성 가능 소리':'낮은 소리';
+  const p=pitchEstimate();$('vapitch').textContent=p?noteName(p.hz):'추정 불가';
+  raf=requestAnimationFrame(tick)
+ }
+ async function start(){try{ensureGraph();await ctx.resume();running=true;status('실시간 분석 중 · 현재 재생 소리를 읽고 있습니다.');$('vastart').disabled=true;$('vastop').disabled=false;cancelAnimationFrame(raf);tick()}catch(e){status('오디오 분석을 시작하지 못했습니다: '+(e.message||e));}}
+ function stop(){running=false;cancelAnimationFrame(raf);raf=0;$('vastart').disabled=false;$('vastop').disabled=true;status('분석 중지 · MP3 재생과 가사 싱크는 그대로 유지됩니다.')}
+ openBtn.addEventListener('click',()=>{panel.hidden=false;if($('vaauto').checked)start()});$('vaxc').addEventListener('click',()=>{panel.hidden=true;stop()});$('vastart').addEventListener('click',start);$('vastop').addEventListener('click',stop);
+ document.addEventListener('visibilitychange',()=>{if(document.hidden&&running){cancelAnimationFrame(raf);raf=0}else if(!document.hidden&&running){tick()}});
+ window.addEventListener('resize',()=>{if(running){drawWave();drawSpectrum()}});
+ $('vastop').disabled=true;
+})();
+</script>
+
+</body></html>
