@@ -56,9 +56,9 @@ html[data-cv="1"][data-lt="1"] body::after{filter:blur(38px) saturate(1.3) brigh
 #ly.sy p.pa{color:var(--cpa,inherit)}#ly.sy p.nx{color:var(--cnx,inherit)}
 html[data-lc="1"] #ly.sy p.pa,html[data-lc="1"] #ly.sy p.nx{opacity:.7}
 html[data-wd="1"] #ly.sy p.on{background:none!important}
-#ly.sy p.on .w{background:linear-gradient(90deg,var(--lg1,var(--g1)),var(--lg2,var(--g2))) 0 0/var(--wp,0%) 100% no-repeat,color-mix(in srgb,var(--tx) 58%,transparent);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent}
+html[data-wd="1"] #ly.sy p.on .w{background:linear-gradient(90deg,var(--lg1,var(--g1)),var(--lg2,var(--g2))) 0 0/var(--wp,0%) 100% no-repeat,color-mix(in srgb,var(--tx) 58%,transparent);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent}
 .lcr{display:flex;gap:8px;align-items:center;flex-wrap:wrap;font-size:13.5px}.lcr label{display:flex;gap:5px;align-items:center}.lcr input{width:34px;height:30px;padding:0;border:0;background:none}.lcr button{padding:6px 10px;font-size:13px}
-</style></head><body>
+/* 채움 중 네모 번쩍임 제거: drop-shadow 필터가 글자 뒤에 네모 후광을 만들었음 */#ly.sy p.on,#ly.sy p.on .w{filter:none!important;-webkit-tap-highlight-color:transparent}html[data-kr="1"] #ly.sy p.on,html[data-wd="1"] #ly.sy p.on{transform:none!important;transition:opacity .25s!important;will-change:auto}#ly p{-webkit-user-select:none;user-select:none;outline:0}#ly.sy p,#ly.sy p.on{transition:opacity .25s!important}</style></head><body>
 <header><h1>🎵</h1><nav><button id="t1">목록</button><button id="t2" class="on">가사</button></nav><button id="bkb" title="백업">💾</button><button id="fu" title="도구줄 숨기기/보이기">⛶</button><button class="add" id="addb">＋ 추가</button></header>
 <div id="pfc" style="padding:4px 14px 6px;font-size:16px;color:var(--mu,#b9b9c6)"></div><div id="st" style="padding:0 14px;font-size:13px;color:var(--ac2,#ffb3a8);min-height:0"></div>
 <input id="fi" type="file" multiple hidden accept="audio/*,.mp3,.m4a,.flac,.wav,.ogg,.aac,.lrc,.txt"><input id="fi2" type="file" webkitdirectory multiple hidden>
@@ -76,7 +76,7 @@ html[data-wd="1"] #ly.sy p.on{background:none!important}
 <div id="cf" hidden><div class="mh"><b style="flex:1;align-self:center">⚙ 가사 중계 서버</b><button id="cfx">닫기</button></div><small>Cloudflare Worker 주소를 넣으면 알송·지니·멜론 등이 안정적으로 연결돼요</small><input id="cfu" placeholder="https://이름.계정.workers.dev" style="background:var(--pn,#1b1b22);color:var(--tx,#f2f2f6);border:1px solid var(--bd,#2b2b36);border-radius:12px;padding:11px;font-size:14px"><div class="mh"><button id="cfs">저장</button><button id="cft">연결 점검</button></div><div class="mh"><b style="flex:1;align-self:center;font-size:13px">📊 출처별 기록 (누적)</b><button id="sstc">복사</button><button id="sstr">지우기</button></div><div id="sstd" style="white-space:pre-wrap;font-size:12px;line-height:1.5;max-height:42vh;overflow:auto;user-select:text;-webkit-user-select:text;background:var(--pn,#1b1b22);border-radius:12px;padding:10px"></div><div id="cfr" style="flex:1;overflow:auto"></div></div>
 <div id="fd" hidden><div class="mh"><input id="fq" placeholder="제목 가수"><button id="fs">검색</button><button id="fcfg" title="중계 서버 설정">⚙</button><button id="fc">닫기</button></div><div id="fr"></div></div>
 <div id="sy" hidden><div class="mh"><b style="flex:1;align-self:center">⏱ 직접 싱크 맞추기</b><button id="syx">닫기</button></div><small>노래를 들으면서 <b>가사가 시작되는 순간마다 큰 버튼</b>을 탭하세요. 줄을 누르면 그 줄부터 다시 맞출 수 있어요.</small><div id="syl"></div><div class="syc"><button id="syp">▶ 재생</button><button id="syb">⏪ 5초</button><button id="syu">↶ 되돌리기</button><button id="syr">속도 1×</button></div><button id="syt" class="add">👆 탭</button><button id="syv" style="padding:12px;border-color:var(--ok,#6fe39a);color:var(--ok,#6fe39a)">💾 완료·저장</button></div>
-<div id="sa" hidden><div class="mh"><b style="flex:1;align-self:center">🎚 싱크 분석</b><button id="sax">닫기</button></div><small id="sam"></small><select id="asrm" style="padding:10px;border-radius:10px;background:var(--pn,#1b1b22);color:var(--tx,#f2f2f6);border:1px solid var(--bd,#2b2b36);font-size:14px"><option value="Xenova/whisper-tiny">tiny · 약 40MB · 빠름/인식률 낮음</option><option value="Xenova/whisper-base">base · 약 80MB · 추천</option><option value="Xenova/whisper-small">small · 약 250MB · 가장 정확/느림</option></select><small id="asre" style="color:var(--ac2,#ffb3a8);display:block;margin:2px 0"></small><div class="mh"><button id="asrc" style="flex:1;padding:11px 6px">🎙 음성인식으로 가사+싱크 만들기<small style="display:block;font-weight:400;font-size:12px;margin-top:2px">일반 가사가 있으면 그 글자를 쓰고, 없으면 받아쓰기</small></button><select id="asrl" style="flex:none;width:96px;padding:10px 4px;border-radius:10px;background:var(--pn,#1b1b22);color:var(--tx,#f2f2f6);border:1px solid var(--bd,#2b2b36);font-size:14px"><option value="">언어 자동</option><option value="korean">한국어</option><option value="english">영어</option></select></div><label><input type="checkbox" id="asrf" checked> 목소리 대역 필터 (120~5000Hz, 곡마다 효과 달라요)</label><button id="asrb" style="padding:11px 6px">🎙 음성인식으로 맞추기<small style="display:block;font-weight:400;font-size:12px;margin-top:2px">시간 태그가 있는 가사의 시간만 보정 (처음 한 번 모델 받음)</small></button><button id="asrall" style="padding:11px 6px">📚 일반 가사 곡 전부 일괄 음성인식 싱크<small style="display:block;font-weight:400;font-size:12px;margin-top:2px">충전하면서 이 화면을 켜 두세요 · 다시 누르면 멈춰요</small></button><canvas id="sac"></canvas><div class="mh"><button id="sar" class="add" style="flex:2;border:0">🔬 분석 실행</button><button id="sau" style="flex:1">↩ 원래대로</button></div><button id="sag" style="display:none;border-color:var(--ac2,#ffb3a8);color:var(--ac2,#ffb3a8)">⚠️ 신뢰도 낮음 — 그래도 적용</button><div class="mh" id="safine"><button data-k="-10" style="flex:1">−0.1</button><button data-k="-1" style="flex:1">−0.01</button><span id="sao">0.00s</span><button data-k="1" style="flex:1">+0.01</button><button data-k="10" style="flex:1">+0.1</button></div><label><input type="checkbox" id="sal"> 줄별 보정 사용 (줄마다 시간을 따로 맞춤)</label><label><input type="checkbox" id="saa"> 곡을 재생하면 자동으로 분석</label><b style="margin-top:4px">📦 싱크 DB (HTML 안에 압축 내장)</b><small id="sad"></small><div class="mh"><button id="sae" style="flex:2">💾 HTML에 내장해 저장</button><button id="sac2" style="flex:1">복사</button><button id="sai" style="flex:1">불러오기</button></div><textarea id="sat" hidden></textarea></div>
+<div id="sa" hidden><div class="mh"><b style="flex:1;align-self:center">🎚 싱크 분석</b><button id="sax">닫기</button></div><small id="sam"></small><select id="asrm" style="padding:10px;border-radius:10px;background:var(--pn,#1b1b22);color:var(--tx,#f2f2f6);border:1px solid var(--bd,#2b2b36);font-size:14px"><option value="Xenova/whisper-tiny">tiny · 약 40MB · 빠름/인식률 낮음</option><option value="Xenova/whisper-base">base · 약 80MB · 추천</option><option value="Xenova/whisper-small">small · 약 250MB · 정확/느림</option><option value="onnx-community/whisper-large-v3-turbo_timestamped">large-v3-turbo · 최고 정확 · WebGPU 필요 · 용량 큼</option></select><small id="asre" style="color:var(--ac2,#ffb3a8);display:block;margin:2px 0"></small><div class="mh"><small id="asrs" style="flex:1;align-self:center"></small><button id="asrx" style="flex:none;padding:6px 10px;font-size:12px">🗑 모델 지우기</button></div><div class="mh"><button id="asrc" style="flex:1;padding:11px 6px">🎙 음성인식으로 가사+싱크 만들기<small style="display:block;font-weight:400;font-size:12px;margin-top:2px">일반 가사가 있으면 그 글자를 쓰고, 없으면 받아쓰기</small></button><select id="asrl" style="flex:none;width:96px;padding:10px 4px;border-radius:10px;background:var(--pn,#1b1b22);color:var(--tx,#f2f2f6);border:1px solid var(--bd,#2b2b36);font-size:14px"><option value="">언어 자동</option><option value="korean">한국어</option><option value="english">영어</option></select></div><label><input type="checkbox" id="asrf" checked> 목소리 대역 필터 (120~5000Hz, 곡마다 효과 달라요)</label><button id="asrb" style="padding:11px 6px">🎙 음성인식으로 맞추기<small style="display:block;font-weight:400;font-size:12px;margin-top:2px">시간 태그가 있는 가사의 시간만 보정 (처음 한 번 모델 받음)</small></button><button id="asrall" style="padding:11px 6px">📚 일반 가사 곡 전부 일괄 음성인식 싱크<small style="display:block;font-weight:400;font-size:12px;margin-top:2px">충전하면서 이 화면을 켜 두세요 · 다시 누르면 멈춰요</small></button><canvas id="sac"></canvas><div class="mh"><button id="sar" class="add" style="flex:2;border:0">🔬 분석 실행</button><button id="sau" style="flex:1">↩ 원래대로</button></div><button id="sag" style="display:none;border-color:var(--ac2,#ffb3a8);color:var(--ac2,#ffb3a8)">⚠️ 신뢰도 낮음 — 그래도 적용</button><div class="mh" id="safine"><button data-k="-10" style="flex:1">−0.1</button><button data-k="-1" style="flex:1">−0.01</button><span id="sao">0.00s</span><button data-k="1" style="flex:1">+0.01</button><button data-k="10" style="flex:1">+0.1</button></div><label><input type="checkbox" id="sal"> 줄별 보정 사용 (줄마다 시간을 따로 맞춤)</label><label><input type="checkbox" id="saa"> 곡을 재생하면 자동으로 분석</label><b style="margin-top:4px">📦 싱크 DB (HTML 안에 압축 내장)</b><small id="sad"></small><div class="mh"><button id="sae" style="flex:2">💾 HTML에 내장해 저장</button><button id="sac2" style="flex:1">복사</button><button id="sai" style="flex:1">불러오기</button></div><textarea id="sat" hidden></textarea></div>
 <div id="ei" hidden><div class="mh"><b style="flex:1;align-self:center">✏️ 곡 정보 수정</b><button id="eix">닫기</button></div><small>제목과 가수 이름이 정확하면 가사를 더 잘 찾아요 (예: To Heaven / 조성모)</small><input id="eit" placeholder="제목"><input id="eia" placeholder="가수"><input id="eif" placeholder="폴더 (예: 발라드 / 비워두면 폴더 없음)"><button id="eis" class="add" style="border:0">저장</button><button id="eir" style="padding:12px">저장하고 가사 다시 찾기</button></div>
 <div id="ed" hidden><b>가사 편집 (.lrc 시간 태그 [00:12.30] 지원)</b><textarea id="et" placeholder="가사를 붙여넣으세요"></textarea><div style="display:flex;gap:8px"><label class="add" style="flex:1;text-align:center;background:var(--bt,#22222c)">가사 파일 불러오기<input id="lf" type="file" hidden accept=".lrc,.txt"></label><button id="ec">취소</button><button id="es" class="add" style="border:0">저장</button></div></div>
 <script>
@@ -892,6 +892,7 @@ function asrFit(r,T,dur){const P=(r.res||[]).map(x=>[x.tl,x.tl-x.ta]),n=P.length
  if(Math.abs(q)*span<1.0||madL>madC*.8)return c;
  const o=Math.round((p0+q*mt)*100)/100;return{o,pl:1,lin:1,q,d:T.map(t=>Math.round((o-(p0+q*t))/0.02))}}
 window.asrFit=asrFit;
+function asrClean(ws){const o=[];let br=0,bn=0;for(const w of ws||[]){let t=String(w.text||'');const op=/[(\[（【]/.test(t),cl=/[)\]）】]/.test(t);if(op){br=1;bn=0}if(br){bn++;if(bn>10)br=0}const bad=br||/^[\s♪♫♬🎵🎶*#~.\-–—]*$/.test(t);if(cl)br=0;if(bad)continue;t=t.replace(/[♪♫♬🎵🎶]/g,'');if(!nz(t))continue;o.push(Object.assign({},w,{text:t}))}return o}
 const asrPcm=async blob=>{const ab=await blob.arrayBuffer();const ac=new(window.AudioContext||window.webkitAudioContext)();const buf=await ac.decodeAudioData(ab);try{ac.close()}catch{}const oc=new OfflineAudioContext(1,Math.ceil(buf.duration*16000),16000);const src=oc.createBufferSource();src.buffer=buf;let nd=src;const fe=document.getElementById('asrf');if(!fe||fe.checked){const F=(t,f,q,g)=>{const b=oc.createBiquadFilter();b.type=t;b.frequency.value=f;if(q)b.Q.value=q;if(g)b.gain.value=g;nd.connect(b);nd=b};F('highpass',120);F('peaking',2200,.8,4);F('lowpass',5000)}nd.connect(oc.destination);src.start();return(await oc.startRendering()).getChannelData(0)};
 const lrcT=t=>{t=Math.max(0,t);const m=Math.floor(t/60),x=t-m*60;return '['+String(m).padStart(2,'0')+':'+(x<10?'0':'')+x.toFixed(2)+']'};
 function asrMap(words,texts){const{T,tm}=asrTxt(words),pos=asrDP(T,texts.map(nz),.45),times=texts.map((_,k)=>pos[k]?tm[pos[k].p]:null);return{times,hits:times.filter(x=>x!=null).length}}
@@ -901,33 +902,47 @@ function asrFill(times,dur){const n=times.length,idx=[];times.forEach((t,k)=>{if
  for(let k=idx[idx.length-1]+1;k<n;k++)o[k]=Math.min(o[k-1]+3,Math.max(o[k-1],(dur||1e9)-1));
  for(let k=1;k<n;k++)if(o[k]<o[k-1]+.05)o[k]=o[k-1]+.05;return o}
 window.asrMap=asrMap;window.asrFill=asrFill;
+let ASRT0=0;
+const asrIDB=()=>asrIDB.p||(asrIDB.p=new Promise((res,rej)=>{const r=indexedDB.open('asrModelCache',1);r.onupgradeneeded=()=>r.result.createObjectStore('f');r.onsuccess=()=>res(r.result);r.onerror=()=>{asrIDB.p=null;rej(r.error)}}));
+const asrCache={async match(k){try{const db=await asrIDB();const v=await new Promise((res,rej)=>{const q=db.transaction('f').objectStore('f').get(String(k));q.onsuccess=()=>res(q.result);q.onerror=()=>rej(q.error)});if(!v||!v.b)return undefined;return new Response(v.b,{status:200,headers:{'content-type':v.t||'application/octet-stream','content-length':String(v.b.size)}})}catch{return undefined}},
+ async put(k,resp){try{const b=await resp.blob();const t=resp.headers.get('content-type')||'';const db=await asrIDB();await new Promise((res,rej)=>{const tx=db.transaction('f','readwrite');tx.objectStore('f').put({b,t,s:b.size,at:Date.now()},String(k));tx.oncomplete=res;tx.onerror=()=>rej(tx.error);tx.onabort=()=>rej(tx.error)})}catch(e){console.warn('모델 저장 실패',e)}}};
+async function asrScan(MN,del){const db=await asrIDB();let n=0,b=0;await new Promise(res=>{const tx=db.transaction('f',del?'readwrite':'readonly'),q=tx.objectStore('f').openCursor();q.onsuccess=()=>{const c=q.result;if(!c){return}if(String(c.key).includes(MN)){n++;b+=(c.value&&c.value.s)||0;if(del)c.delete()}c.continue()};q.onerror=()=>res();tx.oncomplete=()=>res();tx.onabort=()=>res()});return{n,b}}
+async function asrStat(){const e=$a('asrs');if(!e)return;const MN=$a('asrm').value;try{const r=await asrScan(MN,0);e.style.color=r.n&&r.b>1e6?'var(--ok,#6fe39a)':'var(--mu,#9a9aa8)';e.textContent=r.n&&r.b>1e6?'💾 이 모델은 폰에 저장돼 있어요 ('+(r.b/1048576).toFixed(0)+'MB) · 다시 안 받아요':(ASR&&ASRN===MN?'⚠ 모델은 불러왔지만 저장이 안 됐어요 (저장 공간 부족이거나 막힌 환경)':'⬇ 아직 안 받은 모델이에요 · 처음 한 번만 받아요')}catch{e.style.color='var(--ac2,#ffb3a8)';e.textContent='⚠ 이 환경에서는 모델 저장이 안 될 수 있어요 (매번 받음)'}}
 let ASRGPU=0,ASRNOGPU=0;try{ASRNOGPU=localStorage.asrNoGpu==='1'}catch{}
-async function asrInit(MN,m){if(ASR&&ASRN!==MN)ASR=null;if(ASR)return;ASRN=MN;m.textContent='🎙 음성인식 모델 받는 중... (처음 한 번만)';
- const T=await import('https://cdn.jsdelivr.net/npm/@huggingface/transformers@3.0.2');
- const pc=p=>{if(p.status==='progress')m.textContent='🎙 모델 받는 중 '+Math.round(p.progress)+'% ('+String(p.file||'').split('/').pop()+')'};
- const mk=o=>T.pipeline('automatic-speech-recognition',MN,Object.assign({progress_callback:pc},o));ASRGPU=0;
- if(!ASRNOGPU&&navigator.gpu){try{if(await navigator.gpu.requestAdapter()){ASR=await mk({device:'webgpu',dtype:{encoder_model:'fp32',decoder_model_merged:'q4'}});ASRGPU=1;return}}catch(e){ASR=null}}
- try{T.env.backends.onnx.wasm.proxy=true;ASR=await mk({dtype:'q8'})}catch(e){try{T.env.backends.onnx.wasm.proxy=false}catch{}ASR=await mk({dtype:'q8'})}}
-async function asrCall(MN,m,pcm,o){try{return await asrCall(MN,m,pcm,o)}catch(e){if(!ASRGPU)throw e;ASRNOGPU=1;try{localStorage.asrNoGpu='1'}catch{}ASR=null;m.textContent='⚡ GPU가 불안정해서 일반 방식(CPU)으로 다시 돌려요...';await asrInit(MN,m);return await asrCall(MN,m,pcm,o)}}
-const ASRF={tiny:.15,base:.3,small:1};
-const asrFac=MN=>{const k=MN.split('-').pop();try{const v=parseFloat(localStorage['asrf_'+k]);if(v>0)return v}catch{}return ASRF[k]||.5};
+async function asrInit(MN,m){if(ASR&&ASRN!==MN)ASR=null;if(ASR)return;ASRN=MN;
+ const L0=Date.now();let lt='🎙 음성인식 모델 준비 중...';const tick=()=>{m.textContent=lt+' · 경과 '+asrFmt((Date.now()-(ASRT0||L0))/1000)};tick();const iv=setInterval(tick,500);
+ try{
+  const T=await import('https://cdn.jsdelivr.net/npm/@huggingface/transformers@3.0.2');
+  try{T.env.allowLocalModels=false;T.env.useBrowserCache=false;T.env.useCustomCache=true;T.env.customCache=asrCache}catch{}
+  try{navigator.storage&&navigator.storage.persist&&navigator.storage.persist()}catch{}
+  const pc=p=>{const f=String(p.file||'').split('/').pop();if(p.status==='progress')lt='🎙 모델 받는 중 '+Math.round(p.progress)+'% ('+f+') · 한 번만 받으면 폰에 저장돼요';else if(p.status==='initiate')lt='🎙 모델 확인 중 ('+f+')';else if(p.status==='done')lt='🎙 모델 파일 확인 끝 ('+f+')';else if(p.status==='ready')lt='🎙 모델 올리는 중...'};
+  const mk=o=>T.pipeline('automatic-speech-recognition',MN,Object.assign({progress_callback:pc},o));ASRGPU=0;
+  const big=/turbo/.test(MN);
+  if(!ASRNOGPU&&navigator.gpu){try{if(await navigator.gpu.requestAdapter()){ASR=await mk({device:'webgpu',dtype:big?{encoder_model:'q4',decoder_model_merged:'q4'}:{encoder_model:'fp32',decoder_model_merged:'q4'}});ASRGPU=1;return}}catch(e){ASR=null;if(big)throw e}}
+  if(big)throw new Error('large-v3-turbo 모델은 WebGPU가 되는 폰/브라우저에서만 돌아가요. base나 small을 써 주세요');
+  try{T.env.backends.onnx.wasm.proxy=true;ASR=await mk({dtype:'q8'})}catch(e){try{T.env.backends.onnx.wasm.proxy=false}catch{}ASR=await mk({dtype:'q8'})}
+ }finally{clearInterval(iv);try{asrStat()}catch{}}}
+async function asrCall(MN,m,pcm,o){try{return await ASR(pcm,o)}catch(e){if(!ASRGPU)throw e;ASRNOGPU=1;try{localStorage.asrNoGpu='1'}catch{}ASR=null;m.textContent='⚡ GPU가 불안정해서 일반 방식(CPU)으로 다시 돌려요...';await asrInit(MN,m);return await asrCall(MN,m,pcm,o)}}
+const ASRF={tiny:.15,base:.3,small:1,turbo:.6};function asrKey(MN){return /turbo/.test(MN)?'turbo':String(MN).split('-').pop()}
+const asrFac=MN=>{const k=asrKey(MN);try{const v=parseFloat(localStorage['asrf_'+k]);if(v>0)return v}catch{}return ASRF[k]||.5};
 const asrFmt=t=>{t=Math.max(0,Math.round(t));return Math.floor(t/60)+':'+String(t%60).padStart(2,'0')};
-function asrEst(){const e=$a('asre');if(!e)return;const MN=$a('asrm').value,d=A.duration;if(!isFinite(d)||!d){e.textContent='⏱ 곡을 재생하면 예상 소요 시간이 나와요';return}const k=MN.split('-').pop();let learned=0;try{learned=parseFloat(localStorage['asrf_'+k])>0}catch{}e.textContent='⏱ 예상 소요 약 '+asrFmt(d*asrFac(MN))+' (곡 '+asrFmt(d)+' · '+k+' 모델'+(learned?' · 이 폰에서 실제로 걸린 속도 기준':' · 대략적인 값, 한 번 돌리면 더 정확해져요')+')'}
-function asrTrack(m,dur,MN,what){let wl=null;try{navigator.wakeLock&&navigator.wakeLock.request('screen').then(x=>{wl=x}).catch(()=>{})}catch{}const t0=Date.now(),tot=Math.max(1,Math.ceil(Math.max(0,dur-30)/20)+1),est=dur*asrFac(MN);let done=0;
- const draw=()=>{const el=(Date.now()-t0)/1000;const rem=done>0?el/done*(tot-done):Math.max(est-el,est*.1);m.textContent='🎙 '+what+' · 경과 '+asrFmt(el)+' · 남은 시간 약 '+asrFmt(rem)+' ('+Math.min(99,Math.round(done*100/tot))+'%)'+(done===0&&el>20?' · 첫 구간 처리 중이라 0%로 보여요 (30초 구간마다 올라가요)':'')};
- draw();const iv=setInterval(draw,1000);
- return{cb:()=>{done++;draw()},stop:()=>{clearInterval(iv);try{wl&&wl.release()}catch{}const el=(Date.now()-t0)/1000;if(dur>20){try{localStorage['asrf_'+MN.split('-').pop()]=(el/dur).toFixed(3)}catch{}}return el}}}
+function asrEst(){const e=$a('asre');if(!e)return;const MN=$a('asrm').value,d=A.duration;if(!isFinite(d)||!d){e.textContent='⏱ 곡을 재생하면 예상 소요 시간이 나와요';return}const k=asrKey(MN);let learned=0;try{learned=parseFloat(localStorage['asrf_'+k])>0}catch{}e.textContent='⏱ 예상 소요 약 '+asrFmt(d*asrFac(MN))+' (곡 '+asrFmt(d)+' · '+k+' 모델'+(learned?' · 이 폰에서 실제로 걸린 속도 기준':' · 대략적인 값, 한 번 돌리면 더 정확해져요')+')'}
+function asrTrack(m,dur,MN,what,T0){let wl=null;try{navigator.wakeLock&&navigator.wakeLock.request('screen').then(x=>{wl=x}).catch(()=>{})}catch{}
+ const t0=Date.now(),A0=T0||t0,tot=Math.max(1,Math.ceil(Math.max(0,dur-30)/20)+1),est=Math.max(1,dur*asrFac(MN));let n=0,tk=0;
+ const draw=()=>{const now=Date.now(),el=(now-A0)/1000,pe=(now-t0)/1000,dn=Math.min(tot,n+Math.min(.9,tk/70));let rem,pc;if(dn>=.4){rem=pe/dn*(tot-dn);pc=dn/tot}else{rem=Math.max(est-pe,est*.05);pc=Math.min(.95,pe/est)}m.textContent='🎙 '+what+' · 경과 '+asrFmt(el)+' · 남은 시간 약 '+asrFmt(rem)+' ('+Math.min(99,Math.round(pc*100))+'%)'};
+ draw();const iv=setInterval(draw,500);
+ return{st:{put(){tk++},end(){n++;tk=0;draw()}},stop:()=>{clearInterval(iv);try{wl&&wl.release()}catch{}const now=Date.now(),pe=(now-t0)/1000;if(dur>20){try{localStorage['asrf_'+asrKey(MN)]=(pe/dur).toFixed(3)}catch{}}ASRT0=0;return(now-A0)/1000}}}
 window.asrTrack=asrTrack;window.asrEst=asrEst;
-$a('asrm').addEventListener('change',asrEst);$('#sx').addEventListener('click',()=>setTimeout(asrEst,50));
+$a('asrm').addEventListener('change',asrEst);$a('asrm').addEventListener('change',asrStat);$a('asrx').onclick=async()=>{const MN=$a('asrm').value;if(!confirm('저장된 이 모델을 지울까요?\n다시 쓰려면 새로 받아야 해요.'))return;try{await asrScan(MN,1)}catch{}if(ASRN===MN)ASR=null;asrStat()};setTimeout(asrStat,300);$('#sx').addEventListener('click',()=>setTimeout(()=>{asrEst();asrStat()},50));
 $a('asrb').onclick=async()=>{const s=S[i],m=$a('sam'),b=$a('asrb');if(!s){m.textContent='먼저 곡을 재생하세요';return}const g=sig(s);if(!g){m.textContent='시간(싱크) 태그가 있는 가사가 있어야 해요';return}
- let tr=null;b.disabled=true;try{
+ let tr=null;b.disabled=true;ASRT0=Date.now();try{
   const MN=$a('asrm').value;await asrInit(MN,m);
-  m.textContent='🎙 노래 불러오는 중...';let pcm=await asrPcm(s.blob);pcm=asrKeep(pcm,plrc(s.lyrics||'').l.map(x=>x[0]));tr=asrTrack(m,pcm.length/16000,MN,'노래 듣는 중');
-  const tx=plrc(s.lyrics||'').l.map(x=>x[1]).join(''),ko=(tx.match(/[\uac00-\ud7a3]/g)||[]).length,la=(tx.match(/[a-z]/gi)||[]).length,lg=ko+la?(ko>la*.3?'korean':'english'):undefined;const out=await asrCall(MN,m,pcm,{return_timestamps:'word',chunk_length_s:30,stride_length_s:5,language:lg,task:'transcribe',chunk_callback:tr.cb});const EL=tr.stop();
-  const r=asrAlign((asrUn(out.chunks||[],pcm)),plrc(s.lyrics||'').l);
-  const RT=Math.round(r.rate*100),SM=Math.round(r.sim*100),MS=MN.split('-').pop();if(r.n<3||r.mad>2){m.textContent='🎙 인식률 '+RT+'% (줄 '+r.n+'/'+r.lines+' 일치 · 유사도 '+SM+'%) · 편차 '+r.mad.toFixed(1)+'초 · 모델 '+MS+' — 확신하기 어려워 적용 안 함';b.disabled=false;return}
+  m.textContent='🎙 노래 불러오는 중...';let pcm=await asrPcm(s.blob);pcm=asrKeep(pcm,plrc(s.lyrics||'').l.map(x=>x[0]));tr=asrTrack(m,pcm.length/16000,MN,'노래 듣는 중',ASRT0);
+  const tx=plrc(s.lyrics||'').l.map(x=>x[1]).join(''),ko=(tx.match(/[\uac00-\ud7a3]/g)||[]).length,la=(tx.match(/[a-z]/gi)||[]).length,lg=ko+la?(ko>la*.3?'korean':'english'):undefined;const out=await asrCall(MN,m,pcm,{return_timestamps:'word',chunk_length_s:30,stride_length_s:5,language:lg,task:'transcribe',streamer:tr.st});const EL=tr.stop();
+  const r=asrAlign((asrClean(asrUn(out.chunks||[],pcm))),plrc(s.lyrics||'').l);
+  const RT=Math.round(r.rate*100),SM=Math.round(r.sim*100),MS=asrKey(MN);if(r.n<3||r.mad>2){m.textContent='🎙 인식률 '+RT+'% (줄 '+r.n+'/'+r.lines+' 일치 · 유사도 '+SM+'%) · 편차 '+r.mad.toFixed(1)+'초 · 모델 '+MS+' — 확신하기 어려워 적용 안 함';b.disabled=false;return}
   const FT=asrFit(r,plrc(s.lyrics||'').l.map(x=>x[0]),(pcm.od||pcm.length/16000)),o=FT.o;setSy(s,{v:1,a:1,pl:FT.pl,o,d:FT.d,n:g.n,t0:g.t0,dur:A.duration||(pcm.od||pcm.length/16000),h:lh(s),z:0,src:'asr',rate:RT},'🎙 음성인식 보정 '+(o>=0?'+':'')+o.toFixed(2)+'초'+(FT.lin?' (시작·끝 따로 맞춤)':'')+' · 인식률 '+RT+'%');m.textContent='🎙 인식률 '+RT+'% (줄 '+r.n+'/'+r.lines+' 일치 · 유사도 '+SM+'%) · 보정 '+(o>=0?'+':'')+o.toFixed(2)+'초 · 모델 '+MS+' · 걸린 시간 '+asrFmt(EL)+' · 원래대로는 ↩'
- }catch(e){try{tr&&tr.stop()}catch{}m.textContent='🎙 실패: '+(e&&e.message||e)}b.disabled=false};
+ }catch(e){try{tr&&tr.stop()}catch{}ASRT0=0;m.textContent='🎙 실패: '+(e&&e.message||e)}b.disabled=false};
 function asrLines(words){const L=[];let cur=null;const mk=t=>{const m=Math.floor(t/60),x=t-m*60;return '['+String(m).padStart(2,'0')+':'+(x<10?'0':'')+x.toFixed(2)+']'};
  words.forEach(w=>{if(!w.timestamp||w.timestamp[0]==null)return;const t=(w.text||'');if(!t.trim())return;const a=w.timestamp[0],e=w.timestamp[1]==null?a:w.timestamp[1];
   if(cur&&(a-cur.e>0.7||cur.t.length>38||cur.n>=9)){L.push(cur);cur=null}
@@ -938,17 +953,17 @@ window.asrLines=asrLines;
 $a('asrc').onclick=async()=>{const s=S[i],m=$a('sam'),b=$a('asrc');if(!s){m.textContent='먼저 곡을 재생하세요';return}
  const pl0=plrc(s.lyrics||''),ref=pl0.sync?[]:pl0.l.map(x=>x[1]).filter(x=>x&&!/^\[.*\]$/.test(x.trim()));
  if((s.lyrics||'').trim()&&!ref.length&&!confirm('이 곡에는 이미 가사가 있어요.\n음성인식 결과로 바꿀까요? (이전 가사는 되돌릴 수 없어요)'))return;
- let tr=null;b.disabled=true;try{
+ let tr=null;b.disabled=true;ASRT0=Date.now();try{
   const MN=$a('asrm').value;await asrInit(MN,m);
-  m.textContent='🎙 노래 불러오는 중...';let pcm=await asrPcm(s.blob);pcm=asrKeep(pcm,null);tr=asrTrack(m,pcm.length/16000,MN,'노래 듣고 가사 만드는 중');
-  const rtx=ref.join(''),rko=(rtx.match(/[\uac00-\ud7a3]/g)||[]).length,rla=(rtx.match(/[a-z]/gi)||[]).length;const lg=$a('asrl').value||(rko+rla?(rko>rla*.3?'korean':'english'):undefined);const out=await asrCall(MN,m,pcm,{return_timestamps:'word',chunk_length_s:30,stride_length_s:5,language:lg,task:'transcribe',chunk_callback:tr.cb});const EL=tr.stop();
+  m.textContent='🎙 노래 불러오는 중...';let pcm=await asrPcm(s.blob);pcm=asrKeep(pcm,null);tr=asrTrack(m,pcm.length/16000,MN,'노래 듣고 가사 만드는 중',ASRT0);
+  const rtx=ref.join(''),rko=(rtx.match(/[\uac00-\ud7a3]/g)||[]).length,rla=(rtx.match(/[a-z]/gi)||[]).length;const lg=$a('asrl').value||(rko+rla?(rko>rla*.3?'korean':'english'):undefined);const out=await asrCall(MN,m,pcm,{return_timestamps:'word',chunk_length_s:30,stride_length_s:5,language:lg,task:'transcribe',streamer:tr.st});const EL=tr.stop();
   let lrc,note='';
-  if(ref.length){const r=asrMap(asrUn(out.chunks||[],pcm),ref),RT=Math.round(r.hits*100/ref.length);if(r.hits<3||r.hits<ref.length*.3){m.textContent='🎙 인식률 '+RT+'% (줄 '+r.hits+'/'+ref.length+' 일치) — 소리와 가사가 잘 안 맞아서 적용 안 함';b.disabled=false;return}const t=asrFill(r.times,(pcm.od||pcm.length/16000));lrc=ref.map((x,k)=>lrcT(t[k])+x.trim()).join('\n');note=' · 일반 가사 참고 · 인식률 '+RT+'% (줄 '+r.hits+'/'+ref.length+' 일치, 나머지는 사이 시간으로 채움)'}
-  else{lrc=asrLines(asrUn(out.chunks||[],pcm));if(lrc.split('\n').length<3){m.textContent='🎙 가사를 거의 못 알아들었어요 (인식된 줄 '+(lrc?lrc.split('\n').length:0)+'개) — 적용 안 함';b.disabled=false;return}}
+  if(ref.length){const r=asrMap(asrClean(asrUn(out.chunks||[],pcm)),ref),RT=Math.round(r.hits*100/ref.length);if(r.hits<3||r.hits<ref.length*.3){m.textContent='🎙 인식률 '+RT+'% (줄 '+r.hits+'/'+ref.length+' 일치) — 소리와 가사가 잘 안 맞아서 적용 안 함';b.disabled=false;return}const t=asrFill(r.times,(pcm.od||pcm.length/16000));lrc=ref.map((x,k)=>lrcT(t[k])+x.trim()).join('\n');note=' · 일반 가사 참고 · 인식률 '+RT+'% (줄 '+r.hits+'/'+ref.length+' 일치, 나머지는 사이 시간으로 채움)'}
+  else{lrc=asrLines(asrClean(asrUn(out.chunks||[],pcm)));if(lrc.split('\n').length<3){m.textContent='🎙 가사를 거의 못 알아들었어요 (인식된 줄 '+(lrc?lrc.split('\n').length:0)+'개) — 적용 안 함';b.disabled=false;return}}
   s.lyrics=lrc;s.off=0;s.tried=1;delete s.sy;if(S[i]===s)off=0;try{BK[s.name]=Object.assign(BK[s.name]||{n:s.name},{l:lrc,o:0});bkSave()}catch{}
   try{await put(s)}catch{}if(S[i]===s){$('#ov').textContent='0.0s';lyr();A.ontimeupdate()}try{render()}catch{}
   m.textContent='🎙 가사+싱크 '+lrc.split('\n').length+'줄 만들었어요 (걸린 시간 '+asrFmt(EL)+')'+(note||' · 틀린 글자는 📝 가사 편집에서 고치세요 (시간은 유지돼요)')
- }catch(e){try{tr&&tr.stop()}catch{}m.textContent='🎙 실패: '+(e&&e.message||e)}b.disabled=false};
+ }catch(e){try{tr&&tr.stop()}catch{}ASRT0=0;m.textContent='🎙 실패: '+(e&&e.message||e)}b.disabled=false};
 let ASRALL=0;
 $a('asrall').onclick=async()=>{const m=$a('sam'),b=$a('asrall');if(ASRALL){ASRALL=0;m.textContent='📚 멈추는 중... (지금 곡까지만)';return}
  const todo=S.filter(s=>s.blob&&(s.lyrics||'').trim()&&!plrc(s.lyrics).sync&&!s.asrTried);
@@ -960,13 +975,68 @@ $a('asrall').onclick=async()=>{const m=$a('sam'),b=$a('asrall');if(ASRALL){ASRAL
   for(let n=0;n<todo.length&&ASRALL;n++){const s=todo[n],pre='📚 '+(n+1)+'/'+todo.length+' · '+s.title+' · ',mm2={set textContent(v){m.textContent=pre+v}};
    try{m.textContent=pre+'소리 불러오는 중';let pcm=await asrPcm(s.blob);pcm=asrKeep(pcm,null);
     const ref=plrc(s.lyrics).l.map(x=>x[1]).filter(x=>x&&!/^\[.*\]$/.test(x.trim())),rtx=ref.join(''),rko=(rtx.match(/[\uac00-\ud7a3]/g)||[]).length,rla=(rtx.match(/[a-z]/gi)||[]).length,lg=$a('asrl').value||(rko+rla?(rko>rla*.3?'korean':'english'):undefined);
-    const tr=asrTrack(mm2,pcm.length/16000,MN,'듣는 중');let out;try{out=await asrCall(MN,mm2,pcm,{return_timestamps:'word',chunk_length_s:30,stride_length_s:5,language:lg,task:'transcribe',chunk_callback:tr.cb})}finally{tr.stop()}
-    const r=asrMap(asrUn(out.chunks||[],pcm),ref);s.asrTried=1;
+    const tr=asrTrack(mm2,pcm.length/16000,MN,'듣는 중');let out;try{out=await asrCall(MN,mm2,pcm,{return_timestamps:'word',chunk_length_s:30,stride_length_s:5,language:lg,task:'transcribe',streamer:tr.st})}finally{tr.stop()}
+    const r=asrMap(asrClean(asrUn(out.chunks||[],pcm)),ref);s.asrTried=1;
     if(r.hits>=3&&r.hits>=ref.length*.3){const t=asrFill(r.times,pcm.od||pcm.length/16000);s.lyrics=ref.map((x,k)=>lrcT(t[k])+x.trim()).join('\n');s.off=0;delete s.sy;try{BK[s.name]=Object.assign(BK[s.name]||{n:s.name},{l:s.lyrics,o:0});bkSave()}catch{}ok++;if(S[i]===s){lyr();A.ontimeupdate()}}else fail++;
     try{await put(s)}catch{}}catch(e){fail++;s.asrTried=1;try{await put(s)}catch{}}}
  }catch(e){m.textContent='📚 실패: '+(e&&e.message||e);ASRALL=0;b.innerHTML=bh;try{wl&&wl.release()}catch{};return}
  const stopped=!ASRALL;ASRALL=0;b.innerHTML=bh;try{wl&&wl.release()}catch{}try{render()}catch{}
  m.textContent='📚 '+(stopped?'멈춤':'일괄 끝')+' · 싱크 입힘 '+ok+'곡 · 인식 부족으로 건너뜀 '+fail+'곡'};
+/* 🌙 싱크 있는 곡 전부 자동 보정 (자는 동안): 곡 선택 → 시작/예상 종료/실제 종료 시각 표시 */
+(()=>{
+const css=document.createElement('style');css.textContent='#bsy{position:fixed;inset:0;background:var(--bg,#141418);display:flex;flex-direction:column;padding:14px;gap:8px;z-index:30}#bsy[hidden]{display:none}#bsy .r{display:flex;gap:8px;align-items:center}#bsy button{padding:10px 8px;font-size:14px}#bsl{flex:1;min-height:90px;overflow:auto;background:var(--pn,#1a1a20);border-radius:12px;padding:4px}#bsl label{display:flex;gap:8px;align-items:center;padding:7px 8px;border-radius:8px;font-size:14px}#bsl label small{margin-left:auto;flex:none;font-size:11.5px}#bsl input{flex:none;width:18px;height:18px;accent-color:var(--ac,#ff5a4d)}#bsl label span{min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}#bss{background:var(--pn,#1a1a20);border-radius:12px;padding:10px 12px;font-size:13.5px;line-height:1.55}#bss b{color:var(--ac2,#ffb3a8)}#bsg{height:22vh;overflow:auto;font-size:12px;line-height:1.45;background:var(--pn,#1a1a20);border-radius:12px;padding:6px 8px;color:var(--mu,#b9b9c6)}';document.head.append(css);
+const d=document.createElement('div');d.id='bsy';d.hidden=true;
+d.innerHTML='<div class="r"><b style="flex:1;font-size:16px">🌙 자동 싱크 보정</b><button id="bsx">닫기</button></div><small style="color:var(--mu,#9a9aa8)">시간 태그가 있는 가사의 시간을 음성인식으로 곡마다 다시 맞춰요. 충전기를 꽂고 이 화면을 켜 둔 채로 주무세요.</small><div class="r"><button id="bsa" style="flex:1">전체 선택</button><button id="bsn" style="flex:1">전체 해제</button><label style="flex:none;font-size:13px"><input type="checkbox" id="bsd"> 이미 한 곡 포함</label></div><div id="bsl"></div><div id="bss"></div><div class="r"><button id="bsgo" class="add" style="flex:2;border:0">▶ 선택한 곡 자동 시작</button><button id="bsst" style="flex:1" disabled>⏹ 멈추기</button></div><div id="bsg"></div>';
+document.body.append(d);
+const q=id=>document.getElementById(id);
+const clk=t=>{const x=new Date(t),p=n=>String(n).padStart(2,'0');return (x.getMonth()+1)+'/'+x.getDate()+' '+p(x.getHours())+':'+p(x.getMinutes())+':'+p(x.getSeconds())};
+const dmin=s=>{s=Math.max(0,Math.round(s));const h=Math.floor(s/3600),m=Math.floor(s%3600/60);return h?h+'시간 '+m+'분':m+'분 '+(s%60)+'초'};
+let SEL=new Set(),RUN=0,CAND=[],DUR=240,logEl=q('bsg');
+const stOf=s=>s.perfect?'완벽 표시':(s.asrFix===1||(s.sy&&s.sy.src==='asr'))?'✓ 보정됨':s.asrFix===2?'건너뜀':s.asrFix===3?'실패':'';
+const logL=t=>{const e=document.createElement('div');e.textContent=t;logEl.append(e);while(logEl.children.length>400)logEl.firstChild.remove();logEl.scrollTop=1e9};
+function build(){CAND=S.filter(s=>s.blob&&(s.lyrics||'').trim()&&plrc(s.lyrics).sync);const inc=q('bsd').checked;SEL=new Set(CAND.filter(s=>inc?!s.perfect:!stOf(s)));list();sum()}
+function list(){q('bsl').innerHTML='';CAND.forEach(s=>{const l=document.createElement('label'),c=document.createElement('input');c.type='checkbox';c.checked=SEL.has(s);c.disabled=!!RUN;c.onchange=()=>{c.checked?SEL.add(s):SEL.delete(s);sum()};const t=document.createElement('span');t.textContent=s.title+(s.artist?' · '+s.artist:'');const g=document.createElement('small');g.textContent=stOf(s);g.dataset.k=CAND.indexOf(s);l.append(c,t,g);q('bsl').append(l)})}
+function sum(){if(RUN)return;const n=SEL.size,MN=$a('asrm').value,e=n*DUR*asrFac(MN);let last='';try{const L=JSON.parse(localStorage.bsyLast||'null');if(L)last='<br>지난 실행: '+clk(L.a)+' → '+clk(L.b)+' · 보정 '+L.ok+' · 건너뜀 '+L.sk+' · 실패 '+L.fl}catch{}q('bss').innerHTML='싱크 있는 곡 <b>'+CAND.length+'</b>곡 중 <b>'+n+'</b>곡 선택<br>예상 소요 약 <b>'+dmin(e)+'</b> (곡당 약 '+DUR+'초로 가정 · 모델 '+asrKey(MN)+')'+last}
+q('bsa').onclick=()=>{if(RUN)return;SEL=new Set(CAND);list();sum()};q('bsn').onclick=()=>{if(RUN)return;SEL=new Set();list();sum()};q('bsd').onchange=()=>{if(!RUN)build()};
+$a('asrall').insertAdjacentHTML('afterend','<button id="bsyb" style="padding:11px 6px">🌙 싱크 있는 곡 전부 자동 보정<small style="display:block;font-weight:400;font-size:12px;margin-top:2px">곡 선택 → 시작·종료 시각 표시 · 자는 동안 맡기기</small></button>');
+q('bsyb').onclick=()=>{if(!RUN)build();else sum();d.hidden=false};
+q('bsx').onclick=()=>{if(RUN&&!confirm('돌아가는 중이에요. 화면을 닫아도 계속 돌아가요. 닫을까요?'))return;d.hidden=true};
+q('bsst').onclick=()=>{if(RUN){RUN=2;q('bsst').disabled=true;logL('⏹ 현재 곡까지만 하고 멈춰요...')}};
+q('bsgo').onclick=async()=>{
+ if(RUN)return;const todo=CAND.filter(s=>SEL.has(s));if(!todo.length){alert('선택한 곡이 없어요');return}
+ if(!confirm(todo.length+'곡을 차례로 자동 보정해요.\n충전기를 꽂고, 이 화면을 켜 둔 채로 두세요. 시작할까요?'))return;
+ RUN=1;q('bsgo').disabled=true;q('bsst').disabled=false;list();logEl.innerHTML='';
+ const MN=$a('asrm').value,T0=Date.now();let ok=0,sk=0,fl=0,audSec=0,work=0,wl=null;
+ const getWl=()=>{try{navigator.wakeLock&&navigator.wakeLock.request('screen').then(x=>{wl=x}).catch(()=>{})}catch{}};getWl();
+ const vis=()=>{if(!document.hidden&&RUN)getWl()};document.addEventListener('visibilitychange',vis);
+ let cur='',curEl='',doneN=0;const est0=todo.length*DUR*asrFac(MN);
+ const paint=()=>{const now=Date.now(),el=(now-T0)/1000;let rem;if(doneN>0&&audSec>0){rem=(el/doneN)*(todo.length-doneN)}else rem=est0;q('bss').innerHTML='시작 <b>'+clk(T0)+'</b> · 예상 종료 <b>'+clk(now+Math.max(0,rem)*1000)+'</b><br>경과 '+dmin(el)+' · 남은 약 '+dmin(rem)+'<br>진행 <b>'+doneN+' / '+todo.length+'</b>곡 · 보정 '+ok+' · 건너뜀 '+sk+' · 실패 '+fl+'<br>지금: '+esc(cur)+'<br><span style="color:var(--mu,#9a9aa8)">'+esc(curEl)+'</span>'};
+ const iv=setInterval(paint,1000);paint();
+ const mm2={set textContent(v){curEl=v}};
+ logL('▶ 시작 '+clk(T0)+' · '+todo.length+'곡 · 모델 '+asrKey(MN));
+ try{
+  ASRT0=Date.now();await asrInit(MN,mm2);ASRT0=0;
+  for(let n=0;n<todo.length&&RUN===1;n++){const s=todo[n],t1=Date.now();cur=(n+1)+'/'+todo.length+' · '+s.title;curEl='소리 불러오는 중';
+   try{
+    const L=plrc(s.lyrics||''),g=sig(s);if(!g)throw new Error('싱크 태그 없음');
+    let pcm=await asrPcm(s.blob);pcm=asrKeep(pcm,L.l.map(x=>x[0]));const dur=pcm.od||pcm.length/16000;audSec+=dur;
+    const tr=asrTrack(mm2,pcm.length/16000,MN,'듣는 중');
+    const tx=L.l.map(x=>x[1]).join(''),ko=(tx.match(/[\uac00-\ud7a3]/g)||[]).length,la=(tx.match(/[a-z]/gi)||[]).length,lg=$a('asrl').value||(ko+la?(ko>la*.3?'korean':'english'):undefined);
+    let out;try{out=await asrCall(MN,mm2,pcm,{return_timestamps:'word',chunk_length_s:30,stride_length_s:5,language:lg,task:'transcribe',streamer:tr.st})}finally{tr.stop()}
+    const r=asrAlign(asrClean(asrUn(out.chunks||[],pcm)),L.l),RT=Math.round(r.rate*100);
+    if(r.n<3||r.mad>2){s.asrFix=2;sk++;logL('– '+(n+1)+'. '+s.title+' · 건너뜀 (인식률 '+RT+'%, 일치 '+r.n+'/'+r.lines+') · '+clk(t1)+'→'+clk(Date.now()))}
+    else{const FT=asrFit(r,L.l.map(x=>x[0]),dur),o=FT.o;setSy(s,{v:1,a:1,pl:FT.pl,o,d:FT.d,n:g.n,t0:g.t0,dur,h:lh(s),z:0,src:'asr',rate:RT},'');s.asrFix=1;ok++;logL('✓ '+(n+1)+'. '+s.title+' · 보정 '+(o>=0?'+':'')+o.toFixed(2)+'초 · 인식률 '+RT+'% · '+clk(t1)+'→'+clk(Date.now()))}
+   }catch(e){s.asrFix=3;fl++;logL('✗ '+(n+1)+'. '+s.title+' · 실패: '+(e&&e.message||e))}
+   try{await put(s)}catch{}doneN++;const gg=q('bsl').querySelector('small[data-k="'+CAND.indexOf(s)+'"]');if(gg)gg.textContent=stOf(s);paint()}
+ }catch(e){logL('✗ 중단: '+(e&&e.message||e))}
+ clearInterval(iv);document.removeEventListener('visibilitychange',vis);try{wl&&wl.release()}catch{}
+ const T1=Date.now(),stopped=RUN===2;RUN=0;ASRT0=0;
+ try{localStorage.bsyLast=JSON.stringify({a:T0,b:T1,ok,sk,fl})}catch{}
+ q('bss').innerHTML=(stopped?'⏹ 멈춤':'✅ 끝')+'<br>시작 <b>'+clk(T0)+'</b> · 종료 <b>'+clk(T1)+'</b> (총 '+dmin((T1-T0)/1000)+')<br>보정 <b>'+ok+'</b>곡 · 건너뜀 '+sk+'곡 · 실패 '+fl+'곡';
+ logL((stopped?'⏹ 멈춤 ':'✅ 끝 ')+clk(T1)+' · 보정 '+ok+' · 건너뜀 '+sk+' · 실패 '+fl);
+ q('bsgo').disabled=false;q('bsst').disabled=true;list();try{render()}catch{}};
+})();
+
 $('#pf').addEventListener('click',()=>{const s=S[i];if(!s||!s.perfect)return;if(s.sy&&s.sy.a&&s.sy.dur){dbAdd(toE(s));return}if(s.sy||!A.duration)return;const g=sig(s);if(!g)return;s.sy={v:1,a:1,pl:0,o:s.off||0,d:[],n:g.n,t0:g.t0,dur:A.duration,h:lh(s),z:0,src:'man'};save(s);dbAdd(toE(s));try{render()}catch{}});
 document.querySelectorAll('#safine [data-k]').forEach(b=>b.onclick=()=>{const s=S[i];if(!s)return;const k=+b.dataset.k/100;const y=s.sy||(s.sy={v:1,a:1,pl:0,o:s.off||0,d:[],n:sig(s)?sig(s).n:0,t0:sig(s)?sig(s).t0:0,dur:A.duration||0,h:lh(s),z:0,src:'man'});y.a=1;y.o=Math.round((y.o+k)*100)/100;s.off=y.o;off=y.o;$('#ov').textContent=off.toFixed(1)+'s';if(y.d.length===0)y.pl=0;save(s);dbAdd(toE(s));A.ontimeupdate();try{render()}catch{}ui()});
 $a('sae').onclick=async()=>{const t=await dbInfo();const m=$a('sad');
@@ -980,7 +1050,7 @@ $a('sai').onclick=async()=>{const t=$a('sat');if(t.hidden||!t.value.trim()){t.hi
 /* 시작 시 DB 읽기: 내장 → 사용자가 불러온 것 */
 (async()=>{for(const t of [(document.getElementById('sydb')||{}).textContent,(()=>{try{return localStorage.sydb}catch{}})()]){try{await dbLoad(t)}catch{}}})();
 })();
-</script><script>if('serviceWorker' in navigator)addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}))</script><script>(()=>{const BUILD='2026-11-22 가사색·단어',f=d=>d.toLocaleString('ko-KR',{month:'numeric',day:'numeric',hour:'2-digit',minute:'2-digit',hour12:false}),e=document.getElementById('ver');if(!e)return;let s='빌드 '+BUILD.slice(5);try{const d=new Date(document.lastModified);if(!isNaN(d)&&Math.abs(Date.now()-d)>20000)s+=' · 사이트 반영 '+f(d)}catch{}e.textContent=s;e.title='이 index.html의 빌드 '+BUILD+' (한국 시간)'})()</script><script>(()=>{
+</script><script>if('serviceWorker' in navigator)addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}))</script><script>(()=>{const BUILD='2026-11-22 11:03 가사색·단어',f=d=>d.toLocaleString('ko-KR',{month:'numeric',day:'numeric',hour:'2-digit',minute:'2-digit',hour12:false}),e=document.getElementById('ver');if(!e)return;let s='빌드 '+BUILD.slice(5);try{const d=new Date(document.lastModified);if(!isNaN(d)&&Math.abs(Date.now()-d)>20000)s+=' · 사이트 반영 '+f(d)}catch{}e.textContent=s;e.title='이 index.html의 빌드 '+BUILD+' (한국 시간)'})()</script><script>(()=>{
 const Q=s=>document.querySelector(s),ls=(k,v)=>{try{if(v===undefined)return localStorage[k];localStorage[k]=v}catch{}};
 const H=c=>[1,3,5].map(k=>parseInt(c.slice(k,k+2),16)),X=r=>'#'+r.map(v=>Math.round(Math.max(0,Math.min(255,v))).toString(16).padStart(2,'0')).join(''),mx=(a,b,t)=>{const p=H(a),q=H(b);return X(p.map((v,k)=>v+(q[k]-v)*t))},ra=(c,a)=>'rgba('+H(c).join(',')+','+a+')';
 const hs=(h,s,l)=>{h=((h%360)+360)%360;const a=s*Math.min(l,1-l),f=n=>{const k=(n+h/30)%12;return l-a*Math.max(-1,Math.min(k-3,9-k,1))};return X([f(0)*255,f(8)*255,f(4)*255])};
@@ -1024,7 +1094,7 @@ function lcApply(){const g=k=>ls('lc'+k)||'';['cpa','cnx','lg1','lg2'].forEach(k
 function wdReset(){if(prevP&&prevP._t!=null&&prevP.isConnected){prevP.textContent=prevP._t;prevP._t=null}prevP=null;lastLi=-2}
 lcApply();
 (function loop(){try{if(LY&&LY.sync&&li>=0){const ch=document.getElementById('ly').children,p=ch[li];
- if(ch[0]!==lastEl||li!==lastLi){lastEl=ch[0];if(prevP&&prevP!==p&&prevP._t!=null&&prevP.isConnected){prevP.textContent=prevP._t;prevP._t=null}prevP=null;lastLi=li;for(let j=0;j<ch.length;j++){ch[j].classList.toggle('pa',j<li);ch[j].classList.toggle('nx',j>li)}
+ if(ch[0]!==lastEl||li!==lastLi){lastEl=ch[0];prevP=null;lastLi=li;for(let j=0;j<ch.length;j++){ch[j].classList.toggle('pa',j<li);ch[j].classList.toggle('nx',j>li)}
   if(wd&&p&&p._t==null){p._t=p.textContent;const ws=p._t.split(/(\s+)/).filter(x=>x!==''),L=ws.filter(x=>!/^\s+$/.test(x)).join('').length||1;let c=0;p.textContent='';p._w=[];ws.forEach(x=>{if(/^\s+$/.test(x)){p.append(x);return}const sp=document.createElement('span');sp.className='w';sp.textContent=x;p.append(sp);p._w.push([sp,c/L,(c+x.length)/L]);c+=x.length});prevP=p}}
  if((kr||wd)&&p&&!A.paused){const t=A.currentTime+off+.2,s0=LY.l[li][0],nx=LY.l[li+1],e0=nx?nx[0]:s0+5,d=Math.max(.6,Math.min(e0-s0-.15,7)),f=Math.max(0,Math.min(1,(t-s0)/d));
   if(wd&&p._w)p._w.forEach(([sp,a,b])=>sp.style.setProperty('--wp',(Math.max(0,Math.min(1,(f-a)/(b-a)))*100).toFixed(1)+'%'));else p.style.setProperty('--kp',(f*100).toFixed(1)+'%')}}}catch{}requestAnimationFrame(loop)})();
