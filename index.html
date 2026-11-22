@@ -91,7 +91,7 @@ html[data-fx="bokeh"]::before{background:radial-gradient(70px 70px at 15% 25%,co
 <div id="bk" hidden><div class="mh"><b style="flex:1;align-self:center">💾 가사 백업 / 복원</b><button id="bkx">닫기</button></div><small>곡 파일 이름으로 가사·싱크와 제목·가수를 저장해요 (음악 파일은 포함되지 않아요)</small><button id="lrca">💾 전체 저장 (zip 파일)</button><label class="add" style="text-align:center;background:var(--bt,#22222c)">백업 파일 불러오기<input id="bkf" type="file" hidden accept=".zip,.json,.txt,application/zip,application/json"></label><b style="margin-top:6px">앱 안 최근 기록 (최대 5개)</b><div id="bkh" style="flex:1;overflow:auto"></div><div id="bkm" style="color:var(--ac2,#ffb3a8);font-size:13px"></div></div>
 <div id="cf" hidden><div class="mh"><b style="flex:1;align-self:center">⚙ 가사 중계 서버</b><button id="cfx">닫기</button></div><small>Cloudflare Worker 주소를 넣으면 알송·지니·멜론 등이 안정적으로 연결돼요</small><input id="cfu" placeholder="https://이름.계정.workers.dev" style="background:var(--pn,#1b1b22);color:var(--tx,#f2f2f6);border:1px solid var(--bd,#2b2b36);border-radius:12px;padding:11px;font-size:14px"><div class="mh"><button id="cfs">저장</button><button id="cft">연결 점검</button></div><div class="mh"><b style="flex:1;align-self:center;font-size:13px">📊 출처별 기록 (누적)</b><button id="sstc">복사</button><button id="sstr">지우기</button></div><div id="sstd" style="white-space:pre-wrap;font-size:12px;line-height:1.5;max-height:42vh;overflow:auto;user-select:text;-webkit-user-select:text;background:var(--pn,#1b1b22);border-radius:12px;padding:10px"></div><div id="cfr" style="flex:1;overflow:auto"></div></div>
 <div id="fd" hidden><div class="mh"><input id="fq" placeholder="제목 가수"><button id="fs">검색</button><button id="fcfg" title="중계 서버 설정">⚙</button><button id="fc">닫기</button></div><div id="fr"></div></div>
-<div id="sy" hidden><div class="mh"><b style="flex:1;align-self:center">⏱ 직접 싱크 맞추기</b><button id="syx">닫기</button></div><small>노래를 들으면서 <b>가사가 시작되는 순간마다 큰 버튼</b>을 탭하세요. 줄을 누르면 그 줄부터 다시 맞출 수 있어요.</small><div id="syl"></div><div class="syc"><button id="syp">▶ 재생</button><button id="syb">⏪ 5초</button><button id="syu">↶ 되돌리기</button><button id="syr">속도 1×</button></div><button id="syt" class="add">👆 탭</button><button id="syv" style="padding:12px;border-color:var(--ok,#6fe39a);color:var(--ok,#6fe39a)">💾 완료·저장</button></div>
+<div id="sy" hidden><div class="mh"><b style="flex:1;align-self:center">⏱ 직접 싱크 맞추기</b><button id="syx">닫기</button></div><small>노래를 들으면서 <b>가사가 시작되는 순간마다 큰 버튼</b>을 탭하세요. 줄을 누르면 그 줄부터 다시 맞출 수 있어요.</small><div id="syl"></div><div class="syc"><button id="syp">▶ 재생</button><button id="syb">⏪ 5초</button><button id="syu">↶ 되돌리기</button><button id="syr">속도 1×</button></div><div class="syc"><button id="sya0" title="전주 포함 곡 전체에서 목소리 구간을 찾아 줄 시간을 채워요">🤖 처음부터 자동 초안</button><button id="sya1" title="노래를 첫 가사가 나오는 곳에 두고 누르면 전주를 건너뛰고 맞춰요">🤖 현재 위치부터</button></div><small id="syas" style="min-height:16px;line-height:1.35"></small><button id="syt" class="add">👆 탭</button><button id="syv" style="padding:12px;border-color:var(--ok,#6fe39a);color:var(--ok,#6fe39a)">💾 완료·저장</button></div>
 <div id="sa" hidden><div class="mh"><b style="flex:1;align-self:center">🎚 싱크 분석</b><button id="sax">닫기</button></div><small id="sam"></small><small style="color:var(--mu,#9a9aa8);display:block;margin:2px 0">목소리 대역(250~3800Hz) 하모닉을 분석해 가사 시간을 맞춰요. 곡을 재생하지 않고 파일만 읽어서 몇 초면 끝나요.</small><canvas id="sac"></canvas><div class="mh"><button id="sar" class="add" style="flex:2;border:0">🔬 분석 실행</button><button id="sau" style="flex:1">↩ 원래대로</button></div><button id="sag" style="display:none;border-color:var(--ac2,#ffb3a8);color:var(--ac2,#ffb3a8)">⚠️ 신뢰도 낮음 — 그래도 적용</button><div class="mh" id="safine"><button data-k="-10" style="flex:1">−0.1</button><button data-k="-1" style="flex:1">−0.01</button><span id="sao">0.00s</span><button data-k="1" style="flex:1">+0.01</button><button data-k="10" style="flex:1">+0.1</button></div><label><input type="checkbox" id="sal"> 줄별 보정 사용 (줄마다 시간을 따로 맞춤)</label><label><input type="checkbox" id="saa"> 곡을 재생하면 자동으로 분석</label><b style="margin-top:4px">📦 싱크 DB (HTML 안에 압축 내장)</b><small id="sad"></small><div class="mh"><button id="sae" style="flex:2">💾 HTML에 내장해 저장</button><button id="sac2" style="flex:1">복사</button><button id="sai" style="flex:1">불러오기</button></div><textarea id="sat" hidden></textarea></div>
 <div id="ei" hidden><div class="mh"><b style="flex:1;align-self:center">✏️ 곡 정보 수정</b><button id="eix">닫기</button></div><small>제목과 가수 이름이 정확하면 가사를 더 잘 찾아요 (예: To Heaven / 조성모)</small><input id="eit" placeholder="제목"><input id="eia" placeholder="가수"><input id="eif" placeholder="폴더 (예: 발라드 / 비워두면 폴더 없음)"><button id="eis" class="add" style="border:0">저장</button><button id="eir" style="padding:12px">저장하고 가사 다시 찾기</button></div>
 <div id="ed" hidden><b>가사 편집 (.lrc 시간 태그 [00:12.30] 지원)</b><textarea id="et" placeholder="가사를 붙여넣으세요"></textarea><div style="display:flex;gap:8px"><label class="add" style="flex:1;text-align:center;background:var(--bt,#22222c)">가사 파일 불러오기<input id="lf" type="file" hidden accept=".lrc,.txt"></label><button id="ec">취소</button><button id="es" class="add" style="border:0">저장</button></div></div>
@@ -824,7 +824,126 @@ const SyncAI = (() => {
     const med = [...r.shift].sort((a, b) => a - b)[r.shift.length >> 1];
     return { ...r, med, onset: on, hop: F.hop, pres: F.pres };
   }
-  return { analyze, features, onsetCurve, align };
+  /* 5) 일반 가사(시간 없음) 자동 초안: 목소리 구간(끊김) 검출 → 줄 배분
+     - 목소리 점수 = 하모닉(배음) + 가운데 성분 에너지. 이력(히스테리시스)으로 켜짐/꺼짐 판정
+     - 짧은 끊김(숨·자음)은 메우고, 긴 끊김은 '프레이즈 경계'로 사용
+     - 줄 시작 후보 = 목소리 시작점(강) + 목소리 안쪽 0.4초 간격 지점(약)
+     - 비터비: 줄의 글자 수에 비례한 '노래한 시간'이 실제 목소리 시간과 비슷하도록 + 경계 직후면 가산점 */
+  function lyricWeight(t) {
+    let n = 0;
+    const cjk = t.match(/[\u3131-\u318e\uac00-\ud7a3\u3040-\u30ff\u4e00-\u9fff]/g); if (cjk) n += cjk.length;
+    const lat = t.replace(/[\u3131-\u318e\uac00-\ud7a3\u3040-\u30ff\u4e00-\u9fff]/g, ' ').match(/[A-Za-z\u00c0-\u024f]+/g);
+    if (lat) for (const w of lat) { const v = w.match(/[aeiouy\u00c0-\u00ff]+/gi); n += Math.max(1, v ? v.length : 1); }
+    const dg = t.match(/\d/g); if (dg) n += dg.length;
+    return Math.max(1, n);
+  }
+
+  function voiceRuns(F) {
+    const { pres, harm, nF, hop } = F;
+    const h = smooth(harm, 4), p = smooth(pres, 4);
+    const q = (a, r) => { const s = Float32Array.from(a).sort(); return s[Math.floor(s.length * r)] || 1e-6; };
+    const th = q(h, 0.92), tp = q(p, 0.92);
+    // 패드/현악처럼 계속 깔리는 배음이 있으면 '바닥값'을 빼서 목소리가 얹힌 부분만 남김
+    let hf = q(h, 0.08); if (hf > 0.6 * th) hf = 0;
+    const sc = new Float32Array(nF);
+    // 배음(하모닉) 점수가 주 신호. 에너지는 '완전 무음' 거르는 용도로만 사용 (반주가 시끄러워도 숨 구간을 구분하려고)
+    for (let f = 0; f < nF; f++) { const e = p[f] / tp; sc[f] = Math.min(1.5, Math.max(0, h[f] - hf) / (th - hf)) * (e >= 0.3 ? 1 : e / 0.3); }
+    const on = 0.30, off = 0.18;
+    const m = new Uint8Array(nF); let v = 0;
+    for (let f = 0; f < nF; f++) { if (!v && sc[f] > on) v = 1; else if (v && sc[f] < off) v = 0; m[f] = v; }
+    // 구간 목록
+    let runs = []; let s0 = -1;
+    for (let f = 0; f <= nF; f++) {
+      const x = f < nF ? m[f] : 0;
+      if (x && s0 < 0) s0 = f; else if (!x && s0 >= 0) { runs.push([s0, f]); s0 = -1; }
+    }
+    // 0.22초 미만 끊김은 숨/자음으로 보고 메움
+    const minGap = Math.round(0.22 / hop), minLen = Math.round(0.18 / hop);
+    const merged = [];
+    for (const r of runs) {
+      if (merged.length && r[0] - merged[merged.length - 1][1] < minGap) merged[merged.length - 1][1] = r[1];
+      else merged.push(r.slice());
+    }
+    return merged.filter(r => r[1] - r[0] >= minLen);
+  }
+
+  function draft(F, texts, opt) {
+    opt = opt || {};
+    // texts: 부를 줄들의 가사 글자열 배열 → { t:[줄 시작 초], conf, runs, voiced }
+    const hop = F.hop, M = texts.length;
+    let runs = voiceRuns(F);
+    if (opt.from > 0) { // 보컬 시작 위치를 알려 준 경우: 그 앞(전주 악기 등)은 버림
+      const f0 = Math.round(opt.from / hop);
+      runs = runs.map(r => [Math.max(r[0], f0), r[1]]).filter(r => r[1] - r[0] >= Math.round(0.18 / hop));
+    }
+    if (M < 2) return null;
+    if (runs.length < 2) { // 숨 쉬는 구간을 못 찾음 → 소리가 있는 범위 안에서 글자 수에 비례해 나눔(정확도 낮음)
+      const pr = smooth(F.pres, 25); let mx = 0; for (let f = 0; f < F.nF; f++) if (pr[f] > mx) mx = pr[f];
+      let a = Math.round((opt.from || 0) / hop), b = F.nF - 1;
+      while (a < b && pr[a] < mx * 0.3) a++; while (b > a && pr[b] < mx * 0.3) b--;
+      const ws = texts.map(lyricWeight), Wt = ws.reduce((x, y) => x + y, 0); let c = 0;
+      return { t: ws.map(w => { const t = (a + (b - a) * c / Wt) * hop; c += w; return t; }), runs: [], voiced: (b - a) * hop, strong: 0, rate: 0, cost: 9, fallback: 1 };
+    }
+    // 누적 목소리 시간 cv(frame)
+    const cvArr = new Float32Array(F.nF + 1);
+    { let c = 0, k = 0; for (let f = 0; f < F.nF; f++) { cvArr[f] = c; while (k < runs.length && runs[k][1] <= f) k++; if (k < runs.length && f >= runs[k][0]) c += hop; } cvArr[F.nF] = c; }
+    const total = cvArr[F.nF];
+    if (total < M * 0.4) return null;
+    // 후보점
+    const C = []; // {f, strong, gs}
+    runs.forEach((r, k) => {
+      const gap = k ? (r[0] - runs[k - 1][1]) * hop : 1.2;
+      C.push({ f: r[0], strong: 1, gs: Math.min(1, gap / 1.0) });
+      for (let f = r[0] + Math.round(0.5 / hop); f < r[1] - Math.round(0.5 / hop); f += Math.round(0.4 / hop)) C.push({ f, strong: 0, gs: 0 });
+    });
+    C.sort((a, b) => a.f - b.f);
+    const K = C.length, cv = C.map(c => cvArr[c.f]);
+    const wts = texts.map(lyricWeight), W = wts.reduce((a, b) => a + b, 0);
+    const emit = C.map(c => c.strong ? 0.8 * (1 - c.gs) : 1.0);
+    let rate = total / W, best = null;
+    for (let it = 0; it < 3; it++) {
+      const cost = new Float32Array(M * K).fill(1e9), back = new Int32Array(M * K).fill(-1);
+      for (let k = 0; k < K; k++) cost[k] = emit[k] + 0.4 * cv[k] / Math.max(1, total) * 4; // 첫 줄은 앞쪽에서 시작
+      for (let j = 1; j < M; j++) {
+        const e = Math.max(0.6, wts[j - 1] * rate);
+        for (let k = 0; k < K; k++) {
+          let bc = 1e9, bp = -1;
+          for (let p = 0; p < k; p++) {
+            const cp = cost[(j - 1) * K + p]; if (cp >= 1e8) continue;
+            if ((C[k].f - C[p].f) * hop < 0.3) continue;
+            const dv = Math.max(0.2, cv[k] - cv[p]);
+            const c = cp + 1.5 * Math.abs(Math.log(dv / e));
+            if (c < bc) { bc = c; bp = p; }
+          }
+          if (bp >= 0) { cost[j * K + k] = bc + emit[k]; back[j * K + k] = bp; }
+        }
+      }
+      let bk = -1, bcost = 1e9; const eL = Math.max(0.6, wts[M - 1] * rate);
+      for (let k = 0; k < K; k++) {
+        const c = cost[(M - 1) * K + k]; if (c >= 1e8) continue;
+        const rem = total - cv[k];
+        const tc = rem < 0.6 * eL ? 1.5 * Math.abs(Math.log(Math.max(0.2, rem) / (0.6 * eL))) : 0;
+        if (c + tc < bcost) { bcost = c + tc; bk = k; }
+      }
+      if (bk < 0) return null;
+      const sel = new Array(M); let k = bk;
+      for (let j = M - 1; j >= 0; j--) { sel[j] = k; k = back[j * K + k]; }
+      best = { sel, cost: bcost };
+      // 줄당 실제 '노래한 시간'으로 속도 재추정
+      let sv = 0, sw = 0; for (let j = 0; j < M - 1; j++) { sv += cv[sel[j + 1]] - cv[sel[j]]; sw += wts[j]; }
+      const nr = sw ? sv / sw : rate; if (Math.abs(nr - rate) / rate < 0.02) { rate = nr; break; } rate = nr;
+    }
+    const t = best.sel.map(k => C[k].f * hop);
+    const strongN = best.sel.filter(k => C[k].strong).length;
+    return { t, runs: runs.map(r => [r[0] * hop, r[1] * hop]), voiced: total, strong: strongN / M, rate, cost: best.cost / M };
+  }
+
+  async function analyzeDraft(L, R, sr, texts, onProg, opt) {
+    const F = await features(L, R, sr, onProg);
+    if (F.nF < 400) return null;
+    return draft(F, texts, opt);
+  }
+  return { analyze, features, onsetCurve, align, draft, analyzeDraft, voiceRuns, lyricWeight };
 })();
 
 /* ===== 자동 싱크(파형 분석) + 압축 싱크 DB ===== */
@@ -995,7 +1114,40 @@ $a('sai').onclick=async()=>{const t=$a('sat');if(t.hidden||!t.value.trim()){t.hi
 /* 시작 시 DB 읽기: 내장 → 사용자가 불러온 것 */
 (async()=>{for(const t of [(document.getElementById('sydb')||{}).textContent,(()=>{try{return localStorage.sydb}catch{}})()]){try{await dbLoad(t)}catch{}}})();
 })();
-</script><script>if('serviceWorker' in navigator)addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}))</script><script>(()=>{const BUILD='2026-11-22 11:03 가사색·단어',f=d=>d.toLocaleString('ko-KR',{month:'numeric',day:'numeric',hour:'2-digit',minute:'2-digit',hour12:false}),e=document.getElementById('ver');if(!e)return;let s='빌드 '+BUILD.slice(5);try{const d=new Date(document.lastModified);if(!isNaN(d)&&Math.abs(Date.now()-d)>20000)s+=' · 사이트 반영 '+f(d)}catch{}e.textContent=s;e.title='이 index.html의 빌드 '+BUILD+' (한국 시간)'})()</script><script>(()=>{
+</script><script>/* 🤖 일반 가사 자동 싱크 초안: 목소리 끊김 구간을 찾아 줄 시작 시간을 채워 줌 (직접 싱크 화면에서 사용) */
+(()=>{
+const g=id=>document.getElementById(id);let busy=0;
+const say=(m,bad)=>{const e=g('syas');if(e){e.textContent=m||'';e.style.color=bad?'var(--ac2,#ffb3a8)':'var(--ok,#6fe39a)'}};
+async function dec(blob){const buf=await blob.arrayBuffer();let ctx;
+ try{ctx=new(window.OfflineAudioContext||window.webkitOfflineAudioContext)(2,16000,16000)}catch{ctx=new(window.AudioContext||window.webkitAudioContext)({sampleRate:16000})}
+ return await new Promise((res,rej)=>{const p=ctx.decodeAudioData(buf,res,rej);if(p&&p.catch)p.catch(rej)})}
+const tag=t=>/^\[[^\]]*\]$/.test(t.trim());
+async function go(fromHere){
+ if(busy)return;const s=S[i];
+ if(!s||!s.blob){say('이 곡의 오디오 파일을 읽을 수 없어요',1);return}
+ let from=0;
+ if(fromHere){from=Math.max(0,A.currentTime-0.3);if(from<1){say('먼저 노래를 첫 가사가 시작되는 곳까지 이동해 두고 눌러 주세요',1);return}}
+ const rows=TS.filter(x=>x.t.trim()&&!tag(x.t));
+ if(rows.length<3){say('가사가 3줄 이상 있어야 해요',1);return}
+ if(TS.some(x=>x.ts!=null)&&!confirm('이미 맞춘 줄이 있어요.\n자동 초안으로 전부 덮어쓸까요?'))return;
+ busy=1;g('sya0').disabled=g('sya1').disabled=true;const wasPlaying=!A.paused;if(wasPlaying)A.pause();
+ try{
+  say('🎚 소리를 읽는 중…');
+  const ab=await dec(s.blob),c0=ab.getChannelData(0),c1=ab.numberOfChannels>1?ab.getChannelData(1):c0;
+  const F=await SyncAI.features(c0,c1,ab.sampleRate,async p=>{say('🎚 목소리 구간 분석 '+Math.round(p*100)+'%');await new Promise(q=>setTimeout(q,0))});
+  const D=F.nF<400?null:SyncAI.draft(F,rows.map(x=>x.t),{from});
+  if(!D){say('이 곡에서는 목소리 구간을 찾지 못했어요 (직접 탭으로 맞춰 주세요)',1);return}
+  TS=TS.filter(x=>!tag(x.t));TH=[];
+  let k=0;TS.forEach(x=>{if(x.t.trim())x.ts=Math.max(0,Math.round((D.t[k++]+off)*100)/100);else x.ts=null});
+  tc=TS.findIndex(x=>x.t.trim());tsDraw();
+  const n=D.t.length;
+  if(D.fallback)say('⚠️ 끊기는 구간을 못 찾아 글자 수 비례로 배치했어요. 많이 틀릴 수 있으니 재생하며 고쳐 주세요 ('+n+'줄)',1);
+  else if(D.strong<.4)say('⚠️ 초안 완료 ('+n+'줄) — 숨 쉬는 구간이 뚜렷하지 않아 틀린 줄이 많을 수 있어요',1);
+  else say('✅ 초안 완료 ('+n+'줄, 목소리 구간 '+D.runs.length+'개) — 재생하며 틀린 줄만 눌러서 다시 탭하세요');
+ }catch(e){say('분석 실패: '+(e&&e.message||e),1)}
+ finally{busy=0;g('sya0').disabled=g('sya1').disabled=false}}
+g('sya0').onclick=()=>go(false);g('sya1').onclick=()=>go(true);
+})()</script><script>if('serviceWorker' in navigator)addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}))</script><script>(()=>{const BUILD='2026-11-22 11:03 소리 싱크 초안',f=d=>d.toLocaleString('ko-KR',{month:'numeric',day:'numeric',hour:'2-digit',minute:'2-digit',hour12:false}),e=document.getElementById('ver');if(!e)return;let s='빌드 '+BUILD.slice(5);try{const d=new Date(document.lastModified);if(!isNaN(d)&&Math.abs(Date.now()-d)>20000)s+=' · 사이트 반영 '+f(d)}catch{}e.textContent=s;e.title='이 index.html의 빌드 '+BUILD+' (한국 시간)'})()</script><script>(()=>{
 const Q=s=>document.querySelector(s),ls=(k,v)=>{try{if(v===undefined)return localStorage[k];localStorage[k]=v}catch{}};
 const H=c=>[1,3,5].map(k=>parseInt(c.slice(k,k+2),16)),X=r=>'#'+r.map(v=>Math.round(Math.max(0,Math.min(255,v))).toString(16).padStart(2,'0')).join(''),mx=(a,b,t)=>{const p=H(a),q=H(b);return X(p.map((v,k)=>v+(q[k]-v)*t))},ra=(c,a)=>'rgba('+H(c).join(',')+','+a+')';
 const hs=(h,s,l)=>{h=((h%360)+360)%360;const a=s*Math.min(l,1-l),f=n=>{const k=(n+h/30)%12;return l-a*Math.max(-1,Math.min(k-3,9-k,1))};return X([f(0)*255,f(8)*255,f(4)*255])};
