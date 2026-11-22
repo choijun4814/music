@@ -982,58 +982,76 @@ $a('asrall').onclick=async()=>{const m=$a('sam'),b=$a('asrall');if(ASRALL){ASRAL
  }catch(e){m.textContent='📚 실패: '+(e&&e.message||e);ASRALL=0;b.innerHTML=bh;try{wl&&wl.release()}catch{};return}
  const stopped=!ASRALL;ASRALL=0;b.innerHTML=bh;try{wl&&wl.release()}catch{}try{render()}catch{}
  m.textContent='📚 '+(stopped?'멈춤':'일괄 끝')+' · 싱크 입힘 '+ok+'곡 · 인식 부족으로 건너뜀 '+fail+'곡'};
-/* 🌙 싱크 있는 곡 전부 자동 보정 (자는 동안): 곡 선택 → 시작/예상 종료/실제 종료 시각 표시 */
+/* 🌙 전곡 자동 싱크 (자는 동안): 곡 종류별 선택 → 시작/예상 종료/실제 종료 시각 표시 */
 (()=>{
-const css=document.createElement('style');css.textContent='#bsy{position:fixed;inset:0;background:var(--bg,#141418);display:flex;flex-direction:column;padding:14px;gap:8px;z-index:30}#bsy[hidden]{display:none}#bsy .r{display:flex;gap:8px;align-items:center}#bsy button{padding:10px 8px;font-size:14px}#bsl{flex:1;min-height:90px;overflow:auto;background:var(--pn,#1a1a20);border-radius:12px;padding:4px}#bsl label{display:flex;gap:8px;align-items:center;padding:7px 8px;border-radius:8px;font-size:14px}#bsl label small{margin-left:auto;flex:none;font-size:11.5px}#bsl input{flex:none;width:18px;height:18px;accent-color:var(--ac,#ff5a4d)}#bsl label span{min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}#bss{background:var(--pn,#1a1a20);border-radius:12px;padding:10px 12px;font-size:13.5px;line-height:1.55}#bss b{color:var(--ac2,#ffb3a8)}#bsg{height:22vh;overflow:auto;font-size:12px;line-height:1.45;background:var(--pn,#1a1a20);border-radius:12px;padding:6px 8px;color:var(--mu,#b9b9c6)}';document.head.append(css);
+const css=document.createElement('style');css.textContent='#bsy{position:fixed;inset:0;background:var(--bg,#141418);display:flex;flex-direction:column;padding:14px;gap:8px;z-index:30}#bsy[hidden]{display:none}#bsy .r{display:flex;gap:8px;align-items:center;flex-wrap:wrap}#bsy button{padding:10px 8px;font-size:14px}#bsy .r label{font-size:13px;display:flex;gap:5px;align-items:center}#bsl{flex:1;min-height:90px;overflow:auto;background:var(--pn,#1a1a20);border-radius:12px;padding:4px}#bsl label{display:flex;gap:8px;align-items:center;padding:7px 8px;border-radius:8px;font-size:14px}#bsl label small{margin-left:auto;flex:none;font-size:11.5px}#bsl input{flex:none;width:18px;height:18px;accent-color:var(--ac,#ff5a4d)}#bsl label span{min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}#bss{background:var(--pn,#1a1a20);border-radius:12px;padding:10px 12px;font-size:13.5px;line-height:1.55}#bss b{color:var(--ac2,#ffb3a8)}#bsg{height:20vh;overflow:auto;font-size:12px;line-height:1.45;background:var(--pn,#1a1a20);border-radius:12px;padding:6px 8px;color:var(--mu,#b9b9c6)}';document.head.append(css);
 const d=document.createElement('div');d.id='bsy';d.hidden=true;
-d.innerHTML='<div class="r"><b style="flex:1;font-size:16px">🌙 자동 싱크 보정</b><button id="bsx">닫기</button></div><small style="color:var(--mu,#9a9aa8)">시간 태그가 있는 가사의 시간을 음성인식으로 곡마다 다시 맞춰요. 충전기를 꽂고 이 화면을 켜 둔 채로 주무세요.</small><div class="r"><button id="bsa" style="flex:1">전체 선택</button><button id="bsn" style="flex:1">전체 해제</button><label style="flex:none;font-size:13px"><input type="checkbox" id="bsd"> 이미 한 곡 포함</label></div><div id="bsl"></div><div id="bss"></div><div class="r"><button id="bsgo" class="add" style="flex:2;border:0">▶ 선택한 곡 자동 시작</button><button id="bsst" style="flex:1" disabled>⏹ 멈추기</button></div><div id="bsg"></div>';
+d.innerHTML='<div class="r" style="flex-wrap:nowrap"><b style="flex:1;font-size:16px">🌙 전곡 자동 싱크</b><button id="bsx">닫기</button></div><small style="color:var(--mu,#9a9aa8)">곡 종류를 고르고 시작하면 음성인식으로 차례로 맞춰요. 충전기를 꽂고 이 화면을 켜 둔 채로 주무세요.</small><div class="r"><label><input type="checkbox" id="bk1" checked> 싱크 있는 곡 (시간 보정)</label><label><input type="checkbox" id="bk2" checked> 일반 가사 곡 (싱크 만들기)</label><label><input type="checkbox" id="bk3"> 가사 없는 곡 (받아쓰기·정확도 낮음)</label></div><div class="r"><button id="bsa" style="flex:1">전체 선택</button><button id="bsn" style="flex:1">전체 해제</button><button id="bsf" style="flex:1">🔍 가사 먼저 일괄 찾기</button><label style="flex:none"><input type="checkbox" id="bsd"> 이미 한 곡 포함</label></div><div id="bsl"></div><div id="bss"></div><div class="r" style="flex-wrap:nowrap"><button id="bsgo" class="add" style="flex:2;border:0">▶ 선택한 곡 자동 시작</button><button id="bsst" style="flex:1" disabled>⏹ 멈추기</button></div><div id="bsg"></div>';
 document.body.append(d);
 const q=id=>document.getElementById(id);
 const clk=t=>{const x=new Date(t),p=n=>String(n).padStart(2,'0');return (x.getMonth()+1)+'/'+x.getDate()+' '+p(x.getHours())+':'+p(x.getMinutes())+':'+p(x.getSeconds())};
 const dmin=s=>{s=Math.max(0,Math.round(s));const h=Math.floor(s/3600),m=Math.floor(s%3600/60);return h?h+'시간 '+m+'분':m+'분 '+(s%60)+'초'};
 let SEL=new Set(),RUN=0,CAND=[],DUR=240,logEl=q('bsg');
+const kind=s=>{const t=(s.lyrics||'').trim();return !t?'none':plrc(t).sync?'sync':'plain'};
+const KN={sync:'싱크',plain:'일반',none:'없음'};
 const stOf=s=>s.perfect?'완벽 표시':(s.asrFix===1||(s.sy&&s.sy.src==='asr'))?'✓ 보정됨':s.asrFix===2?'건너뜀':s.asrFix===3?'실패':'';
 const logL=t=>{const e=document.createElement('div');e.textContent=t;logEl.append(e);while(logEl.children.length>400)logEl.firstChild.remove();logEl.scrollTop=1e9};
-function build(){CAND=S.filter(s=>s.blob&&(s.lyrics||'').trim()&&plrc(s.lyrics).sync);const inc=q('bsd').checked;SEL=new Set(CAND.filter(s=>inc?!s.perfect:!stOf(s)));list();sum()}
-function list(){q('bsl').innerHTML='';CAND.forEach(s=>{const l=document.createElement('label'),c=document.createElement('input');c.type='checkbox';c.checked=SEL.has(s);c.disabled=!!RUN;c.onchange=()=>{c.checked?SEL.add(s):SEL.delete(s);sum()};const t=document.createElement('span');t.textContent=s.title+(s.artist?' · '+s.artist:'');const g=document.createElement('small');g.textContent=stOf(s);g.dataset.k=CAND.indexOf(s);l.append(c,t,g);q('bsl').append(l)})}
-function sum(){if(RUN)return;const n=SEL.size,MN=$a('asrm').value,e=n*DUR*asrFac(MN);let last='';try{const L=JSON.parse(localStorage.bsyLast||'null');if(L)last='<br>지난 실행: '+clk(L.a)+' → '+clk(L.b)+' · 보정 '+L.ok+' · 건너뜀 '+L.sk+' · 실패 '+L.fl}catch{}q('bss').innerHTML='싱크 있는 곡 <b>'+CAND.length+'</b>곡 중 <b>'+n+'</b>곡 선택<br>예상 소요 약 <b>'+dmin(e)+'</b> (곡당 약 '+DUR+'초로 가정 · 모델 '+asrKey(MN)+')'+last}
-q('bsa').onclick=()=>{if(RUN)return;SEL=new Set(CAND);list();sum()};q('bsn').onclick=()=>{if(RUN)return;SEL=new Set();list();sum()};q('bsd').onchange=()=>{if(!RUN)build()};
-$a('asrall').insertAdjacentHTML('afterend','<button id="bsyb" style="padding:11px 6px">🌙 싱크 있는 곡 전부 자동 보정<small style="display:block;font-weight:400;font-size:12px;margin-top:2px">곡 선택 → 시작·종료 시각 표시 · 자는 동안 맡기기</small></button>');
+const want=()=>({sync:q('bk1').checked,plain:q('bk2').checked,none:q('bk3').checked});
+function pick(){const w=want(),inc=q('bsd').checked;SEL=new Set(CAND.filter(s=>w[kind(s)]&&!s.perfect&&(inc||!stOf(s))))}
+function build(){CAND=S.filter(s=>s.blob);pick();list();sum()}
+function list(){q('bsl').innerHTML='';CAND.forEach((s,k)=>{const l=document.createElement('label'),c=document.createElement('input');c.type='checkbox';c.checked=SEL.has(s);c.disabled=!!RUN;c.onchange=()=>{c.checked?SEL.add(s):SEL.delete(s);sum()};const t=document.createElement('span');t.textContent=(s.title||s.name)+(s.artist?' · '+s.artist:'');const g=document.createElement('small');g.textContent=KN[kind(s)]+(stOf(s)?' · '+stOf(s):'');g.dataset.k=k;l.append(c,t,g);q('bsl').append(l)})}
+function sum(){if(RUN)return;const n=SEL.size,MN=$a('asrm').value,e=n*DUR*asrFac(MN),c={sync:0,plain:0,none:0};CAND.forEach(s=>c[kind(s)]++);let last='';try{const L=JSON.parse(localStorage.bsyLast||'null');if(L)last='<br>지난 실행: '+clk(L.a)+' → '+clk(L.b)+' · 보정 '+L.ok+' · 건너뜀 '+L.sk+' · 실패 '+L.fl}catch{}q('bss').innerHTML='전체 <b>'+CAND.length+'</b>곡 · 싱크 있음 '+c.sync+' · 일반 가사 '+c.plain+' · 가사 없음 '+c.none+'<br>선택 <b>'+n+'</b>곡 · 예상 소요 약 <b>'+dmin(e)+'</b> (곡당 약 '+DUR+'초 가정 · 모델 '+asrKey(MN)+')'+last}
+['bk1','bk2','bk3','bsd'].forEach(id=>q(id).onchange=()=>{if(!RUN){pick();list();sum()}});
+q('bsa').onclick=()=>{if(RUN)return;SEL=new Set(CAND.filter(s=>!s.perfect));list();sum()};q('bsn').onclick=()=>{if(RUN)return;SEL=new Set();list();sum()};
+q('bsf').onclick=()=>{if(RUN)return;if(typeof bulkLy==='function'){d.hidden=true;$a('sa').hidden=true;bulkLy()}else alert('목록 화면의 🔍 가사 일괄 버튼을 눌러 주세요')};
+$a('asrall').insertAdjacentHTML('afterend','<button id="bsyb" style="padding:11px 6px">🌙 전곡 자동 싱크 (자는 동안)<small style="display:block;font-weight:400;font-size:12px;margin-top:2px">곡 종류 선택 → 시작·종료 시각 표시 · 싱크 보정/만들기</small></button>');
 q('bsyb').onclick=()=>{if(!RUN)build();else sum();d.hidden=false};
 q('bsx').onclick=()=>{if(RUN&&!confirm('돌아가는 중이에요. 화면을 닫아도 계속 돌아가요. 닫을까요?'))return;d.hidden=true};
 q('bsst').onclick=()=>{if(RUN){RUN=2;q('bsst').disabled=true;logL('⏹ 현재 곡까지만 하고 멈춰요...')}};
 q('bsgo').onclick=async()=>{
  if(RUN)return;const todo=CAND.filter(s=>SEL.has(s));if(!todo.length){alert('선택한 곡이 없어요');return}
- if(!confirm(todo.length+'곡을 차례로 자동 보정해요.\n충전기를 꽂고, 이 화면을 켜 둔 채로 두세요. 시작할까요?'))return;
+ if(!confirm(todo.length+'곡을 차례로 자동 처리해요.\n충전기를 꽂고, 이 화면을 켜 둔 채로 두세요. 시작할까요?'))return;
  RUN=1;q('bsgo').disabled=true;q('bsst').disabled=false;list();logEl.innerHTML='';
- const MN=$a('asrm').value,T0=Date.now();let ok=0,sk=0,fl=0,audSec=0,work=0,wl=null;
+ const MN=$a('asrm').value,T0=Date.now();let ok=0,sk=0,fl=0,audSec=0,wl=null;
  const getWl=()=>{try{navigator.wakeLock&&navigator.wakeLock.request('screen').then(x=>{wl=x}).catch(()=>{})}catch{}};getWl();
  const vis=()=>{if(!document.hidden&&RUN)getWl()};document.addEventListener('visibilitychange',vis);
  let cur='',curEl='',doneN=0;const est0=todo.length*DUR*asrFac(MN);
- const paint=()=>{const now=Date.now(),el=(now-T0)/1000;let rem;if(doneN>0&&audSec>0){rem=(el/doneN)*(todo.length-doneN)}else rem=est0;q('bss').innerHTML='시작 <b>'+clk(T0)+'</b> · 예상 종료 <b>'+clk(now+Math.max(0,rem)*1000)+'</b><br>경과 '+dmin(el)+' · 남은 약 '+dmin(rem)+'<br>진행 <b>'+doneN+' / '+todo.length+'</b>곡 · 보정 '+ok+' · 건너뜀 '+sk+' · 실패 '+fl+'<br>지금: '+esc(cur)+'<br><span style="color:var(--mu,#9a9aa8)">'+esc(curEl)+'</span>'};
+ const paint=()=>{const now=Date.now(),el=(now-T0)/1000;let rem;if(doneN>0&&audSec>0){rem=(el/doneN)*(todo.length-doneN)}else rem=est0;q('bss').innerHTML='시작 <b>'+clk(T0)+'</b> · 예상 종료 <b>'+clk(now+Math.max(0,rem)*1000)+'</b><br>경과 '+dmin(el)+' · 남은 약 '+dmin(rem)+'<br>진행 <b>'+doneN+' / '+todo.length+'</b>곡 · 완료 '+ok+' · 건너뜀 '+sk+' · 실패 '+fl+'<br>지금: '+esc(cur)+'<br><span style="color:var(--mu,#9a9aa8)">'+esc(curEl)+'</span>'};
  const iv=setInterval(paint,1000);paint();
  const mm2={set textContent(v){curEl=v}};
  logL('▶ 시작 '+clk(T0)+' · '+todo.length+'곡 · 모델 '+asrKey(MN));
  try{
   ASRT0=Date.now();await asrInit(MN,mm2);ASRT0=0;
-  for(let n=0;n<todo.length&&RUN===1;n++){const s=todo[n],t1=Date.now();cur=(n+1)+'/'+todo.length+' · '+s.title;curEl='소리 불러오는 중';
+  for(let n=0;n<todo.length&&RUN===1;n++){const s=todo[n],t1=Date.now(),K=kind(s),tg=(n+1)+'. ['+KN[K]+'] '+(s.title||s.name),tm=()=>' · '+clk(t1)+'→'+clk(Date.now());cur=(n+1)+'/'+todo.length+' · '+(s.title||s.name);curEl='소리 불러오는 중';
    try{
-    const L=plrc(s.lyrics||''),g=sig(s);if(!g)throw new Error('싱크 태그 없음');
-    let pcm=await asrPcm(s.blob);pcm=asrKeep(pcm,L.l.map(x=>x[0]));const dur=pcm.od||pcm.length/16000;audSec+=dur;
+    const L=plrc(s.lyrics||''),g=K==='sync'?sig(s):null;
+    let pcm=await asrPcm(s.blob);pcm=asrKeep(pcm,K==='sync'?L.l.map(x=>x[0]):null);const dur=pcm.od||pcm.length/16000;audSec+=dur;
+    const ref=K==='plain'?L.l.map(x=>x[1]).filter(x=>x&&!/^\[.*\]$/.test(x.trim())):[];
+    const tx=K==='sync'?L.l.map(x=>x[1]).join(''):ref.join(''),ko=(tx.match(/[\uac00-\ud7a3]/g)||[]).length,la=(tx.match(/[a-z]/gi)||[]).length,lg=$a('asrl').value||(ko+la?(ko>la*.3?'korean':'english'):undefined);
     const tr=asrTrack(mm2,pcm.length/16000,MN,'듣는 중');
-    const tx=L.l.map(x=>x[1]).join(''),ko=(tx.match(/[\uac00-\ud7a3]/g)||[]).length,la=(tx.match(/[a-z]/gi)||[]).length,lg=$a('asrl').value||(ko+la?(ko>la*.3?'korean':'english'):undefined);
     let out;try{out=await asrCall(MN,mm2,pcm,{return_timestamps:'word',chunk_length_s:30,stride_length_s:5,language:lg,task:'transcribe',streamer:tr.st})}finally{tr.stop()}
-    const r=asrAlign(asrClean(asrUn(out.chunks||[],pcm)),L.l),RT=Math.round(r.rate*100);
-    if(r.n<3||r.mad>2){s.asrFix=2;sk++;logL('– '+(n+1)+'. '+s.title+' · 건너뜀 (인식률 '+RT+'%, 일치 '+r.n+'/'+r.lines+') · '+clk(t1)+'→'+clk(Date.now()))}
-    else{const FT=asrFit(r,L.l.map(x=>x[0]),dur),o=FT.o;setSy(s,{v:1,a:1,pl:FT.pl,o,d:FT.d,n:g.n,t0:g.t0,dur,h:lh(s),z:0,src:'asr',rate:RT},'');s.asrFix=1;ok++;logL('✓ '+(n+1)+'. '+s.title+' · 보정 '+(o>=0?'+':'')+o.toFixed(2)+'초 · 인식률 '+RT+'% · '+clk(t1)+'→'+clk(Date.now()))}
-   }catch(e){s.asrFix=3;fl++;logL('✗ '+(n+1)+'. '+s.title+' · 실패: '+(e&&e.message||e))}
-   try{await put(s)}catch{}doneN++;const gg=q('bsl').querySelector('small[data-k="'+CAND.indexOf(s)+'"]');if(gg)gg.textContent=stOf(s);paint()}
+    const W=asrClean(asrUn(out.chunks||[],pcm));
+    if(K==='sync'){
+     const r=asrAlign(W,L.l),RT=Math.round(r.rate*100);
+     if(r.n<3||r.mad>2){s.asrFix=2;sk++;logL('– '+tg+' · 건너뜀 (인식률 '+RT+'%, 일치 '+r.n+'/'+r.lines+')'+tm())}
+     else{const FT=asrFit(r,L.l.map(x=>x[0]),dur),o=FT.o;setSy(s,{v:1,a:1,pl:FT.pl,o,d:FT.d,n:g.n,t0:g.t0,dur,h:lh(s),z:0,src:'asr',rate:RT},'');s.asrFix=1;ok++;logL('✓ '+tg+' · 보정 '+(o>=0?'+':'')+o.toFixed(2)+'초 · 인식률 '+RT+'%'+tm())}
+    }else if(K==='plain'){
+     const r=asrMap(W,ref);
+     if(r.hits>=3&&r.hits>=ref.length*.3){const t=asrFill(r.times,dur);s.lyrics=ref.map((x,k)=>lrcT(t[k])+x.trim()).join('\n');s.off=0;s.tried=1;delete s.sy;s.asrFix=1;try{BK[s.name]=Object.assign(BK[s.name]||{n:s.name},{l:s.lyrics,o:0});bkSave()}catch{}ok++;if(S[i]===s){lyr();A.ontimeupdate()}logL('✓ '+tg+' · 싱크 만듦 (줄 '+r.hits+'/'+ref.length+' 일치)'+tm())}
+     else{s.asrFix=2;sk++;logL('– '+tg+' · 건너뜀 (줄 '+r.hits+'/'+ref.length+' 일치)'+tm())}
+    }else{
+     const lrc=asrLines(W);const nl=lrc?lrc.split('\n').length:0;
+     if(nl<3){s.asrFix=2;sk++;logL('– '+tg+' · 건너뜀 (인식된 줄 '+nl+'개)'+tm())}
+     else{s.lyrics=lrc;s.off=0;s.tried=1;delete s.sy;s.asrFix=1;try{BK[s.name]=Object.assign(BK[s.name]||{n:s.name},{l:lrc,o:0});bkSave()}catch{}ok++;if(S[i]===s){lyr();A.ontimeupdate()}logL('✓ '+tg+' · 받아쓰기 '+nl+'줄'+tm())}
+    }
+   }catch(e){s.asrFix=3;fl++;logL('✗ '+tg+' · 실패: '+(e&&e.message||e))}
+   try{await put(s)}catch{}doneN++;const gg=q('bsl').querySelector('small[data-k="'+CAND.indexOf(s)+'"]');if(gg)gg.textContent=KN[kind(s)]+(stOf(s)?' · '+stOf(s):'');paint()}
  }catch(e){logL('✗ 중단: '+(e&&e.message||e))}
  clearInterval(iv);document.removeEventListener('visibilitychange',vis);try{wl&&wl.release()}catch{}
  const T1=Date.now(),stopped=RUN===2;RUN=0;ASRT0=0;
  try{localStorage.bsyLast=JSON.stringify({a:T0,b:T1,ok,sk,fl})}catch{}
- q('bss').innerHTML=(stopped?'⏹ 멈춤':'✅ 끝')+'<br>시작 <b>'+clk(T0)+'</b> · 종료 <b>'+clk(T1)+'</b> (총 '+dmin((T1-T0)/1000)+')<br>보정 <b>'+ok+'</b>곡 · 건너뜀 '+sk+'곡 · 실패 '+fl+'곡';
- logL((stopped?'⏹ 멈춤 ':'✅ 끝 ')+clk(T1)+' · 보정 '+ok+' · 건너뜀 '+sk+' · 실패 '+fl);
+ q('bss').innerHTML=(stopped?'⏹ 멈춤':'✅ 끝')+'<br>시작 <b>'+clk(T0)+'</b> · 종료 <b>'+clk(T1)+'</b> (총 '+dmin((T1-T0)/1000)+')<br>완료 <b>'+ok+'</b>곡 · 건너뜀 '+sk+'곡 · 실패 '+fl+'곡';
+ logL((stopped?'⏹ 멈춤 ':'✅ 끝 ')+clk(T1)+' · 완료 '+ok+' · 건너뜀 '+sk+' · 실패 '+fl);
  q('bsgo').disabled=false;q('bsst').disabled=true;list();try{render()}catch{}};
 })();
 
