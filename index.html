@@ -1296,7 +1296,7 @@ async function go(fromHere){
  }catch(e){say('분석 실패: '+(e&&e.message||e),1)}
  finally{busy=0;g('sya0').disabled=g('sya1').disabled=false}}
 g('sya0').onclick=()=>go(false);g('sya1').onclick=()=>go(true);
-})()</script><script>if('serviceWorker' in navigator)addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}))</script><script>(()=>{const BUILD='2026-11-22 17:26 음악 분석·목소리 싱크',f=d=>d.toLocaleString('ko-KR',{month:'numeric',day:'numeric',hour:'2-digit',minute:'2-digit',hour12:false}),e=document.getElementById('ver');if(!e)return;let s='빌드 '+BUILD.slice(5);try{const d=new Date(document.lastModified);if(!isNaN(d)&&Math.abs(Date.now()-d)>20000)s+=' · 사이트 반영 '+f(d)}catch{}e.textContent=s;e.title='이 index.html의 빌드 '+BUILD+' (한국 시간)'})()</script><script>(()=>{
+})()</script><script>if('serviceWorker' in navigator)addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}))</script><script>(()=>{const BUILD='2026-11-22 20:51 목소리 싱크 자동',f=d=>d.toLocaleString('ko-KR',{month:'numeric',day:'numeric',hour:'2-digit',minute:'2-digit',hour12:false}),e=document.getElementById('ver');if(!e)return;let s='빌드 '+BUILD.slice(5);try{const d=new Date(document.lastModified);if(!isNaN(d)&&Math.abs(Date.now()-d)>20000)s+=' · 사이트 반영 '+f(d)}catch{}e.textContent=s;e.title='이 index.html의 빌드 '+BUILD+' (한국 시간)'})()</script><script>(()=>{
 const Q=s=>document.querySelector(s),ls=(k,v)=>{try{if(v===undefined)return localStorage[k];localStorage[k]=v}catch{}};
 const H=c=>[1,3,5].map(k=>parseInt(c.slice(k,k+2),16)),X=r=>'#'+r.map(v=>Math.round(Math.max(0,Math.min(255,v))).toString(16).padStart(2,'0')).join(''),mx=(a,b,t)=>{const p=H(a),q=H(b);return X(p.map((v,k)=>v+(q[k]-v)*t))},ra=(c,a)=>'rgba('+H(c).join(',')+','+a+')';
 const hs=(h,s,l)=>{h=((h%360)+360)%360;const a=s*Math.min(l,1-l),f=n=>{const k=(n+h/30)%12;return l-a*Math.max(-1,Math.min(k-3,9-k,1))};return X([f(0)*255,f(8)*255,f(4)*255])};
@@ -1358,7 +1358,7 @@ const p=document.createElement('div');p.id='lv';p.hidden=true;
 p.innerHTML='<div class="lvh"><b style="flex:1;align-self:center">📊 음악 분석</b><button id="lvx" style="flex:none;padding:11px 16px">닫기</button></div><small id="lvm">재생 중인 곡을 실시간으로 분석해요 (소리·가사 데이터는 바뀌지 않아요)</small><canvas id="lvc" style="height:130px"></canvas>'
 +['음량','저음','중음','고음'].map((n,k)=>'<div class="r"><b>'+n+'</b><div class="bar"><i id="lvb'+k+'"></i></div><span class="v" id="lvv'+k+'">0%</span></div>').join('')
 +'<div class="r"><b>목소리</b><span id="lvvo" style="flex:1">—</span></div><div class="r"><b>음정</b><span id="lvp" style="flex:1">—</span></div><canvas id="lvt" style="height:90px"></canvas>'
-+'<div class="lvh"><button id="lvs" style="flex:2">🎯 목소리로 싱크 맞추기</button><button id="lvg" style="display:none">그래도 적용</button></div><small id="lvsm">노래가 시작되는 순간(음높이 있는 소리)을 찾아 가사 시간을 맞춰요. 파일만 읽어서 재생하지 않아도 돼요.</small>'
++'<div class="lvh"><button id="lvs" style="flex:2">🎯 목소리로 싱크 맞추기</button><button id="lvg" style="display:none">그래도 적용</button></div><label class="r" style="gap:6px"><input type="checkbox" id="lva"> 곡이 시작되면 자동으로 맞추기</label><small id="lvsm">노래가 시작되는 순간(음높이 있는 소리)을 찾아 가사 시간을 맞춰요. 파일만 읽어서 재생하지 않아도 돼요.</small>'
 +'<div class="r" style="margin-top:4px"><b style="width:auto">가사 싱크 보정</b><span id="lvo" style="flex:1;text-align:right;font-weight:700">+0.0초</span></div><div class="lvh"><button id="lvm1">−0.1초</button><button id="lvp1">+0.1초</button><button id="lvr">되돌리기</button></div><small>＋로 올리면 가사가 더 일찍 나와요. 이 패널을 열 때의 값으로 되돌릴 수 있어요. 목소리·음정은 반주가 섞여 있어 추정값이에요.</small>';
 document.body.appendChild(p);
 const b=document.createElement('button');b.id='lvb';b.title='음악 분석';b.textContent='📊';
@@ -1425,7 +1425,7 @@ async function vsAnalyze(x,sr,T,prog){
   if(f%300==0){prog&&prog(f/nF);await new Promise(r=>setTimeout(r,0))}
   if(rm[f]<thr)continue;const o=f*HOP;let m0=0;for(let j=0;j<W;j++)m0+=x[o+j]*x[o+j];let mx=0;
   for(let t=L0;t<=L1;t++){let r=0,m=m0;for(let j=0;j<W;j++){const y=x[o+j+t];r+=x[o+j]*y;m+=y*y}const q=m>0?2*r/m:0;nsd[t]=q;if(q>mx)mx=q}
-  v[f]=mx>=.85?1:0}
+  v[f]=Math.max(0,Math.min(1,(mx-.55)/.3))}
  const ps=new Float32Array(nF+1);for(let f=0;f<nF;f++)ps[f+1]=ps[f]+v[f];
  const B=25,mean=(a,b)=>(ps[Math.min(nF,b)]-ps[Math.max(0,a)])/Math.max(1,Math.min(nF,b)-Math.max(0,a));
  const edge=k=>k<B||k+B>nF?0:mean(k,k+B)-mean(k-B,k);
@@ -1436,24 +1436,44 @@ async function vsAnalyze(x,sr,T,prog){
  let s2=-1e9;for(let a=0;a<sc.length;a++)if(Math.abs(a-bi)>50&&sc[a]>s2)s2=sc[a];
  let hit=0;for(const k of K)if(edge(k+bi-R)>.25)hit++;
  const z=(sc[bi]-mu)/sd,margin=sc[bi]>0?(sc[bi]-s2)/sc[bi]:0,voicedRatio=ps[nF]/nF;
- return{delta:(bi-R)*.02,z,hit:hit/K.length,margin,voicedRatio,good:hit/K.length>=.6&&margin>=.15&&z>=2.2&&voicedRatio<.85}}
+ let first=-1;for(let f=Math.max(0,Math.floor((T[0]-8)/.02));f+15<nF;f++){if(rm[f]>=thr&&mean(f,f+15)>=.6){first=f*.02;break}}
+ return{first,delta0:first<0?null:first-T[0],delta:(bi-R)*.02,z,hit:hit/K.length,margin,voicedRatio,weak:hit/K.length>=.4&&margin>=.08&&voicedRatio<.92,good:hit/K.length>=.6&&margin>=.15&&z>=2.2&&voicedRatio<.85}}
 
-let vr=null;
-function vsApply(s,d){const o=Math.round(-d*100)/100;off=o;s.off=o;if(s.sy&&s.sy.a)s.sy.o=o;$('#ov').textContent=off.toFixed(1)+'s';try{put(s).catch(()=>{})}catch{}try{lyr()}catch{}try{A.ontimeupdate()}catch{}g('lvo').textContent=fmt(off);base=off}
-g('lvs').onclick=async()=>{const s=S[i],m=g('lvsm');g('lvg').style.display='none';vr=null;
- if(!s||!s.blob){m.textContent='곡을 먼저 선택해 주세요';return}
- let Lr;try{Lr=plrc(s.lyrics||'')}catch{}if(!Lr||!Lr.sync||Lr.l.length<3){m.textContent='시간(싱크)이 있는 가사가 3줄 이상 있어야 해요';return}
- const T=Lr.l.filter(x=>x[1]&&!/^\[[^\]]*\]$/.test(String(x[1]).trim())).map(x=>x[0]);
- g('lvs').disabled=true;m.textContent='소리를 읽는 중…';
- try{const ab=await decode(s.blob),c0=ab.getChannelData(0),c1=ab.numberOfChannels>1?ab.getChannelData(1):c0;let x=c0;if(c1!==c0){x=new Float32Array(c0.length);for(let k=0;k<x.length;k++)x[k]=(c0[k]+c1[k])*.5}
-  const r=await vsAnalyze(x,ab.sampleRate,T,p=>{m.textContent='목소리 구간 분석 '+Math.round(p*100)+'%'});
-  if(!r){m.textContent='분석할 수 없는 곡이에요'}
-  else{vr={s,d:r.delta};const cur=(s.sy&&s.sy.a)?s.sy.o:(s.off||0),want=Math.round(-r.delta*100)/100;
-   const info='목소리 기준 보정 '+fmt(want)+' (현재 '+fmt(cur)+') · 일치 '+Math.round(r.hit*100)+'%';
-   if(r.good){if(S[i]===s){if(Math.abs(want-cur)<.05)m.textContent='✅ 이미 잘 맞아요 · '+info;else{vsApply(s,r.delta);m.textContent='✅ 적용했어요 · '+info}}}
-   else{m.textContent='⚠️ 신뢰도 낮음(반주에도 음이 계속 있거나 가사 시간이 불규칙해요) — 변경하지 않았어요 · '+info;g('lvg').style.display=''}}}
+const LS=k=>{try{return localStorage.getItem(k)}catch{return null}},LW=(k,v)=>{try{localStorage.setItem(k,v)}catch{}};
+let vr=null,vbusy=0,vtm=0,vkey='';
+function toast(t){let e=document.getElementById('lvtoast');if(!e){e=document.createElement('div');e.id='lvtoast';e.style.cssText='position:fixed;left:50%;bottom:90px;transform:translateX(-50%);background:#000c;color:#fff;padding:9px 14px;border-radius:18px;font-size:13px;z-index:40;max-width:88vw;text-align:center';document.body.appendChild(e)}e.textContent=t;e.style.display='';clearTimeout(e._t);e._t=setTimeout(()=>e.style.display='none',5000)}
+function vsApply(s,d){const o=Math.round(-d*100)/100;off=o;s.off=o;if(s.sy&&s.sy.a)s.sy.o=o;try{$('#ov').textContent=off.toFixed(1)+'s'}catch{}try{put(s).catch(()=>{})}catch{}try{lyr()}catch{}try{A.ontimeupdate()}catch{}try{g('lvo').textContent=fmt(off)}catch{}base=off}
+async function vsCompute(s,prog){let Lr;try{Lr=plrc(s.lyrics||'')}catch{}if(!s.blob||!Lr||!Lr.sync||Lr.l.length<3)return{err:'시간(싱크)이 있는 가사가 3줄 이상 있어야 해요'};
+ const T=Lr.l.filter(x=>x[1]&&!/^\[[^\]]*\]$/.test(String(x[1]).trim())).map(x=>x[0]);if(T.length<3)return{err:'가사 줄이 너무 적어요'};
+ const ab=await decode(s.blob),c0=ab.getChannelData(0),c1=ab.numberOfChannels>1?ab.getChannelData(1):c0;let x=c0;if(c1!==c0){x=new Float32Array(c0.length);for(let k=0;k<x.length;k++)x[k]=(c0[k]+c1[k])*.5}
+ const r=await vsAnalyze(x,ab.sampleRate,T,prog);if(!r)return{err:'분석할 수 없는 곡이에요'};return{r}}
+/* 판단: 전체 맞춤(확실/추정) → 첫 소리 기준(반주에 음이 적은 곡만) → 변경 없음 */
+function vsDecide(r){if(r.good)return{d:r.delta,how:'목소리 기준'};if(r.weak)return{d:r.delta,how:'목소리 기준(추정)'};
+ if(r.delta0!=null&&r.voicedRatio<.6&&Math.abs(r.delta0)<=4)return{d:r.delta0,how:'첫 소리 기준'};return null}
+g('lvs').onclick=async()=>{const s=S[i],m=g('lvsm');g('lvg').style.display='none';vr=null;if(!s){m.textContent='곡을 먼저 선택해 주세요';return}
+ g('lvs').disabled=true;vbusy=1;m.textContent='소리를 읽는 중…';
+ try{const c=await vsCompute(s,p=>{m.textContent='목소리 구간 분석 '+Math.round(p*100)+'%'});
+  if(c.err)m.textContent=c.err;else{const r=c.r,cur=(s.sy&&s.sy.a)?s.sy.o:(s.off||0),dc=vsDecide(r),info=' · 일치 '+Math.round(r.hit*100)+'% · 반주 음 '+Math.round(r.voicedRatio*100)+'%';vr={s,d:r.delta};
+   if(dc&&S[i]===s){const want=Math.round(-dc.d*100)/100;if(Math.abs(want-cur)<.05)m.textContent='✅ 이미 잘 맞아요'+info;else{vsApply(s,dc.d);m.textContent='✅ '+dc.how+' '+fmt(want)+' 적용 (이전 '+fmt(cur)+')'+info}}
+   else{m.textContent='⚠️ 신뢰도 낮음 — 변경하지 않았어요 (가능한 값 '+fmt(Math.round(-r.delta*100)/100)+')'+info;g('lvg').style.display=''}}}
  catch(e){m.textContent='분석 실패: '+(e&&e.message||e)}
- g('lvs').disabled=false};
+ g('lvs').disabled=false;vbusy=0};
 g('lvg').onclick=()=>{if(vr&&vr.s===S[i]){vsApply(vr.s,vr.d);g('lvg').style.display='none';g('lvsm').textContent='적용했어요 ('+fmt(off)+') · 되돌리기로 이전 값 복원'}};
+g('lva').onchange=e=>LW('vsAuto',e.target.checked?'1':'0');
+/* 곡이 시작되면 자동 적용: lyr()가 불릴 때(곡 전환·재생 시작) 한 번만 예약 */
+async function vsAuto(s,key){
+ for(let n=0;n<25&&!(s.sy);n++){await new Promise(r=>setTimeout(r,1000));if(S[i]!==s)return}   // 기존 🎚 자동 싱크가 먼저 끝나길 잠깐 기다림
+ if(S[i]!==s||vbusy)return;if(s.sy&&s.sy.a){LW('vsd:'+key,'1');return}
+ vbusy=1;try{const c=await vsCompute(s);if(c.err||S[i]!==s){return}
+  const dc=vsDecide(c.r);LW('vsd:'+key,'1');
+  if(!dc){toast('🎯 목소리 싱크: 신뢰도가 낮아 그대로 뒀어요 (📊에서 확인)');return}
+  const want=Math.round(-dc.d*100)/100;if(Math.abs(want-(s.off||0))<.05)return;vsApply(s,dc.d);toast('🎯 '+dc.how+' 싱크 자동 적용 '+fmt(want))}
+ catch{}finally{vbusy=0}}
+const _lyr3=lyr;lyr=function(){_lyr3.apply(this,arguments);try{
+ const s=S[i];if(!s||LS('vsAuto')==='0')return;const key=s.id+':'+(s.lyrics||'').length;if(key===vkey)return;vkey=key;clearTimeout(vtm);
+ if(LS('vsd:'+key))return;if(!s.sy&&s.off)return;      // 이미 분석했거나, 손으로 맞춰 둔 곡은 건드리지 않음
+ vtm=setTimeout(()=>vsAuto(s,key),1500)}catch{}};
+
+const _st=start;start=function(){_st();g('lva').checked=LS('vsAuto')!=='0'};
 })();
 </script></body></html>
