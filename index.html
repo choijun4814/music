@@ -569,7 +569,7 @@ async function gdRun(man,gest){
  try{
   let t=gdTok();
   if(!t){try{t=await gdRefresh()}catch(e){gdSt(e.message,1);return}}
-  if(!t){if(!man&&!gest){gdPend=1;gdSt('☁️ 로그인이 만료됐어요. 화면을 한 번 터치하면 이어서 백업해요',1);return}t=await gdAuth(man?'':'none')}
+  if(!t){if(!man){gdPend=1;gdSt('☁️ 로그인이 만료됐어요. 💾 창에서 「지금 백업」을 누르면 이어서 백업해요',1);return}t=await gdAuth('')}
   gdSt('☁️ 업로드 중…');
   let fid=gdG('gdF');
   if(!fid){const f=await gdFind(t);fid=f&&f.id;
@@ -578,7 +578,7 @@ async function gdRun(man,gest){
   gdS('gdH',pk.h);gdS('gdN',String(pk.n));gdS('gdL',gdNow());gdPend=0;
   gdSt('✅ '+pk.n+'곡 백업 완료 · '+gdG('gdL'));
  }catch(e){
-  if(e&&e.auth){gdPend=1;gdSt('로그인이 만료됐어요. 화면을 한 번 터치하면 이어서 백업해요',1)}
+  if(e&&e.auth){gdPend=1;gdSt('로그인이 만료됐어요. 💾 창에서 「지금 백업」을 눌러 주세요',1)}
   else{gdPend=0;gdSt('백업 실패: '+(e&&e.message||e),1)}
  }finally{gdBusy=0}}
 async function gdRestore(){
@@ -605,7 +605,7 @@ $('#gdn').onclick=()=>gdRun(true);
 $('#gdr').onclick=gdRestore;
 setInterval(()=>{if(!document.hidden&&gdG('gdA')==='1')gdRun(false)},45000);
 document.addEventListener('visibilitychange',()=>{if(document.hidden&&gdG('gdA')==='1')gdRun(false)});
-document.addEventListener('pointerdown',()=>{if(gdPend&&!gdBusy&&gdG('gdA')==='1'){gdPend=0;gdRun(false,true)}},true);
+
 // ── 🪟 백그라운드 가사 창 (화면 위에 작은 창으로 가사 표시: Picture-in-Picture)
 const pc=document.createElement('canvas');pc.width=720;pc.height=405;const px=pc.getContext('2d');
 const pv=document.createElement('video');pv.muted=true;pv.playsInline=true;pv.setAttribute('playsinline','');pv.style.cssText='position:fixed;left:0;bottom:0;width:2px;height:2px;opacity:.01;pointer-events:none';
