@@ -1543,4 +1543,603 @@ const _lyr3=lyr;lyr=function(){_lyr3.apply(this,arguments);try{
 
 const _st=start;start=function(){_st();g('lva').checked=LS('vsAuto')!=='0'};
 })();
+</script><script id="music-cleanup">
+(()=>{
+const DEFAULT_DELETE_WORDS = Object.freeze([
+  '128k', '192k', '256k', '320k', 'M-V', 'HD', '4K', '320kbps', 'MV', 'official', 'lyrics', 'audio', 'music video', 'official video',
+  'official mv', 'official audio', '가사', '음원',
+]);
+
+const DEFAULT_BRACKET_ONLY_WORDS = Object.freeze([
+  'video', 'lyric', 'lyric video', 'lyrics video', 'm/v', '뮤직비디오', '공식', '가사 영상', '가사 포함', '고음질',
+  'synced lyrics', 'color coded lyrics', 'official music video', 'official audio', 'official video', 'hq sound', 'hq',
+  '싱크가사', '가사첨부', '가사 첨부', '가사포함', '첨부', '포함', '有', '신곡', 'original', 'arttrack', 'ballad', 'rock',
+]);
+
+// 문장 끝 "꼬리" 삭제 전용 (구분기호/공백 뒤에 이 단어만 남았을 때). 괄호 전용 단어(ballad, rock 등)는 넣지 않는다.
+const DEFAULT_TAIL_WORDS = Object.freeze([
+  '가사', '가사포함', '가사 포함', '가사첨부', '가사 첨부', '가사有', '가사 有', '가사 영상', '싱크가사',
+  'lyrics', 'lyric', 'lyrics video', 'lyric video', 'synced lyrics', 'official mv', 'hq sound',
+]);
+
+// 유튜브 업로더/채널 이름 (3토막 파일명 "채널 - 가수 - 제목"에서 맨 앞 토막을 버릴 때 사용)
+const DEFAULT_CHANNEL_NAMES = Object.freeze([
+  '웅키', 'SMTOWN', 'STARSHIP', 'HYBE LABELS', 'Hello, My Music Player', 'Music is my life', 'HopeOfLetter', 'EspioRain', 'EMOPaco77',
+]);
+
+const AUDIO_EXTENSIONS = /\.(?:mp3|m4a|flac|wav|ogg|oga|aac|opus|wma|aiff?|alac|lrc|txt|srt)$/i;
+const BRACKET_GROUP = /\([^()]*\)|\[[^\[\]]*\]|【[^【】]*】|（[^（）]*）/gu;
+const KOREAN = /[가-힣ㄱ-ㅎㅏ-ㅣ]/u;
+const FEATURE_MARKER = /\b(?:feat\.?|ft\.?)\b|\b(?:live|inst(?:rumental)?|remix)\b/iu;
+const FEATURE_SUFFIX = /\s+((?:feat\.?|ft\.?)\s+.+)$/iu;
+
+function asText(value) {
+  if (Array.isArray(value)) return value.map(asText).filter(Boolean).join(', ');
+  if (value == null) return '';
+  if (typeof value === 'object' && 'text' in value) return asText(value.text);
+  return String(value);
+}
+
+function normalizedWords(words = [], disabledWords = []) {
+  const disabled = new Set(disabledWords.map((word) => asText(word).normalize('NFC').trim().toLocaleLowerCase('ko-KR')));
+  return [...DEFAULT_DELETE_WORDS.filter((word) => !disabled.has(word.toLocaleLowerCase('ko-KR'))), ...words]
+    .map((word) => asText(word).normalize('NFC').trim())
+    .filter(Boolean);
+}
+
+function wordsFromOptions(options) {
+  if (options.activeDeleteWords != null) {
+    return [...new Set(options.activeDeleteWords.map((word) => asText(word).normalize('NFC').trim()).filter(Boolean))];
+  }
+  return normalizedWords(options.deleteWords || [], options.disabledDeleteWords || []);
+}
+
+function escapeRegExp(value) {
+  return value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
+function buildEnglishWordPattern(words) {
+  const english = words.filter((word) => /^[\p{ASCII}]+$/u.test(word));
+  if (!english.length) return null;
+  const alternatives = english
+    .sort((a, b) => b.length - a.length)
+    .map(escapeRegExp)
+    .join('|');
+  return new RegExp(`(?<![\\p{L}\\p{N}_])(?:${alternatives})(?![\\p{L}\\p{N}_])`, 'giu');
+}
+
+function buildKoreanBracketPattern(words) {
+  const korean = words.filter((word) => KOREAN.test(word));
+  if (!korean.length) return null;
+  const alternatives = korean
+    .sort((a, b) => b.length - a.length)
+    .map(escapeRegExp)
+    .join('|');
+  return new RegExp(`(?:${alternatives})`, 'giu');
+}
+
+/**
+ * Reinterprets classic CP949-as-Latin-1 mojibake (e.g. ¼º½Ã°æ) offline.
+ * It only accepts a strict, valid EUC-KR decoding that yields Hangul and improves
+ * the text's Korean signal; ordinary Latin text is left untouched.
+ */
+function repairCp949Mojibake(input) {
+  const text = asText(input);
+  if (!text || !/[\u00A1-\u00FF]/u.test(text) || /[^\u0000-\u00FF]/u.test(text)) return text;
+  try {
+    const bytes = Uint8Array.from([...text], (character) => character.codePointAt(0));
+    const candidate = new TextDecoder('euc-kr', { fatal: true }).decode(bytes).normalize('NFC');
+    const originalHangul = (text.match(/[가-힣]/gu) || []).length;
+    const repairedHangul = (candidate.match(/[가-힣]/gu) || []).length;
+    return repairedHangul > originalHangul ? candidate : text;
+  } catch {
+    return text;
+  }
+}
+
+function hasKeepMarker(value) {
+  return FEATURE_MARKER.test(value);
+}
+
+function stripEnglishWords(value, words) {
+  const pattern = buildEnglishWordPattern(words);
+  return pattern ? value.replace(pattern, ' ') : value;
+}
+
+function isJunkBracketContent(content, words) {
+  if (/^(?:19|20)\d{2}\s*(?:年|년)?$/u.test(content.trim())) return true;
+  if (!content.trim() || hasKeepMarker(content)) return false;
+  const englishPattern = buildEnglishWordPattern(words);
+  const koreanPattern = buildKoreanBracketPattern(words);
+  let residue = content.normalize('NFC');
+  if (koreanPattern) residue = residue.replace(koreanPattern, ' ');
+  if (englishPattern) residue = residue.replace(englishPattern, ' ');
+  // A bracket is junk only when nothing but separators and whitespace remains.
+  return residue.replace(/[\s\p{P}\p{S}]/gu, '') === '';
+}
+
+function hasJunkWord(content, words) {
+  const english = buildEnglishWordPattern(words);
+  const korean = buildKoreanBracketPattern(words);
+  return (english && content.search(english) >= 0) || (korean && content.search(korean) >= 0) || false;
+}
+
+// 문장 끝에 "구분기호 + 잡단어"만 남은 꼬리 (예: "- 가사", "│ 가사포함", "_ 가사 (Synced Lyrics)")
+function stripTrailingJunk(value, words) {
+  const alternatives = [...new Set(words.map((w) => w.trim()).filter(Boolean))]
+    .sort((a, b) => b.length - a.length)
+    .map(escapeRegExp)
+    .join('|');
+  let out = value.replace(/\s*가사\s*[ㅣ|│]\s*lyrics?\s*[ㅣ|│]\s*\S+$/iu, '');
+  if (alternatives) {
+    const tail = new RegExp(`(?:[\\s\\-–—_│|ㅣ,/.~]+(?:${alternatives}))+[\\s.~]*$`, 'iu');
+    out = out.replace(tail, '');
+  }
+  return out;
+}
+
+const CONTRACTIONS = [
+  [/\b(Let) (s)\b/g, "$1'$2"],
+  [/\b(Don|Doesn|Didn|Can|Won|Isn|Wasn|Aren|Couldn|Wouldn|Shouldn|Haven|Hasn) (t)\b/g, "$1'$2"],
+  [/\b(I|You|We|They|He|She|It|That|There|Who) (ll|re|ve|m|d|s)\b/g, "$1'$2"],
+];
+// 파일명에서 아포스트로피가 공백으로 바뀐 영어 축약형 복구 ("Let s" → "Let's")
+function fixApostrophes(value) {
+  return CONTRACTIONS.reduce((text, [pattern, replacement]) => text.replace(pattern, replacement), value);
+}
+
+function cleanWhitespace(value) {
+  return value
+    .replace(/[\u00A0\u2000-\u200B\u202F\u205F\u3000]/gu, ' ')
+    .replace(/\s+/gu, ' ')
+    .trim();
+}
+
+/** Shared deterministic cleanup rule for filenames and ID3 text fields. */
+function cleanMusicText(input, options = {}) {
+  const words = wordsFromOptions(options);
+  const bracketWords = [...words, ...(options.bracketOnlyWords ?? DEFAULT_BRACKET_ONLY_WORDS)];
+  let value = repairCp949Mojibake(input).normalize('NFC');
+
+  if (options.filename) value = value.trim().replace(AUDIO_EXTENSIONS, '');
+  value = value.replace(/(?:https?:\/\/)?www\.[a-z0-9-]+(?:\.[a-z0-9-]+)+(?:\/[^\s<>"']*)?/giu, ' ');
+  // 구분자 없이 공백 2칸 이상으로만 가수/제목이 붙은 파일명 ("김현성   소원") → " - "
+  if (options.filename && !/ - /u.test(value)) value = value.replace(/(?<=[\p{L}\p{N}]) {2,}(?=[\p{L}\p{N}])/u, ' - ');
+  value = value.replace(/_/gu, ' ');
+  // Restrict track-number removal to a two-digit prefix followed by the requested separators.
+  value = value.replace(/^\s*(?:\d{1,3}[.)]\s*(?=\D)|\d{2}\s+-\s+|0\d\s*-\s*(?=\S)|0\d\s+(?=\S))/u, '');
+
+  // 파일명 길이 제한으로 잘려 닫힘이 없는 마지막 괄호: 잡단어가 있으면 통째로 삭제, Live/feat류면 닫아 준다.
+  value = value.trimEnd().replace(/([(\[【（])([^()\[\]【】（）]*)$/u, (match, open, content) => {
+    const close = { '(': ')', '[': ']', '【': '】', '（': '）' }[open];
+    if (hasKeepMarker(content)) return `${open}${content}${close}`;
+    if (isJunkBracketContent(content, bracketWords) || hasJunkWord(content, bracketWords)) return ' ';
+    return match;
+  });
+
+  const preservedBrackets = [];
+  value = value.replace(BRACKET_GROUP, (group) => {
+    const content = group.slice(group.startsWith('【') ? 1 : 1, -1);
+    if (isJunkBracketContent(content, bracketWords)) return ' ';
+    const token = `\uE000${preservedBrackets.length}\uE001`;
+    preservedBrackets.push([token, group]);
+    return token;
+  });
+
+  // Korean terms are deliberately not removed outside bracket groups.
+  value = stripEnglishWords(value, words);
+  value = stripTrailingJunk(value, options.tailWords ?? DEFAULT_TAIL_WORDS);
+  value = cleanWhitespace(value);
+  if (options.fixApostrophes !== false) value = fixApostrophes(value);
+  for (const [token, group] of preservedBrackets) value = value.replace(token, group);
+  // "인연 (인연)", "Here I Am (Here I Am)" 처럼 같은 말을 괄호로 되풀이한 것
+  value = value.replace(/^(.+?)\s*[(（]\s*\1\s*[)）]$/iu, '$1');
+  return value.normalize('NFC');
+}
+
+/** Split only on the literal delimiter with one ASCII space on both sides. */
+function splitArtistTitle(value) {
+  const text = asText(value);
+  const delimiter = ' - ';
+  const index = text.indexOf(delimiter);
+  if (index < 0) return { artist: '', title: text.trim() };
+  return {
+    artist: text.slice(0, index).trim(),
+    title: text.slice(index + delimiter.length).trim(),
+  };
+}
+
+function cleanAliasMap(aliases = {}) {
+  const map = new Map();
+  for (const [alias, canonical] of Object.entries(aliases)) {
+    const source = cleanWhitespace(asText(alias).normalize('NFC'));
+    const target = cleanWhitespace(asText(canonical).normalize('NFC'));
+    if (source && target) map.set(source.toLocaleLowerCase('ko-KR'), target);
+  }
+  return map;
+}
+
+function applyArtistAlias(artist, aliases) {
+  const key = cleanWhitespace(artist).toLocaleLowerCase('ko-KR');
+  return aliases.get(key) || artist;
+}
+
+function appendFeatureToTitle(title, feature) {
+  if (!feature) return title;
+  if (title.toLocaleLowerCase('ko-KR').includes(feature.toLocaleLowerCase('ko-KR'))) return title;
+  return cleanWhitespace(`${title} (${feature})`);
+}
+
+function fieldValue(track, field) {
+  const direct = track[field];
+  if (direct != null && asText(direct).trim()) return asText(direct);
+  const tags = track.tags || track.metadata || {};
+  return asText(tags[field]);
+}
+
+function uniqueId(track, index) {
+  return track.id == null ? `track-${index}` : String(track.id);
+}
+
+const HANGUL = /[가-힣]/u;
+const LATIN_ONLY = /^[A-Za-z0-9 .&'’\-+!_,]+$/u;
+const MV_MARKER = /\b(?:M-?V|official(?:\s+music)?\s+(?:mv|video|audio)|lyric\s+video)\b/iu;
+const OST_BRACKET = /\s*[\[(（]([^\[\]()（）]*\bOST\b[^\[\]()（）]*)[\])）]/iu;
+const nfc = (value) => asText(value).normalize('NFC');
+
+function channelSet(options) {
+  const names = options.channelNames ?? DEFAULT_CHANNEL_NAMES;
+  return new Set(names.map((name) => nfc(name).trim().toLocaleLowerCase('ko-KR')));
+}
+
+// "가수(English)" → 가수 / "English(가수)" → 가수. 숫자가 든 이름(015B, K2)은 그대로 둔다.
+function simplifyArtistBrackets(artist, policy) {
+  if (policy === 'keep') return artist;
+  const match = artist.match(/^(.*?)\s*[(（]([^()（）]*)[)）]$/u);
+  if (!match || !match[1].trim() || hasKeepMarker(match[2])) return artist;
+  const [, outer, inner] = match;
+  if (HANGUL.test(outer) && !HANGUL.test(inner) && LATIN_ONLY.test(inner)) return outer.trim();
+  if (!HANGUL.test(outer) && HANGUL.test(inner) && !/\d/u.test(outer)) return inner.trim();
+  return artist;
+}
+
+// 업로더 접두어 제거, 같은 말 반복 제거, K-pop MV식 \"ARTIST 한글 'TITLE'\" 제목 정리
+function parseNameParts(cleanName, rawName, options) {
+  const channels = channelSet(options);
+  const parts = cleanName.split(' - ');
+  const isChannel = (part) => channels.has(nfc(part).trim().toLocaleLowerCase('ko-KR')) || / 및 /u.test(part);
+  if (parts.length >= 3 && (isChannel(parts[0]) || parts[0].trim().toLocaleLowerCase() === parts[1].trim().toLocaleLowerCase())) parts.shift();
+  let { artist, title } = splitArtistTitle(parts.join(' - '));
+  if (MV_MARKER.test(rawName)) {
+    const quoted = title.match(/^(.*?)\s*['‘’“”"]([^'‘’“”"]+)['‘’“”"]/u);
+    if (quoted) {
+      const [, prefix, inside] = quoted;
+      if (prefix.trim() && (isChannel(artist) || !artist)) artist = prefix.trim();
+      title = inside.trim();
+    }
+  }
+  const wrapped = title.match(/^['‘’"“”](.+)['‘’"“”]$/u);
+  if (wrapped) title = wrapped[1];
+  return { artist, title };
+}
+
+/** Create one row per track. Every row contains original/clean fields and review flags. */
+function createCleanupPlan(tracks, options = {}) {
+  const cleanOptions = {
+    deleteWords: options.deleteWords || [],
+    disabledDeleteWords: options.disabledDeleteWords || [],
+    activeDeleteWords: options.activeDeleteWords,
+  };
+  const aliases = cleanAliasMap(options.aliases || {});
+  const rows = tracks.map((track, index) => {
+    const id = uniqueId(track, index);
+    const before = {
+      fileName: asText(track.fileName || track.name),
+      title: fieldValue(track, 'title'),
+      artist: fieldValue(track, 'artist'),
+      album: fieldValue(track, 'album'),
+    };
+
+    const cleanFileName = cleanMusicText(before.fileName, { ...cleanOptions, filename: true });
+    const filenameParts = parseNameParts(cleanFileName, before.fileName, options);
+    // 가수 태그가 없는데 제목 태그에 " - "가 들어 있으면 제목 태그에 파일명이 통째로 들어간 것이므로 믿지 않는다.
+    const tagTitle = !before.artist.trim() && / - /u.test(before.title) ? '' : before.title;
+    let title = cleanMusicText(tagTitle || filenameParts.title, cleanOptions);
+    let artist = cleanMusicText(before.artist || filenameParts.artist, cleanOptions);
+    let album = cleanMusicText(before.album, cleanOptions);
+    const artistBeforeSimplify = artist;
+    artist = simplifyArtistBrackets(artist, options.artistBracketPolicy ?? 'korean');
+    const artistSimplified = artist !== artistBeforeSimplify;
+    let ostMoved = false;
+    if (options.moveOstToAlbum !== false) {
+      const ost = title.match(OST_BRACKET);
+      if (ost) {
+        ostMoved = true;
+        title = cleanWhitespace(title.replace(OST_BRACKET, ' '));
+        if (!album) album = ost[1].trim();
+      }
+    }
+
+    const featureMatch = artist.match(FEATURE_SUFFIX);
+    const featureMoved = Boolean(featureMatch);
+    if (featureMatch) {
+      const feature = cleanMusicText(featureMatch[1], cleanOptions);
+      artist = cleanWhitespace(artist.slice(0, featureMatch.index));
+      title = appendFeatureToTitle(title, feature);
+    }
+    artist = applyArtistAlias(artist, aliases);
+
+    const after = { fileName: cleanFileName, title, artist, album };
+    const changed = Object.fromEntries(Object.keys(before).map((field) => [
+      field,
+      nfc(field === 'fileName' ? before[field].replace(AUDIO_EXTENSIONS, '') : before[field]) !== after[field],
+    ]));
+    const emptyField = Object.keys(before).find((field) => before[field].trim() && !after[field].trim());
+    const lengthFields = ['fileName', 'title', 'artist', 'album'];
+    const fieldShrink = lengthFields.map((field) => {
+      if (field === 'artist' && (featureMoved || artistSimplified)) return 0;
+      if (field === 'title' && (ostMoved || !tagTitle) && before.title) return 0;
+      const original = nfc(field === 'fileName' ? before[field].replace(AUDIO_EXTENSIONS, '') : before[field])
+        .replace(/^(.+?)\s*[(（]\s*\1\s*[)）]$/iu, '$1');
+      const resulting = after[field];
+      const originalLength = [...original].length;
+      const cleanedLength = [...resulting].length;
+      return originalLength ? (originalLength - cleanedLength) / originalLength : 0;
+    });
+    const shrinkRatio = Math.max(0, ...fieldShrink);
+    const threshold = options.shrinkThreshold ?? 0.4;
+    const unsplit = / - /u.test(after.title);
+    const suspicious = Boolean(emptyField) || shrinkRatio >= threshold || unsplit;
+    const hasChanges = Object.values(changed).some(Boolean);
+
+    return {
+      id,
+      before,
+      after,
+      changed,
+      hasChanges,
+      suspicious,
+      suspicionReason: emptyField ? `${emptyField}가 비게 됩니다` : (shrinkRatio >= threshold ? `이름이 ${Math.round(threshold * 100)}% 이상 줄어듭니다` : (unsplit ? "제목에 ' - '가 남았습니다(가수/제목 분리 실패)" : '')),
+      shrinkRatio,
+      checked: hasChanges && !suspicious,
+      duplicate: false,
+      duplicateOf: null,
+      source: track,
+    };
+  });
+
+  const nameGroups = new Map();
+  for (const row of rows) {
+    if (!row.after.fileName) continue;
+    const key = row.after.fileName.normalize('NFC').toLocaleLowerCase('ko-KR');
+    const group = nameGroups.get(key) || [];
+    group.push(row);
+    nameGroups.set(key, group);
+  }
+  for (const group of nameGroups.values()) {
+    if (group.length < 2) continue;
+    const first = group[0].id;
+    for (const row of group) {
+      row.duplicate = true;
+      row.duplicateOf = row.id === first ? null : first;
+    }
+  }
+
+  return {
+    createdAt: new Date().toISOString(),
+    rows,
+    summary: {
+      total: rows.length,
+      changed: rows.filter((row) => row.hasChanges).length,
+      suspicious: rows.filter((row) => row.suspicious).length,
+      duplicates: rows.filter((row) => row.duplicate).length,
+      initiallySelected: rows.filter((row) => row.checked).length,
+    },
+  };
+}
+
+/** Adapter for jsmediatags-style browser readers; reads bytes only and never writes the file. */
+function readId3(file, reader = globalThis.jsmediatags) {
+  if (!reader || typeof reader.read !== 'function') {
+    return Promise.reject(new Error('ID3 reader가 필요합니다. 기존 앱의 오프라인 태그 라이브러리를 전달하세요.'));
+  }
+  return new Promise((resolve, reject) => {
+    reader.read(file, {
+      onSuccess: (result) => {
+        const tags = result?.tags || result || {};
+        resolve({
+          title: repairCp949Mojibake(tags.title),
+          artist: repairCp949Mojibake(tags.artist),
+          album: repairCp949Mojibake(tags.album),
+        });
+      },
+      onError: (error) => reject(error instanceof Error ? error : new Error(String(error?.message || error))),
+    });
+  });
+}
+
+/** Read tags and keep filename fallback available when a tag is missing. */
+async function prepareTrackFromFile(track, reader = globalThis.jsmediatags) {
+  try {
+    const tags = await readId3(track.file, reader);
+    return { ...track, tags, metadataReadError: null };
+  } catch (error) {
+    return { ...track, tags: {}, metadataReadError: error.message };
+  }
+}
+
+/** Return parts suitable for a UI's before/after comparison and color emphasis. */
+function previewFields(row) {
+  return ['fileName', 'title', 'artist', 'album'].map((field) => ({
+    field,
+    before: row.before[field],
+    after: row.after[field],
+    changed: row.changed[field],
+    highlight: row.changed[field] ? 'changed' : 'unchanged',
+  }));
+}
+
+/** Apply only explicitly selected, non-suspicious changes to the app-owned metadata store. */
+async function applyCleanupPlan(plan, store, selectedIds = null) {
+  const explicitSelection = selectedIds != null;
+  const selection = selectedIds == null
+    ? new Set(plan.rows.filter((row) => row.checked).map((row) => row.id))
+    : new Set([...selectedIds].map(String));
+  const changes = plan.rows
+    .filter((row) => selection.has(row.id) && row.hasChanges && (explicitSelection || !row.suspicious))
+    .map((row) => ({ id: row.id, values: row.after }));
+  if (changes.length) await store.apply(changes);
+  return { applied: changes.length, skipped: plan.rows.length - changes.length };
+}
+
+/** IndexedDB overrides are separate from audio blobs. Original MP3 data is never changed. */
+class LocalTrackMetadataStore {
+  constructor({ dbName = 'music-player-cleanup', indexedDBRef = globalThis.indexedDB } = {}) {
+    if (!indexedDBRef) throw new Error('IndexedDB를 사용할 수 없습니다.');
+    this.dbName = dbName;
+    this.indexedDB = indexedDBRef;
+    this.dbPromise = null;
+  }
+
+  open() {
+    if (this.dbPromise) return this.dbPromise;
+    this.dbPromise = new Promise((resolve, reject) => {
+      const request = this.indexedDB.open(this.dbName, 1);
+      request.onupgradeneeded = () => {
+        const db = request.result;
+        if (!db.objectStoreNames.contains('overrides')) db.createObjectStore('overrides', { keyPath: 'id' });
+        if (!db.objectStoreNames.contains('history')) db.createObjectStore('history', { keyPath: 'id' });
+      };
+      request.onsuccess = () => resolve(request.result);
+      request.onerror = () => reject(request.error || new Error('IndexedDB 열기 실패'));
+    });
+    return this.dbPromise;
+  }
+
+  async get(id) {
+    const db = await this.open();
+    return new Promise((resolve, reject) => {
+      const request = db.transaction('overrides', 'readonly').objectStore('overrides').get(String(id));
+      request.onsuccess = () => resolve(request.result || null);
+      request.onerror = () => reject(request.error || new Error('정리 정보 읽기 실패'));
+    });
+  }
+
+  async effectiveTrack(track) {
+    const override = await this.get(track.id);
+    return override ? { ...track, ...override.values } : track;
+  }
+
+  async apply(changes) {
+    const db = await this.open();
+    const previous = {};
+    await Promise.all(changes.map(async ({ id }) => { previous[String(id)] = await this.get(id); }));
+    await new Promise((resolve, reject) => {
+      const transaction = db.transaction(['overrides', 'history'], 'readwrite');
+      const overrides = transaction.objectStore('overrides');
+      const history = transaction.objectStore('history');
+      history.put({ id: 'last', previous, savedAt: new Date().toISOString() });
+      for (const { id, values } of changes) {
+        overrides.put({ id: String(id), values, updatedAt: new Date().toISOString() });
+      }
+      transaction.oncomplete = resolve;
+      transaction.onerror = () => reject(transaction.error || new Error('정리 결과 저장 실패'));
+      transaction.onabort = () => reject(transaction.error || new Error('정리 결과 저장 취소'));
+    });
+  }
+
+  async undo() {
+    const db = await this.open();
+    const snapshot = await new Promise((resolve, reject) => {
+      const request = db.transaction('history', 'readonly').objectStore('history').get('last');
+      request.onsuccess = () => resolve(request.result || null);
+      request.onerror = () => reject(request.error || new Error('되돌리기 정보 읽기 실패'));
+    });
+    if (!snapshot) return false;
+    await new Promise((resolve, reject) => {
+      const transaction = db.transaction(['overrides', 'history'], 'readwrite');
+      const overrides = transaction.objectStore('overrides');
+      for (const [id, previous] of Object.entries(snapshot.previous)) {
+        if (previous) overrides.put(previous);
+        else overrides.delete(id);
+      }
+      transaction.objectStore('history').delete('last');
+      transaction.oncomplete = resolve;
+      transaction.onerror = () => reject(transaction.error || new Error('되돌리기 실패'));
+      transaction.onabort = () => reject(transaction.error || new Error('되돌리기 취소'));
+    });
+    return true;
+  }
+}
+
+const DEFAULT_CLEANUP_DELETE_WORDS = DEFAULT_DELETE_WORDS;
+const DEFAULT_CLEANUP_BRACKET_WORDS = DEFAULT_BRACKET_ONLY_WORDS;
+const DEFAULT_CLEANUP_CHANNEL_NAMES = DEFAULT_CHANNEL_NAMES;
+
+
+const MC={createCleanupPlan,cleanMusicText};
+const UNDO_KEY='mpCleanUndo';
+let plan=null,sel=new Set();
+const q=s=>document.querySelector(s),H=x=>String(x??'').replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
+function build(){
+  const tracks=S.map(s=>({id:String(s.id),fileName:s.name,tags:{title:s.title||'',artist:s.artist||'',album:''}}));
+  const p=MC.createCleanupPlan(tracks,{moveOstToAlbum:false});
+  const byId=new Map(S.map(s=>[String(s.id),s]));
+  p.rows=p.rows.filter(r=>{const s=byId.get(r.id);r.cur={title:s.title||'',artist:s.artist||''};
+    return r.after.title!==r.cur.title||r.after.artist!==r.cur.artist});
+  return p}
+function box(){let o=q('#mcm');if(!o){o=document.createElement('div');o.id='mcm';
+  o.style.cssText='position:fixed;inset:0;z-index:99999;background:rgba(0,0,0,.72);display:flex;align-items:center;justify-content:center;padding:10px';
+  o.onclick=e=>{if(e.target===o)o.remove()};document.body.append(o)}return o}
+function show(){
+  const o=box(),rows=plan.rows,nSus=rows.filter(r=>r.suspicious).length;
+  const list=rows.map(r=>{const ck=sel.has(r.id);
+    return `<label style="display:flex;gap:8px;padding:8px 6px;border-bottom:1px solid var(--bd,#2b2b36);align-items:flex-start;${r.suspicious?'background:rgba(255,160,0,.10)':''}">
+<input type="checkbox" data-id="${H(r.id)}" ${ck?'checked':''} style="margin-top:4px;flex:none">
+<div style="min-width:0;font-size:13px;line-height:1.4">
+<div style="opacity:.55;text-decoration:line-through;word-break:break-all">${H(r.cur.title)}${r.cur.artist?' · '+H(r.cur.artist):''}</div>
+<div style="word-break:break-all"><b>${H(r.after.title)}</b>${r.after.artist?' · '+H(r.after.artist):' · <i style="opacity:.6">가수 없음</i>'}</div>
+${r.suspicious?`<div style="color:#ffb454;font-size:12px">⚠️ ${H(r.suspicionReason)}</div>`:''}</div></label>`}).join('');
+  const undo=localStorage.getItem(UNDO_KEY);
+  o.innerHTML=`<div style="background:var(--pn,#1b1b22);color:var(--tx,#f2f2f6);border:1px solid var(--bd,#2b2b36);border-radius:16px;width:100%;max-width:560px;max-height:90vh;display:flex;flex-direction:column">
+<div style="padding:14px 16px 6px"><b style="font-size:16px">🧹 제목·가수 정리</b>
+<div style="font-size:12px;opacity:.7;margin-top:4px">전체 ${S.length}곡 중 바뀌는 곡 ${rows.length}개${nSus?` · ⚠️ 확인 필요 ${nSus}개(기본 해제)`:''}. 음악 파일·가사·싱크는 건드리지 않고 표시 이름만 바꿔요.</div></div>
+<div id="mcl" style="overflow:auto;flex:1;padding:0 10px">${rows.length?list:'<p style="text-align:center;opacity:.7;padding:30px 0">정리할 곡이 없어요 👍</p>'}</div>
+<div style="display:flex;gap:6px;padding:10px;flex-wrap:wrap">
+<button id="mca" style="padding:10px">전체 선택/해제</button>
+<button id="mcg" class="add" style="flex:1;border:0;padding:10px">✅ <span id="mcn">${sel.size}</span>곡 적용</button>
+${undo?'<button id="mcu" style="padding:10px">↩ 되돌리기</button>':''}
+<button id="mcx" style="padding:10px">닫기</button></div></div>`;
+  const cnt=()=>q('#mcn').textContent=sel.size;
+  o.querySelectorAll('input[data-id]').forEach(c=>c.onchange=()=>{c.checked?sel.add(c.dataset.id):sel.delete(c.dataset.id);cnt()});
+  q('#mca').onclick=()=>{const all=rows.length&&rows.every(r=>sel.has(r.id));sel=new Set(all?[]:rows.map(r=>r.id));show()};
+  q('#mcx').onclick=()=>o.remove();
+  q('#mcg').onclick=apply;
+  const u=q('#mcu');if(u)u.onclick=undoLast}
+async function apply(){
+  const rows=plan.rows.filter(r=>sel.has(r.id));if(!rows.length){alert('적용할 곡을 선택하세요');return}
+  const byId=new Map(S.map(s=>[String(s.id),s])),prev=[];
+  for(const r of rows){const s=byId.get(r.id);if(!s)continue;
+    prev.push({id:r.id,title:s.title,artist:s.artist,edited:s.edited||0});
+    s.title=r.after.title||s.title;s.artist=r.after.artist;s.edited=1;
+    try{await put(s)}catch{}}
+  try{localStorage.setItem(UNDO_KEY,JSON.stringify(prev))}catch{}
+  render();try{info()}catch{}
+  q('#mcm').remove();alert(prev.length+'곡을 정리했어요. 필요하면 「제목·가수 정리 → 되돌리기」로 취소할 수 있어요.')}
+async function undoLast(){
+  let prev;try{prev=JSON.parse(localStorage.getItem(UNDO_KEY)||'null')}catch{}
+  if(!prev||!confirm(prev.length+'곡을 정리 전으로 되돌릴까요?'))return;
+  const byId=new Map(S.map(s=>[String(s.id),s]));
+  for(const p of prev){const s=byId.get(p.id);if(!s)continue;s.title=p.title;s.artist=p.artist;if(p.edited)s.edited=1;else delete s.edited;try{await put(s)}catch{}}
+  try{localStorage.removeItem(UNDO_KEY)}catch{}
+  render();try{info()}catch{}q('#mcm')&&q('#mcm').remove()}
+function open(){
+  if(!S.length){alert('먼저 곡을 추가하세요');return}
+  plan=build();sel=new Set(plan.rows.filter(r=>!r.suspicious).map(r=>r.id));show()}
+const _dm=dmUi;
+dmUi=function(){_dm.apply(this,arguments);try{const b=q('#dmb');
+  if(b&&!dm&&q('#dmo')&&!q('#mcb')){const x=document.createElement('button');x.id='mcb';x.style.flex='1';x.textContent='🧹 제목·가수 정리';x.onclick=open;b.append(x)}}catch{}};
+try{dmUi()}catch{}
+
+})();
 </script></body></html>
