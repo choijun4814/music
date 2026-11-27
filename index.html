@@ -1123,7 +1123,7 @@ async function run(s,manual){if(busy)return null;const L0=plrc(s.lyrics||'');if(
   const ch0=ab.getChannelData(0),ch1=ab.numberOfChannels>1?ab.getChannelData(1):ch0;
   const r=await SyncAI.analyze(ch0,ch1,ab.sampleRate,T,async p=>{stt('🎚 싱크 분석 중 '+Math.round(p*100)+'%');await new Promise(q=>setTimeout(q,0))});
   if(!r){stt('분석할 수 없는 곡이에요');return null}
-  const good=(r.z>=4.5&&r.margin>=.12)||(r.z>=3.5&&r.margin>=.06&&r.hit>=.6);
+  const good=r.good!=null?r.good:((r.z>=4.5&&r.margin>=.12)||(r.z>=3.5&&r.margin>=.06&&r.hit>=.6));
   last={s,r,T,dur:dur||ab.duration,good};lastK=s.id;
   return last}catch(e){stt('싱크 분석 실패: '+(e&&e.message||e));return null}finally{busy=0}}
 function commit(s,L,force){const r=L.r,med=r.med,o=Math.round(-med*100)/100;
@@ -1323,7 +1323,317 @@ async function go(fromHere){
  }catch(e){say('분석 실패: '+(e&&e.message||e),1)}
  finally{busy=0;g('sya0').disabled=g('sya1').disabled=false}}
 g('sya0').onclick=()=>go(false);g('sya1').onclick=()=>go(true);
-})()</script><script>if('serviceWorker' in navigator)addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}))</script><script>(()=>{const BUILD='2026-11-23 스킨 50종 · 파스텔 추가',f=d=>d.toLocaleString('ko-KR',{month:'numeric',day:'numeric',hour:'2-digit',minute:'2-digit',hour12:false}),e=document.getElementById('ver');if(!e)return;let s='빌드 '+BUILD.slice(5);try{const d=new Date(document.lastModified);if(!isNaN(d)&&Math.abs(Date.now()-d)>20000)s+=' · 사이트 반영 '+f(d)}catch{}e.textContent=s;e.title='이 index.html의 빌드 '+BUILD+' (한국 시간)'})()</script><script>(()=>{
+})()</script><script>/* SyncLab engine — 음성 구간 + 시작점 검출 → 가사 시간 최적 정렬
+   브라우저/Node 공용 (UMD). 입력: 스테레오 PCM(Float32), 샘플레이트 */
+(function (root, factory) {
+  if (typeof module === 'object' && module.exports) module.exports = factory();
+  else root.SyncEngine = factory();
+})(typeof self !== 'undefined' ? self : this, function () {
+  'use strict';
+  const N = 2048;
+  const HOPS = 0.01; // 10ms
+
+  /* ---------- FFT ---------- */
+  const REV = new Uint16Array(N), TC = new Float32Array(N / 2), TS = new Float32Array(N / 2), HANN = new Float32Array(N);
+  (function init() {
+    const bits = Math.log2(N);
+    for (let i = 0; i < N; i++) { let r = 0; for (let b = 0; b < bits; b++) if (i & (1 << b)) r |= 1 << (bits - 1 - b); REV[i] = r; }
+    for (let i = 0; i < N / 2; i++) { TC[i] = Math.cos(2 * Math.PI * i / N); TS[i] = -Math.sin(2 * Math.PI * i / N); }
+    for (let i = 0; i < N; i++) HANN[i] = 0.5 - 0.5 * Math.cos(2 * Math.PI * i / N);
+  })();
+  function fft(re, im) {
+    for (let i = 0; i < N; i++) { const j = REV[i]; if (i < j) { let t = re[i]; re[i] = re[j]; re[j] = t; t = im[i]; im[i] = im[j]; im[j] = t; } }
+    for (let len = 2; len <= N; len <<= 1) {
+      const half = len >> 1, st = N / len;
+      for (let i = 0; i < N; i += len) for (let k = 0, w = 0; k < half; k++, w += st) {
+        const a = i + k, b = a + half, cr = TC[w], ci = TS[w];
+        const xr = re[b] * cr - im[b] * ci, xi = re[b] * ci + im[b] * cr;
+        re[b] = re[a] - xr; im[b] = im[a] - xi; re[a] += xr; im[a] += xi;
+      }
+    }
+  }
+
+  /* ---------- 유틸 ---------- */
+  function smooth(a, r) { // 박스 평활 (반경 r 프레임)
+    const n = a.length, o = new Float32Array(n), c = new Float64Array(n + 1);
+    for (let i = 0; i < n; i++) c[i + 1] = c[i] + a[i];
+    for (let i = 0; i < n; i++) { const lo = Math.max(0, i - r), hi = Math.min(n, i + r + 1); o[i] = (c[hi] - c[lo]) / (hi - lo); }
+    return o;
+  }
+  function pct(a, p) { const s = Float32Array.from(a).sort(); return s[Math.min(s.length - 1, Math.floor(s.length * p))]; }
+  function gaussKernel(sig) { const r = Math.ceil(sig * 3), k = new Float32Array(2 * r + 1); let s = 0; for (let i = -r; i <= r; i++) { k[i + r] = Math.exp(-0.5 * i * i / (sig * sig)); s += k[i + r]; } for (let i = 0; i < k.length; i++) k[i] /= s; return k; }
+  function conv(a, k) { const n = a.length, r = (k.length - 1) >> 1, o = new Float32Array(n); for (let i = 0; i < n; i++) { let s = 0; for (let j = -r; j <= r; j++) { const x = i + j; if (x >= 0 && x < n) s += a[x] * k[j + r]; } o[i] = s; } return o; }
+
+  /* ---------- 1) 특징 추출 ---------- */
+  function* featGen(L, R, sr) {
+    const hop = Math.round(sr * HOPS), nF = Math.max(0, Math.floor((L.length - N) / hop));
+    const bw = sr / N;
+    const k0 = Math.round(180 / bw), k1 = Math.round(4000 / bw);
+    const re1 = new Float32Array(N), im1 = new Float32Array(N), re2 = new Float32Array(N), im2 = new Float32Array(N);
+    const cen = new Float32Array(nF), harm = new Float32Array(nF), flux = new Float32Array(nF), bright = new Float32Array(nF);
+    let prev = new Float32Array(k1 + 2);
+    const mag = new Float32Array(k1 + 2), C = new Float32Array(k1 + 2);
+    // F0 후보 (Hz): 85~520, 2.5% 간격
+    const f0s = []; for (let f = 85; f < 520; f *= 1.02) f0s.push(f);
+    const NH = 8;
+    for (let f = 0; f < nF; f++) {
+      const o = f * hop;
+      for (let i = 0; i < N; i++) { const w = HANN[i]; re1[i] = (L[o + i] + R[o + i]) * 0.5 * w; im1[i] = 0; re2[i] = (L[o + i] - R[o + i]) * 0.5 * w; im2[i] = 0; }
+      fft(re1, im1); fft(re2, im2);
+      let ce = 0, br = 0;
+      for (let k = 1; k <= k1 + 1; k++) {
+        const m = Math.hypot(re1[k], im1[k]), s = Math.hypot(re2[k], im2[k]);
+        const c = Math.max(0, m - 0.8 * s); // 가운데(보컬) 성분
+        C[k] = c; mag[k] = Math.log1p(c * 30);
+        if (k >= k0 && k <= k1) { ce += c * c; if (bw * k > 1500) br += c * c; }
+      }
+      cen[f] = Math.log1p(Math.sqrt(ce) * 20);
+      bright[f] = Math.sqrt(br);
+      // 스펙트럼 플럭스 (보컬대역, 로그)
+      let fl = 0; for (let k = k0; k <= k1; k++) { const d = mag[k] - prev[k]; if (d > 0) fl += d; }
+      flux[f] = fl; for (let k = k0; k <= k1; k++) prev[k] = mag[k];
+      // 하모닉 대비: 기본음 후보마다 (배음 위치 평균 − 배음 사이 평균)
+      let best = 0;
+      for (let q = 0; q < f0s.length; q++) {
+        const f0 = f0s[q]; let on = 0, off = 0, cnt = 0;
+        for (let h = 1; h <= NH; h++) {
+          const kk = f0 * h / bw; if (kk + 1.5 > k1) break;
+          const ki = Math.round(kk), ko = Math.round(f0 * (h - 0.5) / bw);
+          on += Math.max(mag[ki - 1], mag[ki], mag[ki + 1]); off += mag[Math.max(1, ko)]; cnt++;
+        }
+        if (cnt >= 4) { const v = (on - off) / cnt; if (v > best) best = v; }
+      }
+      harm[f] = best;
+      if (f % 400 === 0) yield f / nF;
+    }
+    return { nF, hop, dt: hop / sr, cen, harm, flux, bright };
+  }
+
+
+  function features(L, R, sr, onProg) { const g = featGen(L, R, sr); let r; while (!(r = g.next()).done) { if (onProg) onProg(r.value); } return r.value; }
+  async function featuresAsync(L, R, sr, onProg) { const g = featGen(L, R, sr); let r; while (!(r = g.next()).done) { if (onProg) await onProg(r.value); } return r.value; }
+
+  /* ---------- 2) 보컬 활동 곡선 + 시작점 곡선 ---------- */
+  function vocalCurves(F) {
+    const { nF } = F;
+    const h = smooth(F.harm, 3), c = smooth(F.cen, 3);
+    const hp = pct(h, 0.95), hl = pct(h, 0.15), cp = pct(c, 0.95), cl = pct(c, 0.10);
+    const v = new Float32Array(nF);
+    for (let i = 0; i < nF; i++) {
+      const hs = Math.min(1.3, Math.max(0, (h[i] - hl) / Math.max(1e-6, hp - hl)));
+      const cs = Math.min(1.3, Math.max(0, (c[i] - cl) / Math.max(1e-6, cp - cl)));
+      v[i] = Math.sqrt(hs * Math.min(1, cs * 1.2)); // 둘 다 높아야 목소리
+    }
+    const vs = smooth(v, 4);
+    // 시작점: 앞 0.25초 평균 대비 뒤 0.25초 평균의 증가 + 플럭스
+    const w = 25, on = new Float32Array(nF);
+    const cs = new Float64Array(nF + 1); for (let i = 0; i < nF; i++) cs[i + 1] = cs[i] + vs[i];
+    const avg = (a, b) => { a = Math.max(0, a); b = Math.min(nF, b); return b > a ? (cs[b] - cs[a]) / (b - a) : 0; };
+    const fs = smooth(F.flux, 1), fp = pct(fs, 0.9) || 1;
+    for (let i = 0; i < nF; i++) {
+      const d = avg(i, i + w) - avg(i - w, i);
+      on[i] = Math.max(0, d) + 0.25 * Math.min(1.5, fs[i] / fp) * (vs[i] > 0.15 ? 1 : 0.4);
+    }
+    const onS = conv(on, gaussKernel(3));
+    // 프레이즈 시작점: 시작점 × (직전 0.6초가 조용했을수록 강함) — 줄 시작은 대개 숨/쉼 뒤에 온다
+    const ph = new Float32Array(nF), pw = Math.round(0.6 / F.dt);
+    for (let i = 0; i < nF; i++) { const q = avg(i - pw, i - 3); ph[i] = onS[i] * (0.25 + 0.75 * Math.max(0, 1 - q / 0.55)); }
+    return { v: vs, on: onS, ph, dt: F.dt, nF };
+  }
+
+  /* ---------- 3) 음성 구간 (런) ---------- */
+  function voiceRuns(VC, opts) {
+    opts = opts || {};
+    const { v, nF, dt } = VC;
+    const hi = opts.hi || 0.38, lo = opts.lo || 0.22, minGap = Math.round((opts.minGap || 0.35) / dt), minLen = Math.round((opts.minLen || 0.4) / dt);
+    const m = new Uint8Array(nF); let s = 0;
+    for (let i = 0; i < nF; i++) { if (!s && v[i] > hi) s = 1; else if (s && v[i] < lo) s = 0; m[i] = s; }
+    let runs = [], a = -1;
+    for (let i = 0; i <= nF; i++) { const x = i < nF ? m[i] : 0; if (x && a < 0) a = i; else if (!x && a >= 0) { runs.push([a, i]); a = -1; } }
+    const mg = [];
+    for (const r of runs) { if (mg.length && r[0] - mg[mg.length - 1][1] < minGap) mg[mg.length - 1][1] = r[1]; else mg.push([r[0], r[1]]); }
+    return mg.filter(r => r[1] - r[0] >= minLen).map(r => [r[0] * dt, r[1] * dt]);
+  }
+
+  /* ---------- 4) LRC 정렬 ---------- */
+  // lines: [{t, text}] (t = 기존 시간, 초). 반환: 보정된 시간 + 신뢰도
+  function at(arr, t, dt) { const x = t / dt, i = Math.floor(x); if (i < 0 || i >= arr.length - 1) return 0; const f = x - i; return arr[i] * (1 - f) + arr[i + 1] * f; }
+
+  function globalScore(lines, VC, off, scale, anchor) {
+    // 한 번의 (off, scale) 가설 점수: 줄 시작점의 onset 강도 + 줄 안쪽은 목소리, 줄 사이 틈은 조용함
+    let s = 0;
+    for (let i = 0; i < lines.length; i++) {
+      const t = anchor + (lines[i].t - anchor) * scale + off;
+      s += at(VC.onS, t, VC.dt);
+    }
+    return s;
+  }
+
+  function alignGlobal(lines, VC, opt) {
+    opt = opt || {};
+    const dt = VC.dt, range = opt.range || 20, sg = Math.round(0.10 / dt);
+    VC.onS = conv(VC.ph || VC.on, gaussKernel(sg));         // 프레이즈 시작점 (쉼 뒤 시작에 강함)
+    const oS = conv(VC.on, gaussKernel(sg));                 // 일반 시작점 (빠른 랩에도 반응)
+    const usable = lines.filter(l => l.t != null && l.text);
+    if (!usable.length) return null;
+    const capA = pct(oS, 0.85) || 1, capB = pct(VC.onS, 0.85) || 1; // 한두 개 큰 피크가 점수를 독차지하지 않도록 상한을 둠 (줄 여러 개가 고르게 맞는 위치를 선호)
+    const sc2 = (off, scale) => {
+      let a = 0, b = 0;
+      for (const l of usable) {
+        const t = l.t * scale + off, c = 0.6 * (at(VC.v, t + 0.5, dt) - at(VC.v, t - 0.4, dt));
+        a += Math.min(1, at(oS, t, dt) / capA) + c; b += Math.min(1, at(VC.onS, t, dt) / capB) + c;
+      }
+      return [a, b];
+    };
+    const scales = opt.scales || [1], grid = [];
+    for (const scale of scales) for (let off = -range; off <= range; off += 0.02) grid.push([off, scale, ...sc2(off, scale)]);
+    // 두 점수를 각각 표준화(z)해서 합침 — 한쪽 곡선에만 우연히 맞는 가짜 위치를 걸러냄
+    const st = i => { let m = 0; for (const g of grid) m += g[i]; m /= grid.length; let v = 0; for (const g of grid) v += (g[i] - m) * (g[i] - m); return [m, Math.sqrt(v / grid.length) || 1]; };
+    const [ma, sa] = st(2), [mb, sb] = st(3);
+    const comb = (a, b) => (a - ma) / sa + (b - mb) / sb;
+    let best = { s: -1e9, off: 0, scale: 1 };
+    for (const g of grid) { const s = comb(g[2], g[3]); g.push(s); if (s > best.s) best = { s, off: g[0], scale: g[1] }; }
+    for (let off = best.off - 0.03; off <= best.off + 0.03; off += 0.005) { const [a, b] = sc2(off, best.scale), s = comb(a, b); if (s > best.s) best = { s, off, scale: best.scale }; }
+    let second = -1e9; for (const g of grid) if (Math.abs(g[0] - best.off) > 0.8 && g[4] > second) second = g[4];
+    best.conf = Math.max(0, Math.min(1, (best.s - second) / Math.max(1e-6, Math.abs(best.s))));
+    best.perLine = 0; best.zero = comb(...sc2(0, 1));
+    return best;
+  }
+
+  // 줄별 세밀 보정: 비터비 (후보 = 줄 예상 시간 ±win 안의 시작점 피크)
+  function refineLines(lines, VC, g, opt) {
+    opt = opt || {};
+    const dt = VC.dt, win = opt.win || 1.0, minGap = opt.minGap || 0.6;
+    const n = lines.length, cands = [], base = lines.map(l => l.t * g.scale + g.off);
+    for (let i = 0; i < n; i++) {
+      const c = [], lo = Math.round((base[i] - win) / dt), hi = Math.round((base[i] + win) / dt);
+      let any = false;
+      for (let k = Math.max(2, lo); k <= Math.min(VC.nF - 3, hi); k++) {
+        const x = VC.onS[k];
+        if (x >= VC.onS[k - 1] && x > VC.onS[k + 1] && x > 0.05) { c.push({ t: k * dt, e: x }); any = true; }
+      }
+      c.push({ t: base[i], e: 0.02, keep: 1 }); // 후보가 없으면 전역 보정값 유지
+      cands.push(c);
+    }
+    const pen = 0.12; // 전역 위치에서 벗어나는 정도의 벌점 (초당)
+    const D = [], P = [];
+    for (let i = 0; i < n; i++) {
+      D.push(new Float32Array(cands[i].length)); P.push(new Int16Array(cands[i].length));
+      for (let a = 0; a < cands[i].length; a++) {
+        const ca = cands[i][a]; const em = ca.e - pen * Math.abs(ca.t - base[i]);
+        if (i === 0) { D[i][a] = em; P[i][a] = -1; continue; }
+        let bv = -1e9, bi = 0;
+        for (let b = 0; b < cands[i - 1].length; b++) {
+          const cb = cands[i - 1][b], gap = ca.t - cb.t;
+          let tr = 0;
+          if (gap < minGap) tr = -1.5 - (minGap - gap); // 너무 붙으면 강한 벌점
+          else { const og = base[i] - base[i - 1]; tr = -0.05 * Math.min(4, Math.abs(gap - og)); }
+          const v = D[i - 1][b] + tr; if (v > bv) { bv = v; bi = b; }
+        }
+        D[i][a] = bv + em; P[i][a] = bi;
+      }
+    }
+    let ai = 0, bv = -1e9; for (let a = 0; a < D[n - 1].length; a++) if (D[n - 1][a] > bv) { bv = D[n - 1][a]; ai = a; }
+    const out = new Array(n);
+    for (let i = n - 1; i >= 0; i--) { out[i] = cands[i][ai].t; ai = P[i][ai]; if (ai < 0) ai = 0; }
+    return out;
+  }
+
+  /* ---------- 5) 일반 가사 → 자동 초안 (줄 → 음성 구간 배분) ---------- */
+  function lyricWeight(t) {
+    let n = (t.match(/[\u3131-\u318e\uac00-\ud7a3\u3040-\u30ff\u4e00-\u9fff]/g) || []).length;
+    const lat = t.replace(/[\u3131-\u318e\uac00-\ud7a3\u3040-\u30ff\u4e00-\u9fff]/g, ' ').match(/[A-Za-z\u00c0-\u024f]+/g);
+    if (lat) for (const w of lat) { const v = w.match(/[aeiouy\u00c0-\u00ff]+/gi); n += Math.max(1, v ? v.length : 1); }
+    return Math.max(1, n);
+  }
+  function draftFromPlain(texts, VC, runs) {
+    // 목소리 구간 안에서 글자수 비례로 줄 시작을 배분 (구간 경계 가산점)
+    const total = runs.reduce((s, r) => s + (r[1] - r[0]), 0);
+    const w = texts.map(lyricWeight), W = w.reduce((a, b) => a + b, 0);
+    const res = []; let acc = 0;
+    const posOf = (x) => { // 누적 음성 시간 x → 실제 시간
+      for (const r of runs) { const d = r[1] - r[0]; if (x <= d) return r[0] + x; x -= d; }
+      return runs.length ? runs[runs.length - 1][1] : 0;
+    };
+    for (let i = 0; i < texts.length; i++) { res.push(posOf(acc / W * total)); acc += w[i]; }
+    // 스냅(비터비): 예상 시간 근처의 시작점 피크 중, 줄 순서와 최소 간격(0.45초)을 지키면서 점수가 최대가 되는 조합
+    const dt = VC.dt, G = 1.2, MINGAP = 0.45, cs = [];
+    for (let i = 0; i < res.length; i++) {
+      const c = [{ t: res[i], e: 0, est: res[i] }];
+      for (let k = Math.max(2, Math.round((res[i] - G) / dt)); k <= Math.min(VC.nF - 3, Math.round((res[i] + G) / dt)); k++) {
+        const x = VC.on[k]; if (x > VC.on[k - 1] && x >= VC.on[k + 1] && x > 0.06) c.push({ t: k * dt, e: x, est: res[i] });
+      }
+      cs.push(c);
+    }
+    const D = [], P = [];
+    for (let i = 0; i < cs.length; i++) {
+      D.push(new Float32Array(cs[i].length)); P.push(new Int16Array(cs[i].length));
+      for (let a = 0; a < cs[i].length; a++) {
+        const ca = cs[i][a], em = ca.e - 0.12 * Math.abs(ca.t - ca.est);
+        if (!i) { D[i][a] = em; P[i][a] = -1; continue; }
+        let bv = -1e9, bi = 0;
+        for (let b = 0; b < cs[i - 1].length; b++) {
+          const gap = ca.t - cs[i - 1][b].t; const tr = gap < MINGAP ? -2 - (MINGAP - gap) * 4 : 0;
+          const v = D[i - 1][b] + tr; if (v > bv) { bv = v; bi = b; }
+        }
+        D[i][a] = bv + em; P[i][a] = bi;
+      }
+    }
+    let ai = 0, bv = -1e9; const L = cs.length - 1;
+    for (let a = 0; a < D[L].length; a++) if (D[L][a] > bv) { bv = D[L][a]; ai = a; }
+    const out = new Array(cs.length);
+    for (let i = L; i >= 0; i--) { out[i] = cs[i][ai].t; ai = P[i][ai]; if (ai < 0) ai = 0; }
+    return out;
+  }
+
+  /* ---------- LRC 입출력 ---------- */
+  function parseLrc(text) {
+    const lines = []; let sync = 0;
+    for (const raw of text.split(/\r?\n/)) {
+      const ms = [...raw.matchAll(/\[(\d+):(\d+(?:[.:]\d+)?)\]/g)], y = raw.replace(/\[[^\]]*\]/g, '').trim();
+      if (ms.length) { sync = 1; if (y) ms.forEach(m => lines.push({ t: +m[1] * 60 + parseFloat(m[2].replace(':', '.')), text: y })); }
+      else if (y && !/^\[\w+:/.test(raw.trim())) lines.push({ t: null, text: y });
+    }
+    if (sync) return { sync: 1, lines: lines.filter(l => l.t != null).sort((a, b) => a.t - b.t) };
+    return { sync: 0, lines };
+  }
+  function fmt(t) { t = Math.max(0, t); const m = Math.floor(t / 60), s = t - m * 60; return '[' + String(m).padStart(2, '0') + ':' + s.toFixed(2).padStart(5, '0') + ']'; }
+  function toLrc(lines) { return lines.map(l => fmt(l.t) + l.text).join('\n'); }
+
+  return { features, featuresAsync, vocalCurves, voiceRuns, alignGlobal, refineLines, draftFromPlain, parseLrc, toLrc, fmt, smooth, conv, gaussKernel, lyricWeight, N };
+});
+
+
+/* ===== 싱크랩 엔진 연결: 기존 SyncAI.analyze / features / draft 를 새 엔진으로 교체 ===== */
+(()=>{
+const E=SyncEngine;
+const med=a=>{a=[...a].sort((x,y)=>x-y);return a.length?a[a.length>>1]:0};
+SyncAI.features=async(L,R,sr,onProg)=>{const F=await E.featuresAsync(L,R,sr,onProg);if(F.nF<400)return{nF:F.nF};return{nF:F.nF,VC:E.vocalCurves(F)}};
+const peakNear=(VC,t,w)=>{const a=Math.max(3,Math.round((t-w)/VC.dt)),b=Math.min(VC.nF-4,Math.round((t+w)/VC.dt));for(let k=a;k<=b;k++){const x=VC.onS[k];if(x>VC.onS[k-1]&&x>=VC.onS[k+1]&&x>0.08)return true}return false};
+SyncAI.analyze=async(L,R,sr,T,onProg)=>{
+  const F=await SyncAI.features(L,R,sr,onProg);if(!F.VC)return null;const VC=F.VC;
+  const lines=T.map(t=>({t,text:'x'}));
+  const G=E.alignGlobal(lines,VC,{range:25});if(!G)return null;
+  const base=T.map(t=>t+G.off);
+  let hit=0;base.forEach(t=>{if(peakNear(VC,t,0.2))hit++});hit/=Math.max(1,T.length);
+  // 줄별 보정은 가사 시간이 소리와 줄마다 따로 어긋나 있을 때만 (전체 이동으로 충분하면 건드리지 않음)
+  const RF=E.refineLines(lines,VC,G);
+  const resid=RF.map((t,j)=>Math.abs(t-base[j]));
+  const usePL=med(resid)>0.4&&G.conf>=0.5;
+  const shift=T.map((t,j)=>usePL?G.off+Math.max(-0.35,Math.min(0.35,RF[j]-base[j])):G.off);
+  const good=G.conf>=0.3&&hit>=0.3;
+  return{z:G.conf*10,margin:G.conf*0.3,hit,med:G.off,shift,hop:VC.dt,pres:VC.v,onset:VC.ph,good,pl:usePL};
+};
+SyncAI.draft=(F,texts,opt)=>{
+  const VC=F.VC;if(!VC)return null;const from=(opt&&opt.from)||0;
+  let runs=E.voiceRuns(VC,{minGap:0.5,minLen:0.3}).filter(r=>r[1]>from+0.2).map(r=>[Math.max(r[0],from),r[1]]);
+  if(!runs.length)return null;
+  const t=E.draftFromPlain(texts,VC,runs);if(from>0&&t.length)t[0]=Math.max(t[0],from);
+  let sup=0;t.forEach(x=>{if(peakNear(VC,x,0.15))sup++});
+  return{t,runs,voiced:runs.reduce((s,r)=>s+r[1]-r[0],0),strong:sup/Math.max(1,t.length),rate:0,cost:0};
+};
+})();
+</script><script>if('serviceWorker' in navigator)addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}))</script><script>(()=>{const BUILD='2026-11-23 스킨 50종 · 파스텔 추가',f=d=>d.toLocaleString('ko-KR',{month:'numeric',day:'numeric',hour:'2-digit',minute:'2-digit',hour12:false}),e=document.getElementById('ver');if(!e)return;let s='빌드 '+BUILD.slice(5);try{const d=new Date(document.lastModified);if(!isNaN(d)&&Math.abs(Date.now()-d)>20000)s+=' · 사이트 반영 '+f(d)}catch{}e.textContent=s;e.title='이 index.html의 빌드 '+BUILD+' (한국 시간)'})()</script><script>(()=>{
 const Q=s=>document.querySelector(s),ls=(k,v)=>{try{if(v===undefined)return localStorage[k];localStorage[k]=v}catch{}};
 const H=c=>[1,3,5].map(k=>parseInt(c.slice(k,k+2),16)),X=r=>'#'+r.map(v=>Math.round(Math.max(0,Math.min(255,v))).toString(16).padStart(2,'0')).join(''),mx=(a,b,t)=>{const p=H(a),q=H(b);return X(p.map((v,k)=>v+(q[k]-v)*t))},ra=(c,a)=>'rgba('+H(c).join(',')+','+a+')';
 const hs=(h,s,l)=>{h=((h%360)+360)%360;const a=s*Math.min(l,1-l),f=n=>{const k=(n+h/30)%12;return l-a*Math.max(-1,Math.min(k-3,9-k,1))};return X([f(0)*255,f(8)*255,f(4)*255])};
